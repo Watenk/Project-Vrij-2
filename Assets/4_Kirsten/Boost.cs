@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Boost : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Boost : MonoBehaviour
     private bool hasCooldown;
     private Vector3 normalMovementVector = Vector3.forward;
     private Vector3 currentMovementVector;
+
+    public Slider boostSlider;
 
     void Start()
     {
@@ -30,6 +33,7 @@ public class Boost : MonoBehaviour
             // activate the cooldown and start the deactivation method for the boost
             StartCoroutine(ActivateCooldown());
             StartCoroutine(ResetMovementVector());
+            boostSlider.value--;
         }
         // just some basic movement for the test
         transform.Translate(currentMovementVector * Time.deltaTime);
@@ -41,6 +45,7 @@ public class Boost : MonoBehaviour
         yield return new WaitForSeconds(boostDuration);
         // return to normal speed
         currentMovementVector = normalMovementVector;
+        boostSlider.minValue = 0;
         Debug.Log("boost ended");
     }
 
@@ -52,6 +57,7 @@ public class Boost : MonoBehaviour
         // wait until the boost is ready again
         yield return new WaitForSeconds(boostCooldown);
         hasCooldown = false;
+        boostSlider.maxValue = 10;
         Debug.Log("boost ready");
     }
 }
