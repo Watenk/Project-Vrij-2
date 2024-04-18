@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwarmManager
+public struct Creature
 {
-    
+	public GameObject Instance;
 }

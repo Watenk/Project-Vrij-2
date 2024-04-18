@@ -6,9 +6,9 @@ using Watenk;
 /// <summary> Class to store managers / single classes in. </summary>
 public interface IServiceManager : IUpdateable, IFixedUpdateable
 {
-	public void AddService<T>(T service);
-	public void RemoveService<T>(T service);
-	public T GetService<T>();
+	public void Add<T>(T service);
+	public void Remove<T>(T service);
+	public T Get<T>();
 }
 
 /// <summary> Class to store managers / single classes in. </summary>
@@ -30,7 +30,7 @@ public class ServiceManager : IServiceManager
 		foreach (IFixedUpdateable fixedUpdateable in fixedUpdateables) fixedUpdateable.FixedUpdate(); 
 	}
 	
-	public void AddService<T>(T service)
+	public void Add<T>(T service)
 	{
 		if (services.ContainsKey(typeof(T)))
 		{
@@ -44,7 +44,7 @@ public class ServiceManager : IServiceManager
 		if (service is IFixedUpdateable) fixedUpdateables.Add((IFixedUpdateable)service);
 	}
 	
-	public void RemoveService<T>(T service)
+	public void Remove<T>(T service)
 	{
 		if (!services.ContainsKey(typeof(T)))
 		{
@@ -58,7 +58,7 @@ public class ServiceManager : IServiceManager
 		if (service is IFixedUpdateable) fixedUpdateables.Remove((IFixedUpdateable)service);
 	}
 
-	public T GetService<T>()
+	public T Get<T>()
 	{
 		services.TryGetValue(typeof(T), out object service);
 

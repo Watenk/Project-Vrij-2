@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 	
 	private void Awake() 
 	{
-		serviceManager.AddService(new SwarmManager());
+		//serviceManager.AddService(new SwarmManager());
 	}
 
 	private void Update()
