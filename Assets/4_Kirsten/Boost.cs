@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class Boost : MonoBehaviour
 {
     public float boostCooldown = 5f;
-    public float boostDuration = 2f;
-    private float speedBoost = 5;
+    public float boostDuration = 10f;
+    private float speedBoost = 15;
 
     private bool hasCooldown;
     private Vector3 normalMovementVector = Vector3.forward;
@@ -26,14 +26,14 @@ public class Boost : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !hasCooldown)
+        if (Input.GetKey(KeyCode.LeftShift) && !hasCooldown)
         {
             // apply boost, i simply added another vector to it
             currentMovementVector += Vector3.forward * speedBoost;
             // activate the cooldown and start the deactivation method for the boost
             StartCoroutine(ActivateCooldown());
             StartCoroutine(ResetMovementVector());
-            boostSlider.value--;
+            
         }
         // just some basic movement for the test
         transform.Translate(currentMovementVector * Time.deltaTime);
@@ -45,7 +45,7 @@ public class Boost : MonoBehaviour
         yield return new WaitForSeconds(boostDuration);
         // return to normal speed
         currentMovementVector = normalMovementVector;
-        boostSlider.minValue = 0;
+        boostSlider.value = 0;
         Debug.Log("boost ended");
     }
 
@@ -57,7 +57,7 @@ public class Boost : MonoBehaviour
         // wait until the boost is ready again
         yield return new WaitForSeconds(boostCooldown);
         hasCooldown = false;
-        boostSlider.maxValue = 10;
+        boostSlider.value = 10;
         Debug.Log("boost ready");
     }
 }

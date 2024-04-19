@@ -17,6 +17,8 @@ public class Controller2 : MonoBehaviour
     float moveY;
     float moveZ;
 
+    private Vector3 moveDirection;
+
     [Header("Player Rotation")]
     public float sensitivity = 1;
 
@@ -33,14 +35,14 @@ public class Controller2 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        RenderSettings.fog = false;
-        RenderSettings.fogColor = new Color(0.2f, 0.4f, 0.8f, 0.5f);
-        RenderSettings.fogDensity = 0.04f;
+        //RenderSettings.fog = false;
+        //RenderSettings.fogColor = new Color(0.2f, 0.4f, 0.8f, 0.5f);
+        //RenderSettings.fogDensity = 0.04f;
 
         startTime = Time.time;
 
         rb = GetComponent<Rigidbody>();
-        t = this.transform;
+        
 
     }
 
@@ -55,7 +57,7 @@ public class Controller2 : MonoBehaviour
         LookAround();
         Move();
         SmoothAfterMovement();
-        RenderSettings.fog = IsUnderwater();
+        //RenderSettings.fog = IsUnderwater();
         
         if (Input.GetKey(KeyCode.Escape))
         {
@@ -94,17 +96,17 @@ public class Controller2 : MonoBehaviour
         Quaternion target = Quaternion.Euler(tiltAroundX, 0, tiltAroundZ);
 
         // Dampen towards the target rotation
-        transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
+        rb.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
 
         Debug.Log(tiltAngle);
 
         // smoothing the speed
-        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D) && Speed == 2)
-        {
-            //maxForwardSpeed = Mathf.SmoothStep(maxForwardSpeed, maxForwardSpeed / 2, 2);
-            float t = (Time.time - startTime) / smooth;
-            transform.position = new Vector3(Mathf.SmoothStep(Speed, Speed, t), 1, 1);
-        }
+        //if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D) && Speed == 2)
+        //{
+        //    //maxForwardSpeed = Mathf.SmoothStep(maxForwardSpeed, maxForwardSpeed / 2, 2);
+        //    float t = (Time.time - startTime) / smooth;
+        //    transform.position = new Vector3(Mathf.SmoothStep(Speed, Speed, t), 1, 1);
+        //}
     }
 
     void LookAround()
@@ -114,7 +116,7 @@ public class Controller2 : MonoBehaviour
 
         rotationY = Mathf.Clamp(rotationY, rotationMin, rotationMax);
 
-        t.localRotation = Quaternion.Euler(-rotationY, rotationX, 0);
+        transform.localRotation = Quaternion.Euler(-rotationY, rotationX, 0);
     }
 
     private void Move()
@@ -122,7 +124,7 @@ public class Controller2 : MonoBehaviour
         moveX = Input.GetAxis("Horizontal");
         moveZ = Input.GetAxis("Forward");
 
-        t.Translate(new Vector3(moveX, 0, moveZ) * Time.deltaTime * Speed);
-        t.Translate(new Vector3(0, moveY, 0) * Time.deltaTime * Speed, Space.World);
+        moveDirection = new Vector3(moveX, 0, moveZ);
+        transform.Translate(moveDirection * Speed * Time.deltaTime);
     }
 }
