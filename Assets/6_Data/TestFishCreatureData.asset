@@ -10,6 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e2d5e586c7710a43b7a4406f9594366, type: 3}
-  m_Name: CreatureData
+  m_Name: TestFishCreatureData
   m_EditorClassIdentifier: 
-  CreaturePrefab: {fileID: 0}
+  CreaturePrefab: {fileID: 1280610549927367111, guid: a2520b35b82f99b4193a2bec28c4703b,
+    type: 3}

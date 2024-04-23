@@ -582,7 +582,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f374e8cf721954c4dbb7c36fa213bdc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatures: []
+  creatures:
+  - {fileID: 11400000, guid: c8106d9d92d341742bfbd4952b462d42, type: 2}
   WanderRadius: 15
 --- !u!4 &1856467832
 Transform:

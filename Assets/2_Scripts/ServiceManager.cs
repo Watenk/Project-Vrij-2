@@ -4,7 +4,7 @@ using UnityEngine;
 using Watenk;
 
 /// <summary> Class to store managers / single classes in. </summary>
-public interface IServiceManager : IUpdateable, IFixedUpdateable
+public interface IServiceManager
 {
 	public void Add<T>(T service);
 	public void Remove<T>(T service);
@@ -12,7 +12,7 @@ public interface IServiceManager : IUpdateable, IFixedUpdateable
 }
 
 /// <summary> Class to store managers / single classes in. </summary>
-public class ServiceManager : IServiceManager
+public class ServiceManager : Singleton<ServiceManager>, IServiceManager, IUpdateable, IFixedUpdateable
 {
 	private Dictionary<System.Type, object> services = new Dictionary<System.Type, object>();
 	private List<IUpdateable> updateables = new List<IUpdateable>();

@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	private IServiceManager serviceManager;
-	
 	private void Awake() 
 	{
-		//serviceManager.AddService(new SwarmManager());
+		ServiceManager.Instance.Add(new SwarmManager());
 	}
 
 	private void Update()
 	{
-		serviceManager.Update();
+		ServiceManager.Instance.Update();
 	}
 	
 	private void FixedUpdate() 
 	{
-		serviceManager.FixedUpdate();
+		ServiceManager.Instance.FixedUpdate();
 	}
 }
