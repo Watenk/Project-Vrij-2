@@ -36,7 +36,7 @@ public class Boost : MonoBehaviour
             
         }
         // just some basic movement for the test
-        transform.Translate(currentMovementVector * Time.deltaTime);
+        //transform.Translate(currentMovementVector * Time.deltaTime);
     }
 
     IEnumerator ResetMovementVector()
