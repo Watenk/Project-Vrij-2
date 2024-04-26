@@ -12,5 +12,5 @@ public interface ICollectionManager<T, U, V>
 	public void Remove(T instance);
 	public void Remove(V getter);
 	public T Get(V getter);
-	public int GetSize();
+	public int GetCount();
 }

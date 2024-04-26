@@ -34,6 +34,24 @@ public static class UnityUtil
 
 public static class DebugUtil
 {
+	/// <summary> Checks if game is running in the editor and throws a Log. </summary>
+	/// <param name="message">The message the log will display.</param>
+	public static void TrowLog(string message)
+	{
+		#if UNITY_EDITOR
+			Debug.Log(message);
+		#endif
+	}
+	
+	/// <summary> Checks if game is running in the editor and throws a LogWarning. </summary>
+	/// <param name="message">The message the warning will display.</param>
+	public static void TrowWarning(string message)
+	{
+		#if UNITY_EDITOR
+			Debug.LogWarning(message);
+		#endif
+	}
+	
 	/// <summary> Checks if game is running in the editor and throws a LogError. </summary>
 	/// <param name="message">The message the error will display.</param>
 	public static void TrowError(string message)

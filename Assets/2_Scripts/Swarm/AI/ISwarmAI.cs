@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ISwarmAI
 {
-
+    public void UpdateAI(List<Boid> boids);
 }
