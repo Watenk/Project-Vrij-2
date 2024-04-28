@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -58,9 +59,11 @@ public class PLayerController : MonoBehaviour
 		LookAround();
 		Move();
 		SmoothAfterMovement();
-		//RenderSettings.fog = IsUnderwater();
+		Attack();
 		
-		if (Input.GetKey(KeyCode.Escape))
+        //RenderSettings.fog = IsUnderwater();
+
+        if (Input.GetKey(KeyCode.Escape))
 		{
 			Cursor.lockState = CursorLockMode.None;
 		}
@@ -113,19 +116,29 @@ public class PLayerController : MonoBehaviour
 	void Attack()
 	{
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position, AttackRange);
-        foreach (var hitCollider in hitColliders)
-        {
-            // Check for a tag
-        }
+		foreach (var hitCollider in hitColliders)
+		{
+            if (hitCollider.CompareTag("Fish"))
+            {
+				Debug.Log("Ik zie fish");
+
+                if (Input.GetMouseButtonDown(1))
+                {
+					Destroy(hitCollider.gameObject);
+				}
+
+			}
+		}
 	}
+
+#if UNITY_EDITOR
+		void OnDrawGizmosSelected()
+		{
+			Gizmos.color = Color.green;
+			Gizmos.DrawWireSphere(transform.position, AttackRange);
+		}
+#endif
 	
-	#if UNITY_EDITOR
-	void OnDrawGizmosSelected()
-	{
-		Gizmos.color = Color.green;
-		Gizmos.DrawWireSphere(transform.position, AttackRange);
-	}
-	#endif
 
 	void LookAround()
 	{
@@ -146,3 +159,5 @@ public class PLayerController : MonoBehaviour
 		transform.Translate(moveDirection * Speed * Time.deltaTime);
 	}
 }
+
+   
