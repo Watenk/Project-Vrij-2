@@ -11,6 +11,8 @@ public class PLayerController : MonoBehaviour
 
 	float startTime;
 
+	public bool EatedFish;
+
 	[Header("Player Movement")]
 	public float Speed;
 	public float AttackRange;
@@ -42,8 +44,11 @@ public class PLayerController : MonoBehaviour
 		//RenderSettings.fogDensity = 0.04f;
 
 		startTime = Time.time;
+		//rb.useGravity = false;
 
 		rb = GetComponent<Rigidbody>();
+
+		EatedFish = false;
 		
 
 	}
@@ -71,8 +76,9 @@ public class PLayerController : MonoBehaviour
 		if (IsUnderwater())
 		{
 			Speed = 2;
+            rb.useGravity = false;
 
-			if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
 			{
 				rb.velocity = new Vector3(rb.velocity.x, 3, rb.velocity.z);
 
@@ -87,7 +93,8 @@ public class PLayerController : MonoBehaviour
 		else
 		{
 			Speed = 12;
-		}
+            rb.useGravity = true;
+        }
 	}
 
 	void SmoothAfterMovement()
@@ -125,7 +132,9 @@ public class PLayerController : MonoBehaviour
                 if (Input.GetMouseButtonDown(1))
                 {
 					Destroy(hitCollider.gameObject);
-				}
+                    EatedFish = true;
+
+                }
 
 			}
 		}
