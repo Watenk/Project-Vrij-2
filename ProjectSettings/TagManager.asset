@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Water
   - Fish
+  - RandomPoint
   layers:
   - Default
   - TransparentFX
