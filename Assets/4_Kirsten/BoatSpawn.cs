@@ -43,5 +43,9 @@ public class BoatSpawn : MonoBehaviour
         {
             spawnTimeLeft = spawnTimeLeft + Time.deltaTime;
         }
+
     }
+    
+    
+    
 }

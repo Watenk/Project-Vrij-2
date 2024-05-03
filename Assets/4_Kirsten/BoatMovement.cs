@@ -27,4 +27,13 @@ public class BoatMovement : MonoBehaviour
             Debug.Log("Moving to RandomPoint" + CurrentRandom.ToString());
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Island")
+        {
+            Destroy(gameObject);
+            
+        }
+
+    }
 }
