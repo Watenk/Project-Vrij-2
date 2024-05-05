@@ -8,7 +8,9 @@ public class GameManager : MonoBehaviour
 	private void Awake() 
 	{
 		Cursor.lockState = CursorLockMode.Locked;
+		
 		ServiceManager.Instance.Add(new SwarmManager());
+		ServiceManager.Instance.Add(new PlayerManager());
 	}
 
 	private void Update()
