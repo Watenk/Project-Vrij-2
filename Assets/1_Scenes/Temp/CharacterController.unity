@@ -794,7 +794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
+  m_TrackedObjectOffset: {x: 0, y: 0.14, z: 0}
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
@@ -1045,6 +1045,7 @@ GameObject:
   m_Component:
   - component: {fileID: 966418749}
   - component: {fileID: 966418748}
+  - component: {fileID: 966418750}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -1099,15 +1100,33 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 966418747}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000030489367, y: -0.122183256, z: 0.0000000037534122,
-    w: 0.9925076}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.2, y: 0.94, z: -7.192333}
-  m_LocalScale: {x: 1.6666666, y: 1.6666666, z: 1.6666666}
+  m_LocalScale: {x: 1.6666671, y: 1.6666666, z: 1.6666671}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 704712126}
   m_Father: {fileID: 1351429592}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &966418750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966418747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0544e7b14d134a1449e61175446cfb95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ApplyAfter: 3
+  m_Tilt: 0
+  m_Pan: 0
+  m_Dutch: 0
+  m_ZoomScale: 1
+  m_FollowAttachment: 1
+  m_LookAtAttachment: 1
 --- !u!1 &1032947883
 GameObject:
   m_ObjectHideFlags: 0
@@ -1632,7 +1651,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1351429592}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.09, y: 0, z: 0}
 --- !u!114 &1345786307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1828,7 +1847,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CameraRotation: {fileID: 2072910748}
   SirenModdel: {fileID: 1657634479}
+  cinemachineRecomposer: {fileID: 966418750}
   EatedFish: 0
+  CameraTiltIntencity: 1
   Speed: 20
   AttackRange: 0
   Sensitivity: 1

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,9 @@ public class PLayerController : MonoBehaviour
 {
 	public Transform CameraRotation;
 	public GameObject SirenModdel;
+	public CinemachineRecomposer cinemachineRecomposer;
 	public bool EatedFish = false;
+	public float CameraTiltIntencity;
 	
 	private Rigidbody rb;
 	private float startTime;
@@ -64,8 +67,8 @@ public class PLayerController : MonoBehaviour
 	{
 		LookAround();
 		Move();
-		//SmoothAfterMovement();
 		Attack();
+		//SmoothAfterMovement();
 		
 		if (Input.GetKey(KeyCode.Escape))
 		{
@@ -168,6 +171,14 @@ public class PLayerController : MonoBehaviour
 		Vector3 direction = rb.velocity.normalized;
 		Quaternion targetRotation = Quaternion.LookRotation(direction);
 		SirenModdel.transform.rotation = Quaternion.Slerp(SirenModdel.transform.rotation, targetRotation, Time.deltaTime * 10f);
+		
+		float targetTilt = Mathf.Repeat(targetRotation.eulerAngles.x + 180f, 360f) - 180f;
+
+		targetTilt = Mathf.Clamp(targetTilt, -50, 50);
+
+		float currentTilt = cinemachineRecomposer.m_Tilt;
+		float newTilt = Mathf.Lerp(currentTilt, targetTilt * CameraTiltIntencity, Time.deltaTime);
+		cinemachineRecomposer.m_Tilt = newTilt;
 	}
 
 	private void Move()
