@@ -6,11 +6,14 @@ TagManager:
   tags:
   - Water
   - Fish
+  - RandomPoint
+  - Island
+  - Boat
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Boat
   - Water
   - UI
   - 
