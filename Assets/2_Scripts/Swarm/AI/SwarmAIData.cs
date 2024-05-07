@@ -31,7 +31,7 @@ public class SwarmAIData : ScriptableObject
 
 			if (value == null || (value is float && (float)value == 0) || (value is byte && (byte)value == 0))
 			{
-				DebugUtil.TrowWarning(this.name + " has a " + field.Name + " of 0");
+				DebugUtil.ThrowWarning(this.name + " has a " + field.Name + " of 0");
 				hasWarnings = true;
 			}
 		}

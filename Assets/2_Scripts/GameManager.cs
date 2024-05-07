@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
 		Cursor.lockState = CursorLockMode.Locked;
 		
 		ServiceManager.Instance.Add(new SwarmManager());
-		ServiceManager.Instance.Add(new PlayerManager());
 	}
 
 	private void Update()

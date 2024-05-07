@@ -17,7 +17,7 @@ public class SwarmSpawner : MonoBehaviour
 	{
 		if (NullChecks())
 		{
-			DebugUtil.TrowError("Swarm didn't spawn because of error");
+			DebugUtil.ThrowError("Swarm didn't spawn because of error");
 			return;	
 		} 
 		SwarmAIData.NullChecks();
@@ -43,7 +43,7 @@ public class SwarmSpawner : MonoBehaviour
 
 				if (rigidbody == null)
 				{
-					DebugUtil.TrowError("Tried to add a prefab to a swarm that doesn't contain a Rigidbody");
+					DebugUtil.ThrowError("Tried to add a prefab to a swarm that doesn't contain a Rigidbody");
 					return;
 				}
 			}
@@ -61,13 +61,13 @@ public class SwarmSpawner : MonoBehaviour
 	{
 		if (creaturePrefabs.Count == 0)
 		{
-			DebugUtil.TrowError(this.gameObject.name + " has no prefabs assigned");
+			DebugUtil.ThrowError(this.gameObject.name + " has no prefabs assigned");
 			return true;
 		}
 		
 		if (SwarmAIData == null)
 		{
-			DebugUtil.TrowError(this.gameObject.name + " swarmAIData has no swarmAIData assigned");
+			DebugUtil.ThrowError(this.gameObject.name + " swarmAIData has no swarmAIData assigned");
 			return true;
 		}
 		

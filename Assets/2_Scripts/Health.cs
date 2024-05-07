@@ -7,12 +7,12 @@ public class Health : MonoBehaviour
 {
     public Slider heathSlider;
 
-    PLayerMovement PLayerController;
+    CharacterController PLayerController;
 
     void Start()
     {
         heathSlider.value = 2;
-        PLayerController = GetComponent<PLayerMovement>();
+        PLayerController = GetComponent<CharacterController>();
     }
 
     void Update()
