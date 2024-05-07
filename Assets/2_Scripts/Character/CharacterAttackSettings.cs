@@ -6,4 +6,5 @@ using UnityEngine;
 public class CharacterAttackSettings : ScriptableObject
 {
 	public float AttackRange;
+	public int AttackDamage;
 }

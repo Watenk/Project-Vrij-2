@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> is an ICollectionManager </summary>
 public class SwarmManager : ICollectionManager<ISwarm, ISwarm, int>, IFixedUpdateable
 {
 	private List<ISwarm> swarms = new List<ISwarm>();	
+	private Dictionary<int, ISwarm> IDs = new Dictionary<int, ISwarm>();
+	private int idCounter = 0;
 	
 	public void FixedUpdate()
 	{
@@ -15,9 +16,12 @@ public class SwarmManager : ICollectionManager<ISwarm, ISwarm, int>, IFixedUpdat
 		}
 	}
 	
-	public void Add(ISwarm data)
+	public int Add(ISwarm data)
 	{
 		swarms.Add(data);
+		IDs.Add(idCounter, data);
+		idCounter++;
+		return idCounter - 1;
 	}
 
 	public ISwarm Get(int getter)
@@ -37,6 +41,8 @@ public class SwarmManager : ICollectionManager<ISwarm, ISwarm, int>, IFixedUpdat
 
 	public void Remove(int getter)
 	{
-		swarms.Remove(Get(getter));
+		IDs.TryGetValue(getter, out ISwarm swarm);
+		IDs.Remove(getter);
+		Remove(swarm);
 	}
 }

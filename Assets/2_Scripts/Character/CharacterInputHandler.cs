@@ -6,16 +6,18 @@ using UnityEngine.InputSystem;
 public class CharacterInputHandler : ICharacterInputHandler
 {
 	// Events
-    public event ICharacterInputHandler.MoveEventHandler OnMove;
-    public event ICharacterInputHandler.RotateEventHandler OnRotate;
+	public event ICharacterInputHandler.MoveEventHandler OnMove;
+	public event ICharacterInputHandler.RotateEventHandler OnRotate;
+	public event ICharacterInputHandler.AttackEventHandler OnAttack;
 	
 	// Inputs
 	private PlayerInputs inputs;
 	private InputAction movement;
 	private InputAction verticalMovement;
 	private InputAction rotation;
+	private InputAction attack;
 
-    public CharacterInputHandler()
+	public CharacterInputHandler()
 	{
 		EnableInputs();
 	}
@@ -39,11 +41,15 @@ public class CharacterInputHandler : ICharacterInputHandler
 			movement = inputs.Player.Movement;	
 			verticalMovement = inputs.Player.VerticalMovement;
 			rotation = inputs.Player.Rotation;
+			attack = inputs.Player.Attack;
 		}
 		
 		movement.Enable();
 		verticalMovement.Enable();
 		rotation.Enable();
+		attack.Enable();
+		
+		attack.performed += context => OnAttack?.Invoke();
 	}
 	
 	public void DisableInputs()
@@ -51,5 +57,8 @@ public class CharacterInputHandler : ICharacterInputHandler
 		movement.Disable();
 		verticalMovement.Disable();
 		rotation.Disable();
+		attack.Disable();
+		
+		attack.performed -= context => OnAttack?.Invoke();
 	}
 }

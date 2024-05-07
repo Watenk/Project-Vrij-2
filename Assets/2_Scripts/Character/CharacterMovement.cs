@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : ICharacterController
+public class CharacterController : ICharacterMovement
 {
 	float rotationX;
 	float rotationY;
 	
 	// Dependencies
-	private CharacterControllerSettings characterControllerSettings;
+	private CharacterMovementSettings characterControllerSettings;
 	private Rigidbody rb;
 	private Transform cameraRoot;
 	private Transform moddelRoot;
 	private CinemachineRecomposer cinemachineRecomposer;
 	
-	public CharacterController(CharacterControllerSettings characterControllerSettings, Rigidbody rb, Transform cameraRoot, Transform moddelRoot, CinemachineRecomposer cinemachineRecomposer)
+	public CharacterController(CharacterMovementSettings characterControllerSettings, Rigidbody rb, Transform cameraRoot, Transform moddelRoot, CinemachineRecomposer cinemachineRecomposer)
 	{
 		this.characterControllerSettings = characterControllerSettings;
 		this.rb = rb;
@@ -31,7 +31,6 @@ public class CharacterController : ICharacterController
 		moddelRoot.transform.rotation = Quaternion.Slerp(moddelRoot.transform.rotation, targetRotation, Time.deltaTime * 10f);
 		
 		// Camera Rotation
-		Debug.Log(rotationInput);
 		rotationX += rotationInput.x * characterControllerSettings.RotationSensitivity;
 		rotationY += rotationInput.y * characterControllerSettings.RotationSensitivity;
 		rotationY = Mathf.Clamp(rotationY, -90, 90);

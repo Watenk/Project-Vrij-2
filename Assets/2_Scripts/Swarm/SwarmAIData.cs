@@ -19,23 +19,4 @@ public class SwarmAIData : ScriptableObject
 	public float AlignmentForce; 
 	[Tooltip("The force with which the boids will try to move to the center of their group")]
 	public float CohesionForce; 
-	
-	public bool NullChecks()
-	{
-		bool hasWarnings = false;
-
-		FieldInfo[] fields = this.GetType().GetFields();
-		foreach (var field in fields)
-		{
-			object value = field.GetValue(this);
-
-			if (value == null || (value is float && (float)value == 0) || (value is byte && (byte)value == 0))
-			{
-				DebugUtil.ThrowWarning(this.name + " has a " + field.Name + " of 0");
-				hasWarnings = true;
-			}
-		}
-
-		return hasWarnings;
-	}
 }

@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CharacterControllerSettings", menuName = "Settings/CharacterControllerSettings")]
-public class CharacterControllerSettings : ScriptableObject
+[CreateAssetMenu(fileName = "CharacterMovementSettings", menuName = "Settings/CharacterMovementSettings")]
+public class CharacterMovementSettings : ScriptableObject
 {
 	public float Speed;
 	public float RotationSensitivity;
