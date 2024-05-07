@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterAttack
+public class CharacterAttack : IAttack
 {
 	// Dependencies
 	private CharacterAttackSettings characterAttackSettings;
@@ -14,23 +14,13 @@ public class CharacterAttack
 		this.attackRoot = attackRoot;
 	}
 	
-	// private void Attack()
-	// {
-	// 	Collider[] hitColliders = Physics.OverlapSphere(player.GameObject.transform.position, AttackRange);
-	// 	foreach (var hitCollider in hitColliders)
-	// 	{
-	// 		if (hitCollider.CompareTag("Fish"))
-	// 		{
-	// 			Debug.Log("Ik zie fish");
+	public void Attack()
+	{
+		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
+		foreach (var hitCollider in hitColliders)
+		{
 
-	// 			if (Input.GetMouseButtonDown(1))
-	// 			{
-	// 				GameObject.Destroy(hitCollider.gameObject);
-	// 				EatedFish = true;
-
-	// 			}
-	// 		}
-	// 	}
-	// }
+		}
+	}
 }
 

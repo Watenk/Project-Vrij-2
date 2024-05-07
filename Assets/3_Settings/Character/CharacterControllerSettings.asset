@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CharacterControllerSettings
   m_EditorClassIdentifier: 
   Speed: 10
-  AttackRange: 0.5
-  CameraTiltIntencity: 1
+  RotationSensitivity: 0.1
+  CameraTiltIntencity: 0.8

@@ -1,20 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using Watenk;
 
-public class CharacterController : IUpdateable
+public class CharacterController : ICharacterController
 {
-	private float rotationX;
-	private float rotationY;
-	
-	// Inputs
-	private PlayerInputs inputs;
-	private InputAction move;
-	private InputAction verticalMove;
-	private InputAction look;
+	float rotationX;
+	float rotationY;
 	
 	// Dependencies
 	private CharacterControllerSettings characterControllerSettings;
@@ -30,22 +21,9 @@ public class CharacterController : IUpdateable
 		this.cameraRoot = cameraRoot;
 		this.moddelRoot = moddelRoot;
 		this.cinemachineRecomposer = cinemachineRecomposer;
-
-		EnableInputs();
 	}
 	
-	~CharacterController()
-	{
-		DisableInputs();
-	}
-	
-	public void Update()
-	{
-		Rotation();
-		Movement();
-	}
-	
-	private void Rotation()
+	public void UpdateRotation(Vector2 rotationInput)
 	{
 		// Moddel Rotation
 		Vector3 direction = rb.velocity.normalized;
@@ -53,9 +31,10 @@ public class CharacterController : IUpdateable
 		moddelRoot.transform.rotation = Quaternion.Slerp(moddelRoot.transform.rotation, targetRotation, Time.deltaTime * 10f);
 		
 		// Camera Rotation
-		rotationX += Input.GetAxis("Mouse X");
-		rotationY += Input.GetAxis("Mouse Y");
-		//rotationY = Mathf.Clamp(rotationY, RotationMin, RotationMax);
+		Debug.Log(rotationInput);
+		rotationX += rotationInput.x * characterControllerSettings.RotationSensitivity;
+		rotationY += rotationInput.y * characterControllerSettings.RotationSensitivity;
+		rotationY = Mathf.Clamp(rotationY, -90, 90);
 		cameraRoot.localRotation = Quaternion.Euler(-rotationY, rotationX, 0);
 		
 		// Camera Tilt
@@ -66,10 +45,8 @@ public class CharacterController : IUpdateable
 		cinemachineRecomposer.m_Tilt = newTilt;
 	}
 
-	private void Movement()
+	public void UpdateMovement(Vector2 moveInput, float verticalMoveInput)
 	{
-		// Calc MoveDirection
-		Vector2 moveInput = move.ReadValue<Vector2>();
 		Vector3 forward = cameraRoot.forward;
 		Vector3 right = cameraRoot.right;
 		forward.y = 0f;
@@ -77,31 +54,9 @@ public class CharacterController : IUpdateable
 		forward.Normalize();
 		right.Normalize();
 		Vector3 moveDirection = forward * moveInput.y + right * moveInput.x;
-		moveDirection.y = verticalMove.ReadValue<float>();
+		moveDirection.y = verticalMoveInput;
 		moveDirection.Normalize();
 		
 		rb.AddForce(moveDirection * characterControllerSettings.Speed * Time.deltaTime, ForceMode.Impulse);
-	}
-	
-	private void EnableInputs()
-	{
-		if (inputs == null)
-		{
-			inputs = new PlayerInputs();
-			move = inputs.Player.Move;	
-			verticalMove = inputs.Player.VerticalMove;
-			look = inputs.Player.Look;
-		}
-		
-		move.Enable();
-		verticalMove.Enable();
-		look.Enable();
-	}
-	
-	private void DisableInputs()
-	{
-		move.Disable();
-		verticalMove.Disable();
-		look.Disable();
 	}
 }

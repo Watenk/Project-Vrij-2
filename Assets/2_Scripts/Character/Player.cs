@@ -5,10 +5,11 @@ using Watenk;
 
 public class Player : MonoBehaviour, IPlayer
 {
-	public CharacterController CharacterController { get; private set; }
-	public CharacterAttack CharacterAttack { get; private set; }
-	public CharacterHealth Characterhealth { get; private set; }
-	
+	public ICharacterInputHandler CharacterInputHandler { get; private set; }
+	public ICharacterController CharacterController { get; private set; }
+	public IAttack CharacterAttack { get; private set; }
+	public IDamageable Characterhealth { get; private set; }
+
 	[Header("References")]
 	[SerializeField][Tooltip("The point the camera will rotate around")]
 	private Transform cameraRoot;
@@ -32,14 +33,24 @@ public class Player : MonoBehaviour, IPlayer
 		Rigidbody rb = GetComponent<Rigidbody>();
 		if (rb == null) DebugUtil.ThrowError(this.name + " is missing a RigidBody");
 		
+		CharacterInputHandler = new CharacterInputHandler();
 		CharacterController = new CharacterController(characterControllerSettings, rb, cameraRoot, moddelRoot, cinemachineRecomposer);
 		CharacterAttack = new CharacterAttack(characterAttackSettings, attackRoot);
 		Characterhealth = new CharacterHealth(maxHealth);
+		
+		CharacterInputHandler.OnMove += CharacterController.UpdateMovement;
+		CharacterInputHandler.OnRotate += CharacterController.UpdateRotation;
+	}
+	
+	public void OnDestroy() 
+	{
+		CharacterInputHandler.OnMove -= CharacterController.UpdateMovement;
+		CharacterInputHandler.OnRotate -= CharacterController.UpdateRotation;
 	}
 	
 	public void Update()
 	{
-		CharacterController.Update();
+		CharacterInputHandler.Update();
 	}
 
 	#if UNITY_EDITOR

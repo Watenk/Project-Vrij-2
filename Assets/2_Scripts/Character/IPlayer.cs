@@ -4,7 +4,8 @@ using UnityEngine;
 
 public interface IPlayer
 {
-	public CharacterController CharacterController { get; }
-	public CharacterAttack CharacterAttack { get; }
-	public CharacterHealth Characterhealth { get; }
+	public ICharacterInputHandler CharacterInputHandler { get; }
+	public ICharacterController CharacterController { get; }
+	public IAttack CharacterAttack { get; }
+	public IDamageable Characterhealth { get; }
 }
