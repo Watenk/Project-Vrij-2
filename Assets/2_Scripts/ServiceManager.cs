@@ -34,7 +34,7 @@ public class ServiceManager : Singleton<ServiceManager>, IServiceManager, IUpdat
 	{
 		if (services.ContainsKey(typeof(T)))
 		{
-		 	DebugUtil.TrowError("ServiceManager already contains the " + typeof(T).Name + " service");
+		 	DebugUtil.ThrowError("ServiceManager already contains the " + typeof(T).Name + " service");
 		 	return;	
 		}
 		
@@ -48,7 +48,7 @@ public class ServiceManager : Singleton<ServiceManager>, IServiceManager, IUpdat
 	{
 		if (!services.ContainsKey(typeof(T)))
 		{
-		 	DebugUtil.TrowError("ServiceManager doesn't contain the " + typeof(T).Name + " service");
+		 	DebugUtil.ThrowError("ServiceManager doesn't contain the " + typeof(T).Name + " service");
 		 	return;	
 		}
 		
@@ -62,7 +62,7 @@ public class ServiceManager : Singleton<ServiceManager>, IServiceManager, IUpdat
 	{
 		services.TryGetValue(typeof(T), out object service);
 
-		if (service == null) DebugUtil.TrowError(typeof(T).Name + " Sevice not found"); 
+		if (service == null) DebugUtil.ThrowError(typeof(T).Name + " Sevice not found"); 
 
 		return (T)service;
 	}

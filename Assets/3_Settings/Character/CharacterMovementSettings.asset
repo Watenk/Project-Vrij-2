@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e10991f454a4ad4a94f106f66f5377d, type: 3}
-  m_Name: FishSwarmAIData
+  m_Script: {fileID: 11500000, guid: 728c1735413fe5f49a62f1eca72fe023, type: 3}
+  m_Name: CharacterMovementSettings
   m_EditorClassIdentifier: 
-  MinSpeed: 0.3
-  MaxSpeed: 1
-  NeighbourDetectRange: 15
-  ObstacleDetectRange: 5
-  SeparationForce: 53.1
-  AlignmentForce: 1
-  CohesionForce: 3.07
+  Speed: 10
+  RotationSensitivity: 0.1
+  CameraTiltIntencity: 0.8

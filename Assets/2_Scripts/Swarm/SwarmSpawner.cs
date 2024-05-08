@@ -15,63 +15,39 @@ public class SwarmSpawner : MonoBehaviour
 	
 	void Start()
 	{
-		if (NullChecks())
-		{
-			DebugUtil.TrowError("Swarm didn't spawn because of error");
-			return;	
-		} 
-		SwarmAIData.NullChecks();
-
 		// Spawn Swarm
 		Swarm swarm = new Swarm(SwarmAIData, WanderRadius, this.transform.position, Amount, Obstacles);
+		
+		// Add to SwarmManager
+		SwarmManager swarmManager = ServiceManager.Instance.Get<SwarmManager>();
+		int swarmID = swarmManager.Add(swarm);
+		
+		// Populate Swarm
 		for (int i = 0; i < Amount; i++)
 		{
+			// Prefab Instance
 			GameObject randomPrefab = creaturePrefabs[Random.Range(0, creaturePrefabs.Count - 1)];
 			Vector3 spawnPos = new Vector3(
 				this.transform.position.x + Random.Range(-WanderRadius, WanderRadius),
 				this.transform.position.y + Random.Range(-WanderRadius, WanderRadius),
 				this.transform.position.z + Random.Range(-WanderRadius, WanderRadius)
-				);
+			);
 			GameObject instance = GameObject.Instantiate(randomPrefab, spawnPos, Quaternion.identity, this.transform);
 			
-			Rigidbody rigidbody;
-			rigidbody = instance.GetComponent<Rigidbody>();
-		
-			if (rigidbody == null)
+			// Boid
+			Boid boid = instance.GetComponent<Boid>();
+			if (boid == null)
 			{
-				rigidbody = instance.GetComponentInChildren<Rigidbody>();
-
-				if (rigidbody == null)
+				boid = GetComponentInChildren<Boid>();
+				if (boid == null)
 				{
-					DebugUtil.TrowError("Tried to add a prefab to a swarm that doesn't contain a Rigidbody");
-					return;
+					DebugUtil.ThrowError(this.name + "doesn't contain a Boid");
 				}
 			}
-
-			Boid newBoid = new Boid(rigidbody, Random.Range(SwarmAIData.MinSpeed, SwarmAIData.MaxSpeed));
-			swarm.Add(newBoid);
+			
+			int boidID = swarm.Add(boid);
+			boid.Init(swarmID, boidID, Random.Range(SwarmAIData.MinSpeed, SwarmAIData.MaxSpeed));
 		} 
-		
-		// Add to SwarmManager
-		SwarmManager swarmManager = ServiceManager.Instance.Get<SwarmManager>();
-		swarmManager.Add(swarm);
-	}
-	
-	private bool NullChecks()
-	{
-		if (creaturePrefabs.Count == 0)
-		{
-			DebugUtil.TrowError(this.gameObject.name + " has no prefabs assigned");
-			return true;
-		}
-		
-		if (SwarmAIData == null)
-		{
-			DebugUtil.TrowError(this.gameObject.name + " swarmAIData has no swarmAIData assigned");
-			return true;
-		}
-		
-		return false;
 	}
 	
 	#if UNITY_EDITOR
