@@ -1,15 +1,60 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace Watenk
 {
 
+public static class UnityUtil
+{
+	public static T FindInMonobehaviours<T>()
+	{
+		MonoBehaviour[] allMonoBehaviours = MonoBehaviour.FindObjectsOfType<MonoBehaviour>();
+
+		foreach (MonoBehaviour monoBehaviour in allMonoBehaviours)
+		{
+			Type type = monoBehaviour.GetType();
+			FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+			foreach (FieldInfo field in fields)
+			{
+				if (field.FieldType == typeof(T))
+				{
+					return (T)field.GetValue(monoBehaviour);
+				}
+			}
+		}
+
+		Debug.LogError("No " + typeof(T).Name + " found in any MonoBehaviour in the scene!");
+		return default;
+	}
+}
+
 public static class DebugUtil
 {
+	/// <summary> Checks if game is running in the editor and throws a Log. </summary>
+	/// <param name="message">The message the log will display.</param>
+	public static void ThrowLog(string message)
+	{
+		#if UNITY_EDITOR
+			Debug.Log(message);
+		#endif
+	}
+	
+	/// <summary> Checks if game is running in the editor and throws a LogWarning. </summary>
+	/// <param name="message">The message the warning will display.</param>
+	public static void ThrowWarning(string message)
+	{
+		#if UNITY_EDITOR
+			Debug.LogWarning(message);
+		#endif
+	}
+	
 	/// <summary> Checks if game is running in the editor and throws a LogError. </summary>
 	/// <param name="message">The message the error will display.</param>
-	public static void TrowError(string message)
+	public static void ThrowError(string message)
 	{
 		#if UNITY_EDITOR
 			Debug.LogError(message);

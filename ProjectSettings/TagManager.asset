@@ -3,12 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Water
+  - Fish
+  - RandomPoint
+  - Island
+  - Boat
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Boat
   - Water
   - UI
   - 
