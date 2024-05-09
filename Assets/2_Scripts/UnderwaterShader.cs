@@ -24,13 +24,13 @@ public class UnderwaterShader : MonoBehaviour
     {
         if(mainCamera.position.y < depth)
         {
-            RenderSettings.fog = true;
+            //RenderSettings.fog = true;
             underwaterVolume.SetActive(true);
             surfaceVolume.SetActive(false);
         }
         else
         {
-            RenderSettings.fog = false;
+            //RenderSettings.fog = false;
             underwaterVolume.SetActive(false);
             surfaceVolume.SetActive(true);
         }
