@@ -15,13 +15,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.87934387, z: 0.7944809, w: 0}
+    m_Value: {x: 1, y: 0.97648454, z: 0.88654554, w: 0}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.95829654, z: 0.75555867, w: 0}
+    m_Value: {x: 0.9515591, y: 1, z: 0.9734339, w: 0}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.9725831, z: 0.89679533, w: 0}
+    m_Value: {x: 1, y: 0.93099445, z: 0.99575555, w: 0}
   shadowsStart:
     m_OverrideState: 0
     m_Value: 0
@@ -51,6 +51,7 @@ MonoBehaviour:
   - {fileID: 6670145842429567968}
   - {fileID: 7801595961511004239}
   - {fileID: 428277998525801434}
+  - {fileID: 6119080382314200525}
 --- !u!114 &428277998525801434
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -97,6 +98,222 @@ MonoBehaviour:
   bladeRotation:
     m_OverrideState: 0
     m_Value: 0
+--- !u!114 &6119080382314200525
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eb4b772797da9440885e8bd939e9560, type: 3}
+  m_Name: ColorCurves
+  m_EditorClassIdentifier: 
+  active: 1
+  master:
+    m_OverrideState: 1
+    m_Value:
+      <length>k__BackingField: 5
+      m_Loop: 0
+      m_ZeroValue: 0
+      m_Range: 1
+      m_Curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.19290124
+          value: 0.2939297
+          inSlope: 2.2242472
+          outSlope: 2.2242472
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.33950618
+          value: 0.6485623
+          inSlope: 1.6219825
+          outSlope: 1.6219825
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.67901236
+          value: 0.9648562
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  red:
+    m_OverrideState: 0
+    m_Value:
+      <length>k__BackingField: 2
+      m_Loop: 0
+      m_ZeroValue: 0
+      m_Range: 1
+      m_Curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  green:
+    m_OverrideState: 0
+    m_Value:
+      <length>k__BackingField: 2
+      m_Loop: 0
+      m_ZeroValue: 0
+      m_Range: 1
+      m_Curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  blue:
+    m_OverrideState: 0
+    m_Value:
+      <length>k__BackingField: 2
+      m_Loop: 0
+      m_ZeroValue: 0
+      m_Range: 1
+      m_Curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  hueVsHue:
+    m_OverrideState: 0
+    m_Value:
+      <length>k__BackingField: 0
+      m_Loop: 1
+      m_ZeroValue: 0.5
+      m_Range: 1
+      m_Curve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  hueVsSat:
+    m_OverrideState: 0
+    m_Value:
+      <length>k__BackingField: 0
+      m_Loop: 1
+      m_ZeroValue: 0.5
+      m_Range: 1
+      m_Curve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  satVsSat:
+    m_OverrideState: 0
+    m_Value:
+      <length>k__BackingField: 0
+      m_Loop: 0
+      m_ZeroValue: 0.5
+      m_Range: 1
+      m_Curve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  lumVsSat:
+    m_OverrideState: 0
+    m_Value:
+      <length>k__BackingField: 0
+      m_Loop: 0
+      m_ZeroValue: 0.5
+      m_Range: 1
+      m_Curve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
 --- !u!114 &6670145842429567968
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -134,7 +351,7 @@ MonoBehaviour:
   active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: -29.9
+    m_Value: -34.8
   tint:
     m_OverrideState: 1
-    m_Value: 28.7
+    m_Value: 38.5
