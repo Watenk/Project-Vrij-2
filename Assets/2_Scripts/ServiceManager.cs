@@ -4,15 +4,15 @@ using UnityEngine;
 using Watenk;
 
 /// <summary> Class to store managers / single classes in. </summary>
-public interface IServiceManager : IUpdateable, IFixedUpdateable
+public interface IServiceManager
 {
-	public void AddService<T>(T service);
-	public void RemoveService<T>(T service);
-	public T GetService<T>();
+	public void Add<T>(T service);
+	public void Remove<T>(T service);
+	public T Get<T>();
 }
 
 /// <summary> Class to store managers / single classes in. </summary>
-public class ServiceManager : IServiceManager
+public class ServiceManager : Singleton<ServiceManager>, IServiceManager, IUpdateable, IFixedUpdateable
 {
 	private Dictionary<System.Type, object> services = new Dictionary<System.Type, object>();
 	private List<IUpdateable> updateables = new List<IUpdateable>();
@@ -30,11 +30,11 @@ public class ServiceManager : IServiceManager
 		foreach (IFixedUpdateable fixedUpdateable in fixedUpdateables) fixedUpdateable.FixedUpdate(); 
 	}
 	
-	public void AddService<T>(T service)
+	public void Add<T>(T service)
 	{
 		if (services.ContainsKey(typeof(T)))
 		{
-		 	DebugUtil.TrowError("ServiceManager already contains the " + typeof(T).Name + " service");
+		 	DebugUtil.ThrowError("ServiceManager already contains the " + typeof(T).Name + " service");
 		 	return;	
 		}
 		
@@ -44,11 +44,11 @@ public class ServiceManager : IServiceManager
 		if (service is IFixedUpdateable) fixedUpdateables.Add((IFixedUpdateable)service);
 	}
 	
-	public void RemoveService<T>(T service)
+	public void Remove<T>(T service)
 	{
 		if (!services.ContainsKey(typeof(T)))
 		{
-		 	DebugUtil.TrowError("ServiceManager doesn't contain the " + typeof(T).Name + " service");
+		 	DebugUtil.ThrowError("ServiceManager doesn't contain the " + typeof(T).Name + " service");
 		 	return;	
 		}
 		
@@ -58,11 +58,11 @@ public class ServiceManager : IServiceManager
 		if (service is IFixedUpdateable) fixedUpdateables.Remove((IFixedUpdateable)service);
 	}
 
-	public T GetService<T>()
+	public T Get<T>()
 	{
 		services.TryGetValue(typeof(T), out object service);
 
-		if (service == null) DebugUtil.TrowError(typeof(T).Name + " Sevice not found"); 
+		if (service == null) DebugUtil.ThrowError(typeof(T).Name + " Sevice not found"); 
 
 		return (T)service;
 	}
