@@ -21,10 +21,10 @@ public class Boid: MonoBehaviour, IHealth
 	
 	// Dependencies
 	private SwarmManager swarmManager;
-	private int swarmID;
-	private int boidID;
+	private uint swarmID;
+	private uint boidID;
 
-	public void Init(int swarmID, int boidID, float speed)
+	public void Init(uint swarmID, uint boidID, float speed)
 	{
 		Speed = speed;
 		MaxHealth = maxHealth;

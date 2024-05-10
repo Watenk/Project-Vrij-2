@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ISwarm : IFixedUpdateable, ICollectionManager<Boid, Boid, int>
+public interface ISwarm : IFixedUpdateable, ICollectionManager<Boid, Boid>
 {
 	public float WanderRadius { get; }
 	public Vector3 Center { get; }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ISwarmAI
+public interface IID 
 {
-    public void UpdateAI(Dictionary<uint, Boid> boids);
+    public uint ID { get; }
 }

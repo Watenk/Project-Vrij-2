@@ -20,7 +20,7 @@ public class SwarmSpawner : MonoBehaviour
 		
 		// Add to SwarmManager
 		SwarmManager swarmManager = ServiceManager.Instance.Get<SwarmManager>();
-		int swarmID = swarmManager.Add(swarm);
+		uint swarmID = swarmManager.Add(swarm);
 		
 		// Populate Swarm
 		for (int i = 0; i < Amount; i++)
@@ -45,7 +45,7 @@ public class SwarmSpawner : MonoBehaviour
 				}
 			}
 			
-			int boidID = swarm.Add(boid);
+			uint boidID = swarm.Add(boid);
 			boid.Init(swarmID, boidID, Random.Range(SwarmAIData.MinSpeed, SwarmAIData.MaxSpeed));
 		} 
 	}

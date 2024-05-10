@@ -7,5 +7,6 @@ using UnityEngine;
 /// <typeparam name="U"> The type of data it needs </typeparam>
 public interface IFactory<T, U>
 {
-	public T Create(U data);
+	public T Construct(U data);
+	public void Deconstruct(T instance);
 }

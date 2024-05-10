@@ -2,47 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwarmManager : ICollectionManager<ISwarm, ISwarm, int>, IFixedUpdateable
+public class SwarmManager : ADictCollection<ISwarm, ISwarm>, IFixedUpdateable
 {
-	private List<ISwarm> swarms = new List<ISwarm>();	
-	private Dictionary<int, ISwarm> IDs = new Dictionary<int, ISwarm>();
-	private int idCounter = 0;
-	
 	public void FixedUpdate()
 	{
-		foreach (ISwarm swarm in swarms)
+		foreach (var swarm in instances)
 		{
-			swarm.FixedUpdate();
+			swarm.Value.FixedUpdate();
 		}
 	}
 	
-	public int Add(ISwarm data)
+	protected override ISwarm Construct(ISwarm data)
 	{
-		swarms.Add(data);
-		IDs.Add(idCounter, data);
-		idCounter++;
-		return idCounter - 1;
+		return data;
 	}
 
-	public ISwarm Get(int getter)
-	{
-		return swarms[getter];
-	}
-
-	public int GetCount()
-	{
-		return swarms.Count;
-	}
-
-	public void Remove(ISwarm instance)
-	{
-		swarms.Remove(instance);
-	}
-
-	public void Remove(int getter)
-	{
-		IDs.TryGetValue(getter, out ISwarm swarm);
-		IDs.Remove(getter);
-		Remove(swarm);
-	}
+    protected override void Deconstruct(ISwarm instance) {}
 }

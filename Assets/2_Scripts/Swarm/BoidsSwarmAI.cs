@@ -14,10 +14,12 @@ public class BoidsSwarmAI : ISwarmAI
 		this.swarmAIData = swarmAIData;
 	}
 	
-	public void UpdateAI(List<Boid> boids)
+	public void UpdateAI(Dictionary<uint, Boid> boids)
 	{		
-		foreach (Boid boid in boids)
+		foreach (var kvp in boids)
 		{
+			Boid boid = kvp.Value;
+			
 			// Boids
 			boid.Rigidbody.velocity += CalcBoidVelocity(boid) * boid.Speed;
 			
