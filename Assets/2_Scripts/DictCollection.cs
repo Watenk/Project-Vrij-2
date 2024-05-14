@@ -3,23 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using Watenk;
 
-public abstract class ADictCollection<T, U> : ICollectionManager<T, U>
+/// <summary> A manager that keeps track of GameObjects using ICollectionManager </summary>
+/// <typeparam name="T"> The type of object it stores </typeparam>
+public class DictCollection<T> : IObjectCollection<T> where T : IID
 {
 	protected Dictionary<uint, T> instances = new Dictionary<uint, T>();
 	protected Dictionary<T, uint> keys = new Dictionary<T, uint>();
 	protected uint idCounter = 1;
 	
 	// ICollectionManager
-	public uint Add(U data)
+	public uint Add(T instance)
 	{
-		T instance = Construct(data);
+		instance.ChangeID(idCounter);
+		
 		instances.Add(idCounter, instance);
 		keys.Add(instance, idCounter);
 		
 		idCounter++;
 		return idCounter - 1;
 	}
-
 
 	public T Get(uint getter)
 	{
@@ -52,17 +54,17 @@ public abstract class ADictCollection<T, U> : ICollectionManager<T, U>
 		keys.Remove(instance);
 		instances.Remove(getter);
 		
-		Deconstruct(instance);
+		if (instance is IGameObject)
+		{
+			GameObject.Destroy(((IGameObject)instance).GameObject);
+		}
 	}
-    public void Clear()
-    {
-        foreach (var kvp in instances)
+	
+	public void Clear()
+	{
+		foreach (var kvp in instances)
 		{
 			Remove(kvp.Key);
 		}
-    }
-	
-	// IFactory
-	protected abstract T Construct(U data);
-	protected abstract void Deconstruct(T instance);
+	}
 }

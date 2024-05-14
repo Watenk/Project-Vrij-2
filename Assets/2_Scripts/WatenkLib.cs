@@ -7,6 +7,36 @@ using UnityEngine;
 namespace Watenk
 {
 
+public static class ArrayUtil
+{
+	/// <summary> Inserts a object into an array </summary>
+	/// <typeparam name="T"> the type of the array </typeparam>
+	/// <param name="oldArray"> The array to insert the object into </param>
+	/// <param name="insertObject"> The object to insert </param>
+	/// <param name="insertLocation"> The index to insert the object </param>
+	/// <returns> A new array with the object inserted into it </returns>
+	public static T[] InsertObject<T>(T[] oldArray, T insertObject, int insertLocation)
+	{
+		T[] newArray = new T[oldArray.Length + 1];
+		// Copy objects before insert pos
+		for (int i = 0; i < insertLocation; i++)
+		{
+			newArray[i] = oldArray[i];
+		}
+
+		// Insert object
+		newArray[insertLocation] = insertObject;
+
+		// Copy objects after insert pos
+		for (int i = insertLocation; i < oldArray.Length; i++)
+		{
+			newArray[i + 1] = oldArray[i];
+		}
+		
+		return newArray;
+	}
+}
+
 public static class UnityUtil
 {
 	public static T FindInMonobehaviours<T>()
@@ -59,6 +89,12 @@ public static class DebugUtil
 		#if UNITY_EDITOR
 			Debug.LogError(message);
 		#endif
+	}
+	
+	public static T Cast<T>(object objectToCast)
+	{
+		if (!(objectToCast is T)) ThrowError("Cast to type " + typeof(T).Name + " failed");
+		return (T)objectToCast;
 	}
 }
 

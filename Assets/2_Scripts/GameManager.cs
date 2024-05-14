@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	private DictCollectionFixedUpdate<ISwarm> swarmCollection = new DictCollectionFixedUpdate<ISwarm>();
+	
 	private void Awake() 
 	{
 		Cursor.lockState = CursorLockMode.Locked;
 		
-		ServiceManager.Instance.Add(new SwarmManager());
+		ServiceManager.Instance.Add(swarmCollection);
 	}
 
 	private void Update()

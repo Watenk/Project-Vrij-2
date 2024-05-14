@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Human : MonoBehaviour
+public class Human : IGameObject, IFixedUpdateable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public uint ID { get; private set; }
+	public GameObject GameObject { get; private set; }
 
-    // Update is called once per frame
-    void Update()
+	public void ChangeID(uint newID)
+	{
+		ID = newID;
+	}
+
+    public void FixedUpdate()
     {
-        
+        throw new System.NotImplementedException();
     }
 }

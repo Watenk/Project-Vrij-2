@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> Creates an object using data </summary>
-/// <typeparam name="T"> The type of objects it creates </typeparam>
-/// <typeparam name="U"> The type of data it needs </typeparam>
-public interface IFactory<T, U>
+/// <summary> Creates an object </summary>
+/// <typeparam name="T"> The type of objects it constructs </typeparam>
+public interface IFactory<T>
 {
-	public T Construct(U data);
+	public T Construct(params object[] parameters);
 	public void Deconstruct(T instance);
 }
