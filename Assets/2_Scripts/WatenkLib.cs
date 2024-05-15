@@ -22,6 +22,17 @@ public static class NavMeshUtil
 		}
 		return randomPosition;
 	}
+	
+	public static Vector3 GetRandomPositionOnNavMesh(Vector3 center, float range)
+	{
+		NavMeshHit hit;
+		Vector3 randomPosition = Vector3.zero;
+		if (NavMesh.SamplePosition(new Vector3(center.x + UnityEngine.Random.Range(-range, range), 0, UnityEngine.Random.Range(-range, range)), out hit, 10f, NavMesh.AllAreas))
+		{
+			randomPosition = hit.position;
+		}
+		return randomPosition;
+	}
 }
 
 public static class ArrayUtil

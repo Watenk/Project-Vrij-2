@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 589539440456799855}
   - component: {fileID: 624274893581993596}
   - component: {fileID: 3550059480119022048}
-  - component: {fileID: 151613462147432506}
+  - component: {fileID: 4738426437986876922}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.81525, y: 0.44123, z: 1.4116868}
+  m_LocalScale: {x: 3, y: 0.44123, z: 7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 644373860952882209}
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &151613462147432506
+--- !u!65 &4738426437986876922
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,7 +103,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 0.99999994, z: 0.99999994}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7457174032310345364
 GameObject:
@@ -116,6 +116,7 @@ GameObject:
   - component: {fileID: 644373860952882209}
   - component: {fileID: 5928430449776805282}
   - component: {fileID: 6316279201668318854}
+  - component: {fileID: 3817038937154330602}
   m_Layer: 3
   m_Name: Boat
   m_TagString: Boat
@@ -132,8 +133,8 @@ Transform:
   m_GameObject: {fileID: 7457174032310345364}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.073, y: 0.214, z: -0.36504146}
-  m_LocalScale: {x: 7, y: 1, z: 3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 589539440456799855}
@@ -148,14 +149,14 @@ NavMeshAgent:
   m_GameObject: {fileID: 7457174032310345364}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.28
-  m_Speed: 0.1
-  m_Acceleration: 3
+  m_Radius: 1.7
+  m_Speed: 1
+  m_Acceleration: 1.5
   avoidancePriority: 50
-  m_AngularSpeed: 100
+  m_AngularSpeed: 10
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 0.12
   m_BaseOffset: 0.67
@@ -190,5 +191,32 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 50fe2e0a62f51484db9b1f3dcd608305, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 642e839d2cb9d7c4fbcab6a1eff48296, type: 2}
   m_BuildHeightMesh: 0
+--- !u!54 &3817038937154330602
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7457174032310345364}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

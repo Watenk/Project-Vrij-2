@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34d094851bf638e44bc677f7513d29e4, type: 3}
   m_Name: HumansSettings
   m_EditorClassIdentifier: 
-  HumanBounds: {x: 1, y: 3}
+  HumanBounds: {x: 0, y: 0}
   HumanPrefabs:
   - {fileID: 3843687404574601689, guid: d7d1b7454d2adc146a377c91e0124787, type: 3}

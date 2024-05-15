@@ -11,16 +11,20 @@ public class Boat : IGameObject, IFixedUpdateable
 
 	private DictCollectionFixedUpdate<Human> humanCollection = new DictCollectionFixedUpdate<Human>();
 	private float speed;
+	private int sailPointIndex;
 	
 	// Dependencies
 	private List<Transform> sailPoints;
 	private BoatsSettings boatSettings;
 	private NavMeshAgent agent;
+	private Transform orgin;
 	
 	public Boat(BoatsSettings boatSettings, HumansSettings humansSettings, Transform orgin, List<Transform> sailPoints)
 	{
 		this.boatSettings = boatSettings;
 		this.sailPoints = sailPoints;
+		this.orgin = orgin;
+		sailPointIndex = Random.Range(0, sailPoints.Count - 1);
 		
 		// Boat
 		GameObject randomPrefab = boatSettings.BoatPrefabs[Random.Range(0, boatSettings.BoatPrefabs.Count)];
@@ -31,6 +35,7 @@ public class Boat : IGameObject, IFixedUpdateable
 		GameObject = GameObject.Instantiate(randomPrefab, randomPos, Quaternion.identity);
 		agent = GameObject.GetComponent<NavMeshAgent>();
 		if (agent == null) DebugUtil.ThrowError("Can't find NavMeshAgent on boat");
+		agent.speed = Random.Range(boatSettings.SpeedBounds.x, boatSettings.SpeedBounds.y);
 		
 		// Humans
 		int humanAmount = Random.Range(humansSettings.HumanBounds.x, humansSettings.HumanBounds.y);
@@ -46,7 +51,14 @@ public class Boat : IGameObject, IFixedUpdateable
 		humanCollection.FixedUpdate();
 		
 		if(agent.hasPath) return;
-		agent.SetDestination(sailPoints[Random.Range(0, sailPoints.Count)].position);
+		if (sailPoints.Count == 0) agent.SetDestination(NavMeshUtil.GetRandomPositionOnNavMesh(orgin.position, boatSettings.sailingRange));
+		else
+		{
+		 	agent.SetDestination(sailPoints[sailPointIndex].position);
+			sailPointIndex++;
+		
+			if (sailPointIndex == sailPoints.Count - 1) sailPointIndex = 0;	
+		}
 	}
 	
 	public void ChangeID(uint newID)
