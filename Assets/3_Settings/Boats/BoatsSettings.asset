@@ -13,9 +13,6 @@ MonoBehaviour:
   m_Name: BoatsSettings
   m_EditorClassIdentifier: 
   SpeedBounds: {x: 1, y: 2}
-  sailingRange: 15
+  sailingRange: 30
   BoatPrefabs:
   - {fileID: 7457174032310345364, guid: 3765ad8072d53d14bade323c227782ea, type: 3}
-  - {fileID: 2109062547919395217, guid: b2edab8f0794feb4393b005efeba454b, type: 3}
-  - {fileID: 5049909005807576293, guid: e097c87a8e5febc4a86e7288244d35e8, type: 3}
-  HumanPrefabs: []

@@ -36,7 +36,7 @@ public class Boat : IGameObject, IFixedUpdateable
 		int humanAmount = Random.Range(humansSettings.HumanBounds.x, humansSettings.HumanBounds.y);
 		for (int i = 0; i < humanAmount; i++)
 		{
-			Human instance = new Human();
+			Human instance = new Human(GameObject, humansSettings);
 			humanCollection.Add(instance);
 		}
 	}

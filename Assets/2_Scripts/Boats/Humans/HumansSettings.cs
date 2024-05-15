@@ -7,4 +7,5 @@ public class HumansSettings : ScriptableObject
 {
 	[Tooltip("The min and max amount of humans on the boats")]
 	public Vector2Int HumanBounds;
+	public List<GameObject> HumanPrefabs = new List<GameObject>();
 }

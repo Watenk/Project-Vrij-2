@@ -2,10 +2,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Watenk
 {
+
+public static class NavMeshUtil
+{
+	public static Vector3 GetRandomPositionOnNavMesh(NavMeshSurface surface)
+	{
+		NavMeshHit hit;
+		Vector3 randomPosition = Vector3.zero;
+		float range = (surface.size.x + surface.size.y) / 2;
+		if (NavMesh.SamplePosition(new Vector3(surface.center.x + UnityEngine.Random.Range(-range, range), 0, UnityEngine.Random.Range(-range, range)), out hit, 10f, NavMesh.AllAreas))
+		{
+			randomPosition = hit.position;
+		}
+		return randomPosition;
+	}
+}
 
 public static class ArrayUtil
 {
@@ -91,7 +108,7 @@ public static class DebugUtil
 		#endif
 	}
 	
-	public static T Cast<T>(object objectToCast)
+	public static T TryCast<T>(object objectToCast)
 	{
 		if (!(objectToCast is T)) ThrowError("Cast to type " + typeof(T).Name + " failed");
 		return (T)objectToCast;

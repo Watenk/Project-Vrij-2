@@ -10,5 +10,4 @@ public class BoatsSettings : ScriptableObject
 	[Tooltip("The range the boat will be able to sail in")] 
 	public byte sailingRange;
 	public List<GameObject> BoatPrefabs = new List<GameObject>();
-	public List<GameObject> HumanPrefabs = new List<GameObject>();
 }
