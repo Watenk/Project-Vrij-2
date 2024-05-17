@@ -880,7 +880,7 @@ MonoBehaviour:
   - {fileID: 217895046}
   - {fileID: 2015908240}
   boatSettings: {fileID: 11400000, guid: 85a685b78dc111445ab3bd74155d612e, type: 2}
-  humanSettings: {fileID: 11400000, guid: 5bccec8c0fc70894a876eea3db6bc3bf, type: 2}
+  humansSettings: {fileID: 11400000, guid: 5bccec8c0fc70894a876eea3db6bc3bf, type: 2}
 --- !u!4 &1215011495
 Transform:
   m_ObjectHideFlags: 0
