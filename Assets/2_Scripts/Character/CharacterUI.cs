@@ -17,11 +17,13 @@ public class CharacterUI : ICharacterUI
 	
 	public void UpdateHealthAmount(int amount)
 	{
+		if (healthSlider == null) return;
 		healthSlider.value = amount;
 	}
 	
 	public void UpdateBoostAmount(int amount)
 	{
+		if (boostSlider == null) return;
 		boostSlider.value = amount;
 	}
 }

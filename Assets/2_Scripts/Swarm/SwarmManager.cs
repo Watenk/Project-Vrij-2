@@ -1,48 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Watenk;
 
-public class SwarmManager : ICollectionManager<ISwarm, ISwarm, int>, IFixedUpdateable
+/// <summary> Creates a new swarm and adds it to the swarmManager </summary>
+public class SwarmManager : MonoBehaviour
 {
-	private List<ISwarm> swarms = new List<ISwarm>();	
-	private Dictionary<int, ISwarm> IDs = new Dictionary<int, ISwarm>();
-	private int idCounter = 0;
+	public List<GameObject> creaturePrefabs = new List<GameObject>();
+	[Tooltip("Note that the boids will be able to leave this range. Its a target range and not enforced")]
+	public float WanderRadius;
+	public byte Amount;
+	public SwarmAIData SwarmAIData;
+	public Transform[] Obstacles;
 	
-	public void FixedUpdate()
+	void Start()
 	{
-		foreach (ISwarm swarm in swarms)
+		// Spawn Swarm
+		Swarm swarm = new Swarm(SwarmAIData, WanderRadius, this.transform.position, Amount, Obstacles);
+		
+		// Add to SwarmManager
+		uint swarmID = ServiceManager.Instance.Get<DictCollectionFixedUpdate<ISwarm>>().Add(swarm);
+		
+		// Populate Swarm
+		for (int i = 0; i < Amount; i++)
 		{
-			swarm.FixedUpdate();
-		}
+			// Prefab Instance
+			GameObject randomPrefab = creaturePrefabs[Random.Range(0, creaturePrefabs.Count - 1)];
+			Vector3 spawnPos = new Vector3(
+				this.transform.position.x + Random.Range(-WanderRadius, WanderRadius),
+				this.transform.position.y + Random.Range(-WanderRadius, WanderRadius),
+				this.transform.position.z + Random.Range(-WanderRadius, WanderRadius)
+			);
+			GameObject instance = GameObject.Instantiate(randomPrefab, spawnPos, Quaternion.identity, this.transform);
+			
+			// Boid
+			Boid boid = instance.GetComponent<Boid>();
+			if (boid == null)
+			{
+				boid = GetComponentInChildren<Boid>();
+				if (boid == null)
+				{
+					DebugUtil.ThrowError(this.name + "doesn't contain a Boid");
+				}
+			}
+			
+			swarm.Add(boid);
+			boid.Init(swarmID, Random.Range(SwarmAIData.MinSpeed, SwarmAIData.MaxSpeed));
+		} 
 	}
 	
-	public int Add(ISwarm data)
+	#if UNITY_EDITOR
+	void OnDrawGizmosSelected()
 	{
-		swarms.Add(data);
-		IDs.Add(idCounter, data);
-		idCounter++;
-		return idCounter - 1;
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(transform.position, WanderRadius);
 	}
-
-	public ISwarm Get(int getter)
-	{
-		return swarms[getter];
-	}
-
-	public int GetCount()
-	{
-		return swarms.Count;
-	}
-
-	public void Remove(ISwarm instance)
-	{
-		swarms.Remove(instance);
-	}
-
-	public void Remove(int getter)
-	{
-		IDs.TryGetValue(getter, out ISwarm swarm);
-		IDs.Remove(getter);
-		Remove(swarm);
-	}
+	#endif
 }

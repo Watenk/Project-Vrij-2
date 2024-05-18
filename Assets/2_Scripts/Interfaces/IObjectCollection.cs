@@ -5,13 +5,12 @@ using UnityEngine;
 
 /// <summary> A manager that stores objects of a certain type which you can add, remove and get. </summary>
 /// <typeparam name="T"> Type it stores </typeparam>
-/// <typeparam name="U"> Add Type </typeparam>
-/// <typeparam name="V"> ID Type </typeparam>
-public interface ICollectionManager<T, U, V>
+public interface IObjectCollection<T> where T : IID
 {
-	public V Add(U data);
+	public uint Add(T instance);
 	public void Remove(T instance);
-	public void Remove(V getter);
-	public T Get(V getter);
+	public void Remove(uint getter);
+	public T Get(uint getter);
 	public int GetCount();
+	public void Clear();
 }
