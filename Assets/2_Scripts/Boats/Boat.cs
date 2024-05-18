@@ -19,7 +19,7 @@ public class Boat : IGameObject, IFixedUpdateable
 	private NavMeshAgent agent;
 	private Transform orginPos;
 	
-	public Boat(BoatsSettings boatsSettings, HumansSettings humansSettings, Transform orginPos, List<Transform> sailPoints)
+	public Boat(BoatsSettings boatsSettings, HumansSettings humansSettings, Transform orginPos, List<Transform> sailPoints, SirenLocation sirenLocation)
 	{
 		this.boatsSettings = boatsSettings;
 		this.sailPoints = sailPoints;
@@ -42,16 +42,18 @@ public class Boat : IGameObject, IFixedUpdateable
 		List<Vector3> occupiedPos = new List<Vector3>();
 		for (int i = 0; i < humanAmount; i++)
 		{
-			Vector3 randomPosOnBoat = GetRandomHumanPos(humansSettings, occupiedPos, humansSettings.SperationDistance);
+			Vector3 randomPosOnBoat = GetRandomHumanPos(humansSettings, occupiedPos, humansSettings.SeperationDistance);
 			occupiedPos.Add(randomPosOnBoat);
 			
-			Human human = new Human(GameObject, humansSettings, randomPosOnBoat);
+			Human human = new Human(GameObject, humansSettings, randomPosOnBoat, sirenLocation);
 			humanCollection.Add(human);
 		}
 	}
 
 	public void FixedUpdate()
 	{
+		humanCollection.FixedUpdate();
+		
 		if(agent.remainingDistance >= 3) return;
 		if (sailPoints.Count == 0) agent.SetDestination(NavMeshUtil.GetRandomPositionOnNavMesh(orginPos.position, boatsSettings.sailingRange));
 		else

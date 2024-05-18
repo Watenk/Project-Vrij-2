@@ -15,12 +15,15 @@ public class BoatsManager : MonoBehaviour
 	private BoatsSettings boatSettings;
 	[SerializeField]
 	private HumansSettings humansSettings;
+	[SerializeField]
+	private SirenLocation sirenLocation;
+	
 	public void Start() 
 	{
 		boatCollection = new DictCollectionFixedUpdate<Boat>();
 		for (int i = 0; i < boatAmount; i++)
 		{
-			Boat instance = new Boat(boatSettings, humansSettings, this.transform, SailPoints);	
+			Boat instance = new Boat(boatSettings, humansSettings, this.transform, SailPoints, sirenLocation);	
 			boatCollection.Add(instance);
 		}
 	}

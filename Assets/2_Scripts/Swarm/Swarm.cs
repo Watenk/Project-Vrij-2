@@ -28,7 +28,19 @@ public class Swarm : DictCollection<Boid>, ISwarm
 	{
 		swarmAI.UpdateAI(instances);
 	}
-	
+
+	public override uint Add(Boid instance)
+	{
+		instance.OnDeath += () => Remove(instance.ID);
+		return base.Add(instance);
+	}
+
+	public override void Remove(Boid instance)
+	{
+		instance.OnDeath -= () => Remove(instance.ID);
+		base.Remove(instance);
+	}
+
 	public List<Boid> GetNeighbours(Boid boid, float range){
 		List<Boid> neighbours = new List<Boid>();
 		foreach (var kvp in instances)

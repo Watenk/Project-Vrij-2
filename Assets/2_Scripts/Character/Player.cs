@@ -27,6 +27,8 @@ public class Player : MonoBehaviour, IPlayer
 	private Transform attackRoot;
 	[SerializeField]
 	private Transform waterSurface;
+	[SerializeField]
+	private SirenLocation sirenLocation;
 	
 	[Header("UI References")]
 	[SerializeField]
@@ -41,6 +43,8 @@ public class Player : MonoBehaviour, IPlayer
 	private CharacterMovementSettings characterControllerSettings;
 	[SerializeField]
 	private CharacterAttackSettings characterAttackSettings;
+	
+	private bool startHasRun = false;
 
 	public void Start()
 	{
@@ -53,11 +57,13 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterHealth = new CharacterHealth(maxHealth);
 		CharacterUI = new CharacterUI(healthSlider, boostSlider);
 		
-		CharacterInputHandler.OnMove += CharacterMovement.UpdateMovement;
-		CharacterInputHandler.OnRotate += CharacterMovement.UpdateRotation;
-		CharacterInputHandler.OnAttack += CharacterAttack.Slash;
-		ChangeHealth += CharacterHealth.ChangeHealth;
-		CharacterHealth.OnHealthChanged += CharacterUI.UpdateHealthAmount;
+		EnableEvents();
+		startHasRun = true;
+	}
+	
+	public void OnEnable() 
+	{
+		if (startHasRun) EnableEvents();
 	}
 	
 	public void OnDisable() 
@@ -67,11 +73,14 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterInputHandler.OnAttack -= CharacterAttack.Slash;
 		ChangeHealth -= CharacterHealth.ChangeHealth;
 		CharacterHealth.OnHealthChanged -= CharacterUI.UpdateHealthAmount;
+		EventManager.Instance.AddListener(Event.OnPlayerHit, () => CharacterHealth.ChangeHealth(-1));
+		EventManager.Instance.AddListener(Event.OnFishDeath, () => CharacterHealth.ChangeHealth(1));
 	}
 	
 	public void Update()
 	{
 		CharacterInputHandler.Update();
+		sirenLocation.Position = gameObject.transform.position;
 	}
 	
 	private void OnTriggerEnter(Collider other)
@@ -80,6 +89,17 @@ public class Player : MonoBehaviour, IPlayer
 		{
 			CharacterAttack.Grab(other.gameObject, this.gameObject);
 		}
+	}
+	
+	private void EnableEvents()
+	{
+		CharacterInputHandler.OnMove += CharacterMovement.UpdateMovement;
+		CharacterInputHandler.OnRotate += CharacterMovement.UpdateRotation;
+		CharacterInputHandler.OnAttack += CharacterAttack.Slash;
+		ChangeHealth += CharacterHealth.ChangeHealth;
+		CharacterHealth.OnHealthChanged += CharacterUI.UpdateHealthAmount;
+		EventManager.Instance.AddListener(Event.OnPlayerHit, () => CharacterHealth.ChangeHealth(-1));
+		EventManager.Instance.AddListener(Event.OnFishDeath, () => CharacterHealth.ChangeHealth(1));
 	}
 
 	#if UNITY_EDITOR

@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: HumansSettings
   m_EditorClassIdentifier: 
   HumanBounds: {x: 3, y: 3}
-  SpawnHeight: 1
-  SperationDistance: 2
+  SeperationDistance: 2
+  SirenDetectRange: 20
+  RotationSpeed: 3
+  AttackDelay: 5
+  WeaponThrowSpeed: 1000
   HumanPrefabs:
   - {fileID: 3843687404574601689, guid: d7d1b7454d2adc146a377c91e0124787, type: 3}
+  ThrowingWeaponsPrefabs:
+  - {fileID: 7245075359114095302, guid: 4633a13b207b6224abb0c9c318d04391, type: 3}

@@ -19,8 +19,7 @@ public class SwarmManager : MonoBehaviour
 		Swarm swarm = new Swarm(SwarmAIData, WanderRadius, this.transform.position, Amount, Obstacles);
 		
 		// Add to SwarmManager
-		DictCollectionFixedUpdate<ISwarm> swarmCollection = ServiceManager.Instance.Get<DictCollectionFixedUpdate<ISwarm>>();
-		uint swarmID = swarmCollection.Add(swarm);
+		uint swarmID = ServiceManager.Instance.Get<DictCollectionFixedUpdate<ISwarm>>().Add(swarm);
 		
 		// Populate Swarm
 		for (int i = 0; i < Amount; i++)
@@ -45,8 +44,8 @@ public class SwarmManager : MonoBehaviour
 				}
 			}
 			
-			uint boidID = swarm.Add(boid);
-			boid.Init(swarmID, boidID, Random.Range(SwarmAIData.MinSpeed, SwarmAIData.MaxSpeed));
+			swarm.Add(boid);
+			boid.Init(swarmID, Random.Range(SwarmAIData.MinSpeed, SwarmAIData.MaxSpeed));
 		} 
 	}
 	

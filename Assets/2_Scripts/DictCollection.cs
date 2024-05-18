@@ -12,7 +12,7 @@ public class DictCollection<T> : IObjectCollection<T> where T : IID
 	protected uint idCounter = 1;
 	
 	// ICollectionManager
-	public uint Add(T instance)
+	public virtual uint Add(T instance)
 	{
 		instance.ChangeID(idCounter);
 		
@@ -26,7 +26,7 @@ public class DictCollection<T> : IObjectCollection<T> where T : IID
 	public T Get(uint getter)
 	{
 		instances.TryGetValue(getter, out T instance);
-		if (instance == null) DebugUtil.ThrowWarning("Tried to get from " + this.GetType().Name + " but cant find instance");
+		if (instance == null) DebugUtil.ThrowError("Tried to get id " + getter + " from " + this.GetType().Name + " but cant find instance");
 		return instance;
 	}
 
@@ -35,7 +35,7 @@ public class DictCollection<T> : IObjectCollection<T> where T : IID
 		return instances.Count;
 	}
 
-	public void Remove(T instance)
+	public virtual void Remove(T instance)
 	{
 		keys.TryGetValue(instance, out uint key);
 		if (key == 0)

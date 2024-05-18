@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Watenk;
 
-public class Boid: MonoBehaviour, IHealth, IID
+public class Boid : MonoBehaviour, IHealth, IGameObject
 {
 	// Events
 	public event IHealth.HealthChangeEventHandler OnHealthChanged;
@@ -14,6 +14,7 @@ public class Boid: MonoBehaviour, IHealth, IID
 	public Rigidbody Rigidbody { get; private set; }
 	public float Speed { get; private set; }
 	public uint ID { get; private set; }
+	public GameObject GameObject { get; private set; }
 
 	// References / Settings
 	[Header("Settings")]
@@ -21,19 +22,16 @@ public class Boid: MonoBehaviour, IHealth, IID
 	private int maxHealth;
 	
 	// Dependencies
-	private DictCollectionFixedUpdate<ISwarm> swarmCollection;
 	private uint swarmID;
-	private uint boidID;
 
-	public void Init(uint swarmID, uint boidID, float speed)
+	public void Init(uint swarmID, float speed)
 	{
 		Speed = speed;
 		MaxHealth = maxHealth;
 		Health = maxHealth;
+		GameObject = this.gameObject;
 		
-		swarmCollection = ServiceManager.Instance.Get<DictCollectionFixedUpdate<ISwarm>>();
 		this.swarmID = swarmID;
-		this.boidID = boidID;
 		
 		Rigidbody = GetComponent<Rigidbody>();
 		if (Rigidbody == null)
@@ -58,8 +56,8 @@ public class Boid: MonoBehaviour, IHealth, IID
 
 	public void Die()
 	{
+		EventManager.Instance.Invoke(Event.OnFishDeath);
 		OnDeath?.Invoke();
-		swarmCollection.Get(swarmID).Remove(boidID);
 	}
 
 	public void ChangeID(uint newID)
