@@ -25,6 +25,8 @@ public class Player : MonoBehaviour, IPlayer
 	private CinemachineRecomposer cinemachineRecomposer;
 	[SerializeField][Tooltip("The point the player will attack from")]
 	private Transform attackRoot;
+	[SerializeField]
+	private Transform waterSurface;
 	
 	[Header("UI References")]
 	[SerializeField]
@@ -46,14 +48,14 @@ public class Player : MonoBehaviour, IPlayer
 		if (rb == null) DebugUtil.ThrowError(this.name + " is missing a RigidBody");
 		
 		CharacterInputHandler = new CharacterInputHandler();
-		CharacterMovement = new CharacterController(characterControllerSettings, rb, cameraRoot, moddelRoot, cinemachineRecomposer);
+		CharacterMovement = new CharacterController(characterControllerSettings, rb, cameraRoot, moddelRoot, cinemachineRecomposer, waterSurface);
 		CharacterAttack = new CharacterAttack(characterAttackSettings, attackRoot);
 		CharacterHealth = new CharacterHealth(maxHealth);
 		CharacterUI = new CharacterUI(healthSlider, boostSlider);
 		
 		CharacterInputHandler.OnMove += CharacterMovement.UpdateMovement;
 		CharacterInputHandler.OnRotate += CharacterMovement.UpdateRotation;
-		CharacterInputHandler.OnAttack += CharacterAttack.Attack;
+		CharacterInputHandler.OnAttack += CharacterAttack.Slash;
 		ChangeHealth += CharacterHealth.ChangeHealth;
 		CharacterHealth.OnHealthChanged += CharacterUI.UpdateHealthAmount;
 	}
@@ -62,7 +64,7 @@ public class Player : MonoBehaviour, IPlayer
 	{
 		CharacterInputHandler.OnMove -= CharacterMovement.UpdateMovement;
 		CharacterInputHandler.OnRotate -= CharacterMovement.UpdateRotation;
-		CharacterInputHandler.OnAttack -= CharacterAttack.Attack;
+		CharacterInputHandler.OnAttack -= CharacterAttack.Slash;
 		ChangeHealth -= CharacterHealth.ChangeHealth;
 		CharacterHealth.OnHealthChanged -= CharacterUI.UpdateHealthAmount;
 	}
@@ -70,6 +72,14 @@ public class Player : MonoBehaviour, IPlayer
 	public void Update()
 	{
 		CharacterInputHandler.Update();
+	}
+	
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
+		{
+			CharacterAttack.Grab(other.gameObject, this.gameObject);
+		}
 	}
 
 	#if UNITY_EDITOR

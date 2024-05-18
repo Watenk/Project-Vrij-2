@@ -52,7 +52,7 @@ public class Boat : IGameObject, IFixedUpdateable
 
 	public void FixedUpdate()
 	{
-		if(agent.hasPath) return;
+		if(agent.remainingDistance >= 3) return;
 		if (sailPoints.Count == 0) agent.SetDestination(NavMeshUtil.GetRandomPositionOnNavMesh(orginPos.position, boatsSettings.sailingRange));
 		else
 		{

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728c1735413fe5f49a62f1eca72fe023, type: 3}
   m_Name: CharacterMovementSettings
   m_EditorClassIdentifier: 
-  Speed: 10
+  Speed: 20
+  Gravity: 20
   RotationSensitivity: 0.1
   CameraTiltIntencity: 0.8
