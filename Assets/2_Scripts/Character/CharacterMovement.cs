@@ -13,14 +13,16 @@ public class CharacterController : ICharacterMovement
 	private Transform cameraRoot;
 	private Transform moddelRoot;
 	private CinemachineRecomposer cinemachineRecomposer;
+	private Transform waterSurface;
 	
-	public CharacterController(CharacterMovementSettings characterControllerSettings, Rigidbody rb, Transform cameraRoot, Transform moddelRoot, CinemachineRecomposer cinemachineRecomposer)
+	public CharacterController(CharacterMovementSettings characterControllerSettings, Rigidbody rb, Transform cameraRoot, Transform moddelRoot, CinemachineRecomposer cinemachineRecomposer, Transform waterSurface)
 	{
 		this.characterControllerSettings = characterControllerSettings;
 		this.rb = rb;
 		this.cameraRoot = cameraRoot;
 		this.moddelRoot = moddelRoot;
 		this.cinemachineRecomposer = cinemachineRecomposer;
+		this.waterSurface = waterSurface;
 	}
 	
 	public void UpdateRotation(Vector2 rotationInput)
@@ -56,6 +58,20 @@ public class CharacterController : ICharacterMovement
 		moveDirection.y = verticalMoveInput;
 		moveDirection.Normalize();
 		
-		rb.AddForce(moveDirection * characterControllerSettings.Speed * Time.deltaTime, ForceMode.Impulse);
+		if (Underwater())
+		{
+			rb.AddForce(moveDirection * characterControllerSettings.Speed * Time.deltaTime, ForceMode.Impulse);
+		}
+		else
+		{
+			rb.AddForce(rb.gameObject.transform.up * -characterControllerSettings.Gravity * Time.deltaTime, ForceMode.Impulse);
+			rb.AddForce(moveDirection * (characterControllerSettings.Speed / 5) * Time.deltaTime, ForceMode.Impulse);
+		}
+	}
+	
+	private bool Underwater()
+	{
+		if (rb.gameObject.transform.position.y <= waterSurface.position.y) return true;
+		return false;
 	}
 }
