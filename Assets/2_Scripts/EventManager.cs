@@ -7,6 +7,8 @@ public enum Event
 {
 	// Swarm
 	OnNewSwarm,
+	OnPlayerHit,
+	OnFishDeath,
 }
 
 // TODO: use params to generalize the paramers

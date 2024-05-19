@@ -5,16 +5,14 @@ using UnityEngine;
 using Watenk;
 
 /// <summary> Controls and manages a list of creatures using ISwarmAI and ICollectionManager </summary>
-public class Swarm : ISwarm
+public class Swarm : DictCollection<Boid>, ISwarm
 {
 	public float WanderRadius { get; private set; }
 	public Vector3 Center { get; private set; }
 	public byte Amount { get; private set; }
 	public Transform[] Obstacles { get; private set; }
-	
-	private List<Boid> boids = new List<Boid>();
-	private Dictionary<int, Boid> IDs = new Dictionary<int, Boid>();
-	private int idCounter;
+	public uint ID { get; private set; }
+
 	private ISwarmAI swarmAI;
 
 	public Swarm(SwarmAIData swarmAIData, float wanderRadius, Vector3 center, byte amount, Transform[] obstacles)
@@ -25,47 +23,30 @@ public class Swarm : ISwarm
 		Amount = amount;
 		Obstacles = obstacles;
 	}
-
+	
 	public void FixedUpdate()
 	{
-		swarmAI.UpdateAI(boids);
-	}
-	
-	public int Add(Boid data)
-	{
-		boids.Add(data);
-		IDs.Add(idCounter, data);
-		idCounter++;
-		return idCounter - 1;
+		swarmAI.UpdateAI(instances);
 	}
 
-	public Boid Get(int getter)
+	public override uint Add(Boid instance)
 	{
-		return boids[getter];
+		instance.OnDeath += () => Remove(instance.ID);
+		return base.Add(instance);
 	}
 
-	public int GetCount()
+	public override void Remove(Boid instance)
 	{
-		return boids.Count;
+		instance.OnDeath -= () => Remove(instance.ID);
+		base.Remove(instance);
 	}
 
-	public void Remove(Boid instance)
-	{
-		boids.Remove(instance);
-		GameObject.Destroy(instance.Rigidbody.gameObject);
-	}
-
-	public void Remove(int getter)
-	{
-		IDs.TryGetValue(getter, out Boid boid);
-		IDs.Remove(getter);
-		Remove(boid);
-	}
-	
 	public List<Boid> GetNeighbours(Boid boid, float range){
 		List<Boid> neighbours = new List<Boid>();
-		foreach (Boid otherBoid in boids)
+		foreach (var kvp in instances)
 		{
+			Boid otherBoid = kvp.Value;
+			
 			if (Vector3.Distance(boid.Rigidbody.transform.position, otherBoid.Rigidbody.transform.position) <= range)
 			{
 				neighbours.Add(otherBoid);
@@ -73,5 +54,10 @@ public class Swarm : ISwarm
 		}
 		
 		return neighbours;
+	}
+
+	public void ChangeID(uint newID)
+	{
+		ID = newID;
 	}
 }

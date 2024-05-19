@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IAttack 
 {
-    public void Attack();
+	public void Slash();
+	public void Grab(GameObject other, GameObject player);
 }

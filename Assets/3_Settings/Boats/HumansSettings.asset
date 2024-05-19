@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34d094851bf638e44bc677f7513d29e4, type: 3}
+  m_Name: HumansSettings
+  m_EditorClassIdentifier: 
+  HumanBounds: {x: 3, y: 3}
+  SeperationDistance: 2
+  SirenDetectRange: 20
+  RotationSpeed: 3
+  AttackDelay: 5
+  WeaponThrowSpeed: 1000
+  HumanPrefabs:
+  - {fileID: 3843687404574601689, guid: d7d1b7454d2adc146a377c91e0124787, type: 3}
+  ThrowingWeaponsPrefabs:
+  - {fileID: 7245075359114095302, guid: 4633a13b207b6224abb0c9c318d04391, type: 3}
