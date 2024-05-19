@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CharacterAttack : IAttack
 {
+	private GameObject grabbedObject;
+	
 	// Dependencies
 	private CharacterAttackSettings characterAttackSettings;
 	private Transform attackRoot;
@@ -14,7 +16,7 @@ public class CharacterAttack : IAttack
 		this.attackRoot = attackRoot;
 	}
 	
-	public void Attack()
+	public void Slash()
 	{
 		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
 		foreach (var collider in hitColliders)
@@ -24,6 +26,11 @@ public class CharacterAttack : IAttack
 			if (health == null) continue;
 			health.ChangeHealth(-characterAttackSettings.AttackDamage);
 		}
+	}
+	
+	public void Grab(GameObject other, GameObject player)
+	{
+		other.transform.SetParent(player.transform);
 	}
 }
 
