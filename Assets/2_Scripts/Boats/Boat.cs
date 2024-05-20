@@ -11,7 +11,7 @@ public class Boat : IGameObject, IFixedUpdateable
 
 	private float speed;
 	private int sailPointIndex;
-	private DictCollectionFixedUpdate<Human> humanCollection = new DictCollectionFixedUpdate<Human>();
+	private HumanCollection humanCollection = new HumanCollection();
 	
 	// Dependencies
 	private List<Transform> sailPoints;

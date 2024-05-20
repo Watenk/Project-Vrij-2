@@ -5,7 +5,7 @@ using UnityEngine;
 using Watenk;
 
 /// <summary> Controls and manages a list of creatures using ISwarmAI and ICollectionManager </summary>
-public class Swarm : DictCollection<Boid>, ISwarm
+public class Swarm : ADictCollection<Boid>, ISwarm
 {
 	public float WanderRadius { get; private set; }
 	public Vector3 Center { get; private set; }

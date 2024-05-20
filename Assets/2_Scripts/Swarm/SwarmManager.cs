@@ -19,7 +19,7 @@ public class SwarmManager : MonoBehaviour
 		Swarm swarm = new Swarm(SwarmAIData, WanderRadius, this.transform.position, Amount, Obstacles);
 		
 		// Add to SwarmManager
-		uint swarmID = ServiceManager.Instance.Get<DictCollectionFixedUpdate<ISwarm>>().Add(swarm);
+		uint swarmID = ServiceManager.Instance.Get<SwarmCollection>().Add(swarm);
 		
 		// Populate Swarm
 		for (int i = 0; i < Amount; i++)

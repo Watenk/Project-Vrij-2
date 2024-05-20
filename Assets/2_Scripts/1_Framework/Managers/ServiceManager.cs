@@ -12,7 +12,7 @@ public interface IServiceManager
 }
 
 /// <summary> Class to store managers / single classes in. </summary>
-public class ServiceManager : Singleton<ServiceManager>, IServiceManager, IUpdateable, IFixedUpdateable
+public class ServiceManager : ASingleton<ServiceManager>, IServiceManager, IUpdateable, IFixedUpdateable
 {
 	private Dictionary<System.Type, object> services = new Dictionary<System.Type, object>();
 	private List<IUpdateable> updateables = new List<IUpdateable>();

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	private DictCollectionFixedUpdate<ISwarm> swarmCollection = new DictCollectionFixedUpdate<ISwarm>();
+	private SwarmCollection swarmCollection = new SwarmCollection();
 	
 	private void Awake() 
 	{
