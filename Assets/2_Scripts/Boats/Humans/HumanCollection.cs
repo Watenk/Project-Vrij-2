@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HumanCollection : ADictCollection<Human>, IFixedUpdateable
+public class HumanCollection : DictCollection<Human>, IFixedUpdateable
 {
 	public void FixedUpdate()
 	{

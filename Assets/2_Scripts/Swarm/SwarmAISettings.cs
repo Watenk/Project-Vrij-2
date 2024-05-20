@@ -4,8 +4,8 @@ using System.Reflection;
 using UnityEngine;
 using Watenk;
 
-[CreateAssetMenu(fileName = "SwarmAIData", menuName = "Data/SwarmAIData")]
-public class SwarmAIData : ScriptableObject
+[CreateAssetMenu(fileName = "SwarmAISettings", menuName = "Swarm/AISettings")]
+public class SwarmAISettings : ScriptableObject
 {
 	public float MinSpeed;
 	public float MaxSpeed;

@@ -284,6 +284,57 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1515759373}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &326337343
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 326337344}
+  - component: {fileID: 326337345}
+  m_Layer: 0
+  m_Name: Swarm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &326337344
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326337343}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -109.77651, y: 55.18646, z: -73.512344}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &326337345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326337343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 991e30ce9a3da424b9d9b5cafc2d59f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amount: 0
+  wanderRadius: 0
+  creaturePrefabs: []
+  obstacles: []
+  swarmAIData: {fileID: 11400000, guid: d814ce498b7a5a742bc2974756f8c8dc, type: 2}
+  swarmBlackboard: {fileID: 0}
+  swarmChannel: {fileID: 11400000, guid: 4384ff591ba72be4e9d2c550d2838f55, type: 2}
 --- !u!1 &334774490
 GameObject:
   m_ObjectHideFlags: 0
@@ -2753,3 +2804,4 @@ SceneRoots:
   - {fileID: 648177298}
   - {fileID: 1208549265}
   - {fileID: 1138923295}
+  - {fileID: 326337344}

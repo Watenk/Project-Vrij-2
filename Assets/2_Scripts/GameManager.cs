@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	[SerializeField]
-	private SwarmChannel swarmChannel;
-	
 	private void Awake() 
 	{
 		Cursor.lockState = CursorLockMode.Locked;
@@ -15,6 +12,6 @@ public class GameManager : MonoBehaviour
 	
 	public void FixedUpdate() 
 	{
-		swarmChannel.SwarmCollection.FixedUpdate();
+		
 	}
 }

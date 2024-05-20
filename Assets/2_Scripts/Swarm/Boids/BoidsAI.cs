@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Watenk;
 
-public class BoidsAI : ISwarmAI
+public class BoidsAI 
 {
 	private ISwarm swarm;
-	private SwarmAIData swarmAIData;
+	private SwarmAISettings swarmAIData;
 	
-	public BoidsAI(ISwarm swarm, SwarmAIData swarmAIData)
+	public BoidsAI(ISwarm swarm, SwarmAISettings swarmAIData)
 	{
 		this.swarm = swarm;
 		this.swarmAIData = swarmAIData;
