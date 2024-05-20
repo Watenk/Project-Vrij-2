@@ -5,7 +5,7 @@ using Watenk;
 
 /// <summary> A manager that keeps track of GameObjects using ICollectionManager </summary>
 /// <typeparam name="T"> The type of object it stores </typeparam>
-public abstract class ADictCollection<T> : IObjectCollection<T> where T : IID
+public abstract class ADictCollection<T> : ICollection<T> where T : IID
 {
 	protected Dictionary<uint, T> instances = new Dictionary<uint, T>();
 	protected Dictionary<T, uint> keys = new Dictionary<T, uint>();

@@ -1,47 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using Watenk;
 
-/// <summary> Controls and manages a list of creatures using ISwarmAI and ICollectionManager </summary>
-public class Swarm : ADictCollection<Boid>, ISwarm
+/// <summary> Creates a new swarm and adds it to the swarmManager </summary>
+public class Swarm : MonoBehaviour
 {
-	public float WanderRadius { get; private set; }
-	public Vector3 Center { get; private set; }
-	public byte Amount { get; private set; }
-	public Transform[] Obstacles { get; private set; }
-	public uint ID { get; private set; }
-
-	private ISwarmAI swarmAI;
-
-	public Swarm(SwarmAIData swarmAIData, float wanderRadius, Vector3 center, byte amount, Transform[] obstacles)
-	{		
-		swarmAI = new BoidsSwarmAI(this, swarmAIData);
-		WanderRadius = wanderRadius;
-		Center = center;
-		Amount = amount;
-		Obstacles = obstacles;
+	public List<GameObject> creaturePrefabs = new List<GameObject>();
+	[Tooltip("Note that the boids will be able to leave this range. Its a target range and not enforced")]
+	public float WanderRadius;
+	public byte Amount;
+	public SwarmAIData SwarmAIData;
+	public Transform[] Obstacles;
+	
+	[SerializeField]
+	private SwarmChannel swarmChannel;
+	
+	void Start()
+	{
+		// Spawn Swarm
+		Swarm swarm = new Swarm(SwarmAIData, WanderRadius, this.transform.position, Amount, Obstacles);
+		
+		// Add to SwarmManager
+		uint swarmID = swarmChannel.SwarmCollection.Add(swarm);
+		
+		// Populate Swarm
+		for (int i = 0; i < Amount; i++)
+		{
+			// Prefab Instance
+			GameObject randomPrefab = creaturePrefabs[Random.Range(0, creaturePrefabs.Count - 1)];
+			Vector3 spawnPos = new Vector3(
+				this.transform.position.x + Random.Range(-WanderRadius, WanderRadius),
+				this.transform.position.y + Random.Range(-WanderRadius, WanderRadius),
+				this.transform.position.z + Random.Range(-WanderRadius, WanderRadius)
+			);
+			GameObject instance = GameObject.Instantiate(randomPrefab, spawnPos, Quaternion.identity, this.transform);
+			
+			// Boid
+			Boid boid = instance.GetComponent<Boid>();
+			if (boid == null)
+			{
+				boid = GetComponentInChildren<Boid>();
+				if (boid == null)
+				{
+					DebugUtil.ThrowError(this.name + "doesn't contain a Boid");
+				}
+			}
+			
+			swarm.Add(boid);
+			boid.Init(swarmID, Random.Range(SwarmAIData.MinSpeed, SwarmAIData.MaxSpeed));
+		} 
 	}
 	
-	public void FixedUpdate()
+	#if UNITY_EDITOR
+	void OnDrawGizmosSelected()
 	{
-		swarmAI.UpdateAI(instances);
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(transform.position, WanderRadius);
 	}
-
-	public override uint Add(Boid instance)
-	{
-		instance.OnDeath += () => Remove(instance.ID);
-		return base.Add(instance);
-	}
-
-	public override void Remove(Boid instance)
-	{
-		instance.OnDeath -= () => Remove(instance.ID);
-		base.Remove(instance);
-	}
-
-	public List<Boid> GetNeighbours(Boid boid, float range){
+	#endif
+	
+		public List<Boid> GetNeighbours(Boid boid, float range){
 		List<Boid> neighbours = new List<Boid>();
 		foreach (var kvp in instances)
 		{
@@ -54,10 +73,5 @@ public class Swarm : ADictCollection<Boid>, ISwarm
 		}
 		
 		return neighbours;
-	}
-
-	public void ChangeID(uint newID)
-	{
-		ID = newID;
 	}
 }

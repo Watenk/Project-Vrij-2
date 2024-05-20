@@ -267,6 +267,12 @@ PrefabInstance:
       propertyPath: WanderRadius
       value: 10.2
       objectReference: {fileID: 0}
+    - target: {fileID: 7891965802604894690, guid: af7f62a0f2eb8ec4b8565d95a42f2b6e,
+        type: 3}
+      propertyPath: swarmChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 4384ff591ba72be4e9d2c550d2838f55,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2414,6 +2420,12 @@ PrefabInstance:
       propertyPath: WanderRadius
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 7891965802604894690, guid: af7f62a0f2eb8ec4b8565d95a42f2b6e,
+        type: 3}
+      propertyPath: swarmChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 4384ff591ba72be4e9d2c550d2838f55,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
