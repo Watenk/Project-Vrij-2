@@ -2,51 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Swarm : MonoBehaviour, IID
+/// <summary> A collection of boids </summary>
+public class Swarm : MonoBehaviour
 {
-	[Header("Settings")]
+	[Header("Local Settings")]
 	[SerializeField] [Tooltip("The amount of boids in the swarm")]
 	private byte amount;
+	
 	[SerializeField] [Tooltip("Note that the boids will be able to leave this range. Its a target range and not enforced")]
 	private float wanderRadius;
-	[SerializeField] [Tooltip("The kinds of boids in the swarm")]
-	private GameObject[] creaturePrefabs;
+	
 	[SerializeField] [Tooltip("The boids will try to avoid objects in this array. Note that the boids will 'try' to avoid the objects. It's not enforced")]
 	private Transform[] obstacles;
-	[SerializeField] [Tooltip("The AI that controls the boids in the swarm")]
-	private SwarmAISettings swarmAIData;
+
+	[Header("Shared Settings")]
+	[SerializeField] [Tooltip("The settings for the AI of the boids in the swarm")]
+	private BoidSettings boidSettings;
 	
-	[Header("Blackboards")]
-	[SerializeField]
-	private SwarmBlackboard swarmBlackboard;
-	
-	[Header("Channels")]
+	[Header("Events")]
 	[SerializeField]
 	private SwarmChannel swarmChannel;
 
 	[Header("Factory's")]
-	private BoidFactory boidFactory = new BoidFactory();
-	
-	public uint ID { get; }
+	[SerializeField]
+	private BoidFactory boidFactory;
 	
 	private DictCollection<Boid> boidCollection = new DictCollection<Boid>();
 
-	// Logic
 	public void Start()
 	{
-		uint swarmID = swarmBlackboard.SwarmCollection.Add(this);
-		
-		// Populate boidCollection
-		for (int i = 0; i < amount; i++)
-		{
-			Boid newBoid = boidFactory.Construct(creaturePrefabs, this.transform.position, this.transform);
-			boidCollection.Add(newBoid);
-			//boid.Init(swarmID, Random.Range(SwarmAIData.MinSpeed, SwarmAIData.MaxSpeed));
-		} 
+		PopulateBoidsCollection();
 	}
 	
-	public void Update()
+	public void FixedUpdate()
 	{
+		foreach (var kvp in boidCollection.instances)
+		{
+			kvp.Value.FixedUpdate();
+		}
 	}
 	
 	#if UNITY_EDITOR
@@ -57,8 +50,20 @@ public class Swarm : MonoBehaviour, IID
 	}
 	#endif
 	
-	public void ChangeID(uint newID)
+	private void PopulateBoidsCollection()
 	{
-		throw new System.NotImplementedException();
+		for (int i = 0; i < amount; i++)
+		{
+			Boid newBoid = boidFactory.Construct(boidSettings, this.transform.position, this.transform);
+			newBoid.OnDeath += OnBoidDeath;
+			boidCollection.Add(newBoid);
+		} 
+	}
+	
+	private void OnBoidDeath(Boid boid)
+	{
+		swarmChannel.OnBoidDeath?.Invoke(boid);
+		boid.OnDeath -= OnBoidDeath;
+		boidFactory.Deconstruct(boid);
 	}
 }

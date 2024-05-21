@@ -7,7 +7,7 @@ using Watenk;
 /// <typeparam name="T"> The type of object it stores </typeparam>
 public class DictCollection<T> : ICollection<T> where T : IID
 {
-	protected Dictionary<uint, T> instances = new Dictionary<uint, T>();
+	public Dictionary<uint, T> instances { get; protected set; } = new Dictionary<uint, T>();
 	protected Dictionary<T, uint> keys = new Dictionary<T, uint>();
 	protected uint idCounter = 1;
 	
@@ -53,11 +53,6 @@ public class DictCollection<T> : ICollection<T> where T : IID
 		
 		keys.Remove(instance);
 		instances.Remove(getter);
-		
-		if (instance is IGameObject)
-		{
-			GameObject.Destroy(((IGameObject)instance).GameObject);
-		}
 	}
 	
 	public void Clear()

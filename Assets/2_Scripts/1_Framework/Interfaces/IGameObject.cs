@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IGameObject : IID
+public interface IGameObject
 {
  	public GameObject GameObject { get; }
 }

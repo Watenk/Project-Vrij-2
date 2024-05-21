@@ -10,6 +10,6 @@ public interface IPlayer
 	public ICharacterInputHandler CharacterInputHandler { get; }
 	public ICharacterMovement CharacterMovement { get; }
 	public IAttack CharacterAttack { get; }
-	public IHealth CharacterHealth { get; }
+	public IHealth<IPlayer> CharacterHealth { get; }
 	public ICharacterUI CharacterUI { get; }
 }

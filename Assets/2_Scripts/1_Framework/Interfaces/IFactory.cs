@@ -7,4 +7,5 @@ using UnityEngine;
 public interface IFactory<T>
 {
 	public T Construct(params object[] parameters);
+	public void Deconstruct(T instance);
 }

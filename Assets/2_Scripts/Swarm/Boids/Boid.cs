@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Watenk;
 
-public class Boid : MonoBehaviour, IHealth, IGameObject
+public class Boid : IHealth<Boid>, IGameObject, IID, IFixedUpdateable
 {
 	// Events
-	public event IHealth.HealthChangeEventHandler OnHealthChanged;
-	public event IHealth.DeathEventHandler OnDeath;
+    public event IHealth<Boid>.HealthChangeEventHandler OnHealthChanged;
+    public event IHealth<Boid>.DeathEventHandler OnDeath;
 
 	public int Health { get; private set; }
 	public int MaxHealth { get; private set; }
-	public Rigidbody Rigidbody { get; private set; }
-	public float Speed { get; private set; }
 	public uint ID { get; private set; }
 	public GameObject GameObject { get; private set; }
 
@@ -22,42 +20,36 @@ public class Boid : MonoBehaviour, IHealth, IGameObject
 	private int maxHealth;
 	
 	// Dependencies
-	private uint swarmID;
+	private BoidMovement boidMovement;
 
-	public void Init(uint swarmID, float speed)
+
+    public Boid(BoidSettings boidSettings, GameObject gameObject)
 	{
-		Speed = speed;
 		MaxHealth = maxHealth;
 		Health = maxHealth;
-		GameObject = this.gameObject;
+		GameObject = gameObject;
 		
-		this.swarmID = swarmID;
-		
-		Rigidbody = GetComponent<Rigidbody>();
-		if (Rigidbody == null)
-		{
-			Rigidbody = GetComponentInChildren<Rigidbody>();
-			if (Rigidbody == null)
-			{
-				DebugUtil.ThrowError(this.name + "doesn't contain a Rigidbody");
-			}
-		}
+		boidMovement = new BoidMovement(boidSettings);
+	}
+
+	public void FixedUpdate()
+	{
+		boidMovement.FixedUpdate();
 	}
 
 	public void ChangeHealth(int amount)
 	{
 		Health += amount;
 		
-		if (Health <= 0) Die();
-		else if (Health > MaxHealth) Health = MaxHealth;
+		OnHealthChanged?.Invoke(this);
 		
-		OnHealthChanged?.Invoke(Health);
+		if (Health <= 0) Die();
+		if (Health > MaxHealth) Health = MaxHealth;
 	}
 
 	public void Die()
 	{
-		EventManager.Instance.Invoke(Event.OnFishDeath);
-		OnDeath?.Invoke();
+		OnDeath?.Invoke(this);
 	}
 
 	public void ChangeID(uint newID)

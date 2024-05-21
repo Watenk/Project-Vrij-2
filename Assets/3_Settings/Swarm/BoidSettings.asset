@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e10991f454a4ad4a94f106f66f5377d, type: 3}
-  m_Name: SwarmAISettings
+  m_Name: BoidSettings
   m_EditorClassIdentifier: 
-  MinSpeed: 0.1
-  MaxSpeed: 0.2
-  NeighbourDetectRange: 15
-  ObstacleDetectRange: 5
-  SeparationForce: 3
-  AlignmentForce: 1
-  CohesionForce: 3
+  speedBounds: {x: 0, y: 0}
+  neighbourDetectRange: 0
+  obstacleDetectRange: 0
+  separationForce: 0
+  alignmentForce: 0
+  cohesionForce: 0
+  prefabs: []

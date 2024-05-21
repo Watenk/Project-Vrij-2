@@ -12,7 +12,7 @@ public class Player : MonoBehaviour, IPlayer
 	public ICharacterInputHandler CharacterInputHandler { get; private set; }
 	public ICharacterMovement CharacterMovement { get; private set; }
 	public IAttack CharacterAttack { get; private set; }
-	public IHealth CharacterHealth { get; private set; }
+	public IHealth<IPlayer> CharacterHealth { get; private set; }
 	public ICharacterUI CharacterUI { get; private set; }
 	
 	// References / Settings
@@ -54,7 +54,7 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterInputHandler = new CharacterInputHandler();
 		CharacterMovement = new CharacterController(characterControllerSettings, rb, cameraRoot, moddelRoot, cinemachineRecomposer, waterSurface);
 		CharacterAttack = new CharacterAttack(characterAttackSettings, attackRoot);
-		CharacterHealth = new CharacterHealth(maxHealth);
+		CharacterHealth = new CharacterHealth<IPlayer>(maxHealth);
 		CharacterUI = new CharacterUI(healthSlider, boostSlider);
 		
 		EnableEvents();
