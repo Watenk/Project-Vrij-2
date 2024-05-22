@@ -29,6 +29,8 @@ public class CharacterController : ICharacterMovement
 	{
 		// Moddel Rotation
 		Vector3 direction = rb.velocity.normalized;
+		if (direction == Vector3.zero) return;
+		
 		Quaternion targetRotation = Quaternion.LookRotation(direction);
 		moddelRoot.transform.rotation = Quaternion.Slerp(moddelRoot.transform.rotation, targetRotation, Time.deltaTime * 10f);
 		

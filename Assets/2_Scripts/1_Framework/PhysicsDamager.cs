@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PhysicsDamager : MonoBehaviour, IDamager
 {
-	public delegate void DamageEventHandler(int amount);
-	public event DamageEventHandler OnDamage;
-	
 	private void OnTriggerEnter(Collider other) 
 	{
 		IDamagable damagable = other.gameObject.GetComponent<IDamagable>();
