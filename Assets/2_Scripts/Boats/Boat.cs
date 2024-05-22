@@ -52,7 +52,7 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 
 	public void FixedUpdate()
 	{
-		foreach (var kvp in humanCollection.instances)
+		foreach (var kvp in humanCollection.Collection)
 		{
 			kvp.Value.FixedUpdate();
 		}

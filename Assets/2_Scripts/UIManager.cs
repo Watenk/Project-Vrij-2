@@ -12,12 +12,12 @@ public class UIManager : MonoBehaviour
 	
 	public void Start()
 	{
-		EventManager.Instance.AddListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
+		ServiceLocator.Instance.Get<EventManager>().AddListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
 	}
 	
 	private void OnDestroy() 
 	{
-		EventManager.Instance.RemoveListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
+		ServiceLocator.Instance.Get<EventManager>().RemoveListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
 	}
 	
 	public void UpdateHealthAmount(int amount)

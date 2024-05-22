@@ -3,29 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Watenk;
 
-public class BoidMovement : IFixedUpdateable
-{		
-	// Dependency 
-	private IBoid boid;
-	private ISwarm swarm;
-	
-	public BoidMovement(IBoid boid, ISwarm swarm)
+public partial class Boid : IBoid
+{			
+	public void UpdateMovement(List<IBoid> neighbours, Vector3 swarmCenter)
 	{
-		this.boid = boid;
-		this.swarm = swarm;
-	}
-	
-	public void FixedUpdate()
-	{
-		UpdateBoidsVelocity();
-		UpdateBoundsVelocity();
+		UpdateBoidsVelocity(neighbours);
+		UpdateBoundsVelocity(swarmCenter);
 		UpdateObjectAvoidenceVelocity();
 		UpdateRotation();
 	}
 	
-	private void UpdateBoidsVelocity()
+	private void UpdateBoidsVelocity(List<IBoid> neighbours)
 	{
-		List<IBoid> neighbours = swarm.GetBoidNeighbours(boid, swarm.BoidSettings.NeighbourDetectRange);
 		if (neighbours.Count == 0) return;
 		
 		Vector3 averageSeperation = Vector3.zero;
@@ -34,7 +23,8 @@ public class BoidMovement : IFixedUpdateable
 	
 		foreach (IBoid neighbour in neighbours)
 		{
-			averageSeperation += (boid.GameObject.transform.position - neighbour.GameObject.transform.position) / (Vector3.Distance(boid.GameObject.transform.position, neighbour.GameObject.transform.position) + 1);
+			averageSeperation += (GameObject.transform.position - neighbour.GameObject.transform.position) / 
+								 (Vector3.Distance(GameObject.transform.position, neighbour.GameObject.transform.position) + 1);
 			averageVelocity += neighbour.RB.velocity;
 			averagePosition += neighbour.RB.position;
 		}
@@ -43,39 +33,39 @@ public class BoidMovement : IFixedUpdateable
 		averageVelocity /= neighbours.Count;
 		averagePosition /= neighbours.Count;
 	
-		Vector3 cohesion = (averagePosition - boid.GameObject.transform.position) * swarm.BoidSettings.CohesionForce;
-		Vector3 alignment = averageVelocity * swarm.BoidSettings.AlignmentForce;
-		Vector3 separation = averageSeperation * swarm.BoidSettings.SeparationForce;
+		Vector3 cohesion = (averagePosition - GameObject.transform.position) * BoidSettings.CohesionForce;
+		Vector3 alignment = averageVelocity * BoidSettings.AlignmentForce;
+		Vector3 separation = averageSeperation * BoidSettings.SeparationForce;
 
 		Vector3 velocity = cohesion + alignment + separation;
-		boid.RB.velocity += velocity.normalized * boid.Speed;
+		RB.velocity += velocity.normalized * Speed;
 	}
 	
-	private void UpdateBoundsVelocity()
+	private void UpdateBoundsVelocity(Vector3 swarmCenter)
 	{
-		if (Vector3.Distance(boid.GameObject.transform.position, swarm.GameObject.transform.position) <= swarm.WanderRadius) return;
+		if (Vector3.Distance(GameObject.transform.position, swarmCenter) <= SwarmSettings.WanderRadius) return;
 		
-		boid.RB.velocity += (swarm.GameObject.transform.position - boid.GameObject.transform.position).normalized;
+		RB.velocity += (swarmCenter - GameObject.transform.position).normalized;
 	}
 	
 	private void UpdateObjectAvoidenceVelocity()
 	{
-		if (swarm.Obstacles.Length == 0) return;
+		if (SwarmSettings.Obstacles.Length == 0) return;
 		
 		Vector3 velocity = Vector3.zero;
-		foreach (Transform obstacle in swarm.Obstacles)
+		foreach (Transform obstacle in SwarmSettings.Obstacles)
 		{
-			if (Vector3.Distance(boid.GameObject.transform.position, obstacle.position) > swarm.BoidSettings.ObstacleDetectRange) continue;
+			if (Vector3.Distance(GameObject.transform.position, obstacle.position) > BoidSettings.ObstacleDetectRange) continue;
 			
-			velocity += (obstacle.position - boid.GameObject.transform.position).normalized;
+			velocity += (obstacle.position - GameObject.transform.position).normalized;
 		}
-		boid.RB.velocity += velocity.normalized;
+		RB.velocity += velocity.normalized;
 	}
 	
 	private void UpdateRotation()
 	{
-		Vector3 direction = boid.RB.velocity.normalized;
+		Vector3 direction = RB.velocity.normalized;
 		Quaternion targetRotation = Quaternion.LookRotation(direction);
-		boid.GameObject.transform.rotation = Quaternion.Slerp(boid.GameObject.transform.rotation, targetRotation, Time.deltaTime * 10f);
+		GameObject.transform.rotation = Quaternion.Slerp(GameObject.transform.rotation, targetRotation, Time.deltaTime * 10f);
 	}
 }
