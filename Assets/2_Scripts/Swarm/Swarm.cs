@@ -1,63 +1,94 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using Watenk;
 
-/// <summary> Controls and manages a list of creatures using ISwarmAI and ICollectionManager </summary>
-public class Swarm : DictCollection<Boid>, ISwarm
+/// <summary> A collection of boids </summary>
+public class Swarm : MonoBehaviour, ISwarm
 {
-	public float WanderRadius { get; private set; }
-	public Vector3 Center { get; private set; }
-	public byte Amount { get; private set; }
-	public Transform[] Obstacles { get; private set; }
-	public uint ID { get; private set; }
+	public byte Amount { get { return amount; } }
+	[SerializeField] [Tooltip("The amount of boids in the swarm")]
+	private byte amount;
+	
+	public float WanderRadius { get { return wanderRadius; } }
+	[SerializeField] [Tooltip("Note that the boids will be able to leave this range. Its a target range and not enforced")]
+	private float wanderRadius;
+	
+	public Transform[] Obstacles { get { return obstacles; } }
+	[SerializeField] [Tooltip("The boids will try to avoid objects in this array. Note that the boids will 'try' to avoid the objects. It's not enforced")]
+	private Transform[] obstacles;
 
-	private ISwarmAI swarmAI;
+	public BoidSettings BoidSettings { get { return boidSettings; } }
+	[Header("Shared Settings")]
+	[SerializeField] [Tooltip("The settings for the AI of the boids in the swarm")]
+	private BoidSettings boidSettings;
+	
+	public SwarmChannel SwarmChannel { get { return swarmChannel; } }
 
-	public Swarm(SwarmAIData swarmAIData, float wanderRadius, Vector3 center, byte amount, Transform[] obstacles)
-	{		
-		swarmAI = new BoidsSwarmAI(this, swarmAIData);
-		WanderRadius = wanderRadius;
-		Center = center;
-		Amount = amount;
-		Obstacles = obstacles;
+	[Header("Events")]
+	[SerializeField]
+	private SwarmChannel swarmChannel;
+
+	public GameObject GameObject { get; private set; }
+
+	private DictCollection<IBoid> boidCollection = new DictCollection<IBoid>();
+
+	public void Start()
+	{
+		GameObject = this.gameObject;
+		PopulateBoidsCollection();
 	}
 	
 	public void FixedUpdate()
 	{
-		swarmAI.UpdateAI(instances);
-	}
-
-	public override uint Add(Boid instance)
-	{
-		instance.OnDeath += () => Remove(instance.ID);
-		return base.Add(instance);
-	}
-
-	public override void Remove(Boid instance)
-	{
-		instance.OnDeath -= () => Remove(instance.ID);
-		base.Remove(instance);
-	}
-
-	public List<Boid> GetNeighbours(Boid boid, float range){
-		List<Boid> neighbours = new List<Boid>();
-		foreach (var kvp in instances)
+		foreach (var kvp in boidCollection.instances)
 		{
-			Boid otherBoid = kvp.Value;
+			kvp.Value.FixedUpdate();
+		}
+	}
+	
+	public List<IBoid> GetBoidNeighbours(IBoid boid, float range){
+		List<IBoid> neighbours = new List<IBoid>();
+		foreach (var kvp in boidCollection.instances)
+		{
+			IBoid otherBoid = kvp.Value;
 			
-			if (Vector3.Distance(boid.Rigidbody.transform.position, otherBoid.Rigidbody.transform.position) <= range)
+			if (Vector3.Distance(boid.GameObject.transform.position, otherBoid.GameObject.transform.position) <= range)
 			{
 				neighbours.Add(otherBoid);
 			}
 		}
-		
 		return neighbours;
 	}
 
-	public void ChangeID(uint newID)
+	#if UNITY_EDITOR
+	void OnDrawGizmosSelected()
 	{
-		ID = newID;
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(transform.position, wanderRadius);
+	}
+	#endif
+	
+	private void PopulateBoidsCollection()
+	{
+		for (int i = 0; i < amount; i++)
+		{
+			Vector3 spawnPos = new Vector3(
+				this.transform.position.x + Random.Range(-WanderRadius, WanderRadius),
+				this.transform.position.y + Random.Range(-WanderRadius, WanderRadius),
+				this.transform.position.z + Random.Range(-WanderRadius, WanderRadius)
+			);
+			IBoid newBoid = new Boid(this, spawnPos);
+			newBoid.Health.OnDeath += OnBoidDeath;
+			boidCollection.Add(newBoid);
+		} 
+	}
+	
+	private void OnBoidDeath(IBoid boid)
+	{
+		swarmChannel.OnBoidDeath?.Invoke(boid);
+		
+		boidCollection.Remove(boid);
+		boid.Health.OnDeath -= OnBoidDeath;
+		GameObject.Destroy(boid.GameObject);
 	}
 }

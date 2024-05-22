@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Watenk;
 
-public class Human : IGameObject, IFixedUpdateable
+public class Human : IGameObject, IFixedUpdateable, IID
 {
 	public uint ID { get; private set; }
 	public GameObject GameObject { get; private set; }

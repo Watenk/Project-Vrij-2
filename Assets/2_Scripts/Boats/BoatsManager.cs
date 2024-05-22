@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BoatsManager : MonoBehaviour
 {
-	private DictCollectionFixedUpdate<Boat> boatCollection;
+	private DictCollection<Boat> boatCollection = new DictCollection<Boat>();
 	
 	[Header("Settings")]
 	[SerializeField]
@@ -20,7 +20,6 @@ public class BoatsManager : MonoBehaviour
 	
 	public void Start() 
 	{
-		boatCollection = new DictCollectionFixedUpdate<Boat>();
 		for (int i = 0; i < boatAmount; i++)
 		{
 			Boat instance = new Boat(boatSettings, humansSettings, this.transform, SailPoints, sirenLocation);	
@@ -30,7 +29,10 @@ public class BoatsManager : MonoBehaviour
 	
 	public void FixedUpdate() 
 	{
-		boatCollection.FixedUpdate();
+		foreach (var kvp in boatCollection.instances)
+		{
+			kvp.Value.FixedUpdate();
+		}
 	}
 	
 	#if UNITY_EDITOR
