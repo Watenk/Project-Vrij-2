@@ -1,23 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	private IServiceManager serviceManager;
-	
 	private void Awake() 
 	{
-		serviceManager.AddService(new SwarmManager());
-	}
-
-	private void Update()
-	{
-		serviceManager.Update();
+		Cursor.lockState = CursorLockMode.Locked;
 	}
 	
-	private void FixedUpdate() 
+	public void FixedUpdate() 
 	{
-		serviceManager.FixedUpdate();
+		
 	}
 }
