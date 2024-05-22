@@ -29,7 +29,7 @@ public class BoatsManager : MonoBehaviour
 	
 	public void FixedUpdate() 
 	{
-		foreach (var kvp in boatCollection.instances)
+		foreach (var kvp in boatCollection.Collection)
 		{
 			kvp.Value.FixedUpdate();
 		}

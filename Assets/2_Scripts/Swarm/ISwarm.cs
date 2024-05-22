@@ -4,12 +4,7 @@ using UnityEngine;
 
 public interface ISwarm : IGameObject
 {
-	public byte Amount { get; }
-	public float WanderRadius { get; }
-	public Transform[] Obstacles { get; }
+	public SwarmSettings SwarmSettings { get; }
 	public BoidSettings BoidSettings { get; }
 	public SwarmChannel SwarmChannel { get; }
-
-	
-	public List<IBoid> GetBoidNeighbours(IBoid boid, float range);
 }

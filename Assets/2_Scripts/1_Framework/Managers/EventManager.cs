@@ -11,7 +11,8 @@ public enum Event
 
 // TODO: use params to generalize the paramers
 /// <summary> A global eventManager that supports up to 2 parameters </summary>
-public class EventManager : ASingleton<EventManager>{
+public class EventManager
+{
 	private Dictionary<EventManagerKey, object> eventManagers = new Dictionary<EventManagerKey, object>();
 
 	//--------------------------------------------------

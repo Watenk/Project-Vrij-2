@@ -6,7 +6,7 @@ namespace Watenk
 {
 	
 /// <summary> Keeps track of a single instance of a class </summary>
-public abstract class ASingleton<T> where T : class, new()
+public abstract class ASingleton<T> : ISingleton<T> where T : class, new()
 {
 	private static T instance;
 

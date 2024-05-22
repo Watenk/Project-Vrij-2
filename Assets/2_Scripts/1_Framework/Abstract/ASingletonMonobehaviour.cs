@@ -6,7 +6,7 @@ namespace Watenk
 {
 
 /// <summary> Keeps track of a single instance of a class and is a monobehaviour </summary>
-public abstract class ASingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class ASingletonMonoBehaviour<T> : MonoBehaviour, ISingleton<T> where T : MonoBehaviour
 {
 	private static T instance;
 

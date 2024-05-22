@@ -40,13 +40,13 @@ public class Player : MonoBehaviour, IPlayer
 	[SerializeField]
 	private CharacterAttackSettings characterAttackSettings;
 	
-	private DamageTaker damageTaker;
+	private PhysicsDamageDetector damageTaker;
 	
 	public void Awake()
 	{
 		Rigidbody rb = GetComponent<Rigidbody>();
 		if (rb == null) DebugUtil.ThrowError(this.name + " is missing a RigidBody");
-		damageTaker = GetComponentInChildren<DamageTaker>();
+		damageTaker = GetComponentInChildren<PhysicsDamageDetector>();
 		if (damageTaker == null) DebugUtil.ThrowError(this.name + " is missing a DamageTaker");
 		
 		CharacterInputHandler = new CharacterInputHandler();
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterInputHandler.OnAttack += CharacterAttack.Slash;
 		damageTaker.OnDamage += (amount) => CharacterHealth.ChangeHealth(amount * -1);
 		CharacterAttack.OnKill += () => CharacterHealth.ChangeHealth(1);
-		CharacterHealth.OnHealthChanged += (amount) => EventManager.Instance.Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
+		CharacterHealth.OnHealthChanged += (amount) => ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
 	}
 	
 	public void OnDisable() 
@@ -72,7 +72,7 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterInputHandler.OnAttack -= CharacterAttack.Slash;
 		damageTaker.OnDamage -= (amount) => CharacterHealth.ChangeHealth(amount * -1);
 		CharacterAttack.OnKill -= () => CharacterHealth.ChangeHealth(1);
-		CharacterHealth.OnHealthChanged -= (amount) => EventManager.Instance.Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
+		CharacterHealth.OnHealthChanged -= (amount) => ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
 	}
 	
 	public void Update()
