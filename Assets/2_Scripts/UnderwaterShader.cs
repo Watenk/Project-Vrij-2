@@ -7,7 +7,7 @@ public class UnderwaterShader : MonoBehaviour
 {
     [Header("Depth Parameters")]
     [SerializeField] private Transform mainCamera;
-    [SerializeField] private int depth = 0;
+    [SerializeField] private int depth = 1;
 
     [Header("Volumes")]
     public GameObject surfaceVolume;
