@@ -6,5 +6,5 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "SwarmChannel", menuName = "Swarm/Channel")]
 public class SwarmChannel : ScriptableObject
 {
-	public UnityEvent<Boid> OnBoidDeath;
+	public UnityEvent<IBoid> OnBoidDeath;
 }

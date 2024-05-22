@@ -3,55 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using Watenk;
 
-public class Boid : IHealth<Boid>, IGameObject, IID, IFixedUpdateable
+public class Boid : IBoid
 {
-	// Events
-    public event IHealth<Boid>.HealthChangeEventHandler OnHealthChanged;
-    public event IHealth<Boid>.DeathEventHandler OnDeath;
-
-	public int Health { get; private set; }
-	public int MaxHealth { get; private set; }
-	public uint ID { get; private set; }
+	public ISwarm Swarm { get; private set; }
+	public Health<Boid> Health { get; private set; }
 	public GameObject GameObject { get; private set; }
+	public float Speed { get; private set; }
+	public Rigidbody RB { get; private set; }
+	public uint ID { get; private set; }
+	public BoidMovement BoidMovement { get; private set; }
+	public DamageTaker DamageTaker { get; private set; }
 
-	// References / Settings
-	[Header("Settings")]
-	[SerializeField]
-	private int maxHealth;
-	
-	// Dependencies
-	private BoidMovement boidMovement;
-
-
-    public Boid(BoidSettings boidSettings, GameObject gameObject)
+	public Boid(ISwarm swarm, Vector3 pos)
 	{
-		MaxHealth = maxHealth;
-		Health = maxHealth;
-		GameObject = gameObject;
+		Swarm = swarm;
 		
-		boidMovement = new BoidMovement(boidSettings);
+		Speed = Random.Range(Swarm.BoidSettings.SpeedBounds.x, Swarm.BoidSettings.SpeedBounds.y);
+		GameObject = GameObject.Instantiate(Swarm.BoidSettings.Prefabs[Random.Range(0, Swarm.BoidSettings.Prefabs.Length)], pos, Quaternion.identity, swarm.GameObject.transform);
+		DamageTaker = GameObject.GetComponent<DamageTaker>();
+		if (DamageTaker == null) DebugUtil.ThrowError("Boid Doesn't contain a DamageTaker");
+		RB = GameObject.GetComponent<Rigidbody>();
+		if (RB == null) DebugUtil.ThrowError("Boid Doesn't contain a Rigidbody");
+		Health = new Health<Boid>(this, Random.Range(Swarm.BoidSettings.HealthBounds.x, Swarm.BoidSettings.HealthBounds.y));
+		BoidMovement = new BoidMovement(this, swarm);
+		
+		DamageTaker.OnDamage += (amount) => Health.ChangeHealth(amount * -1);
+	}
+	
+	~Boid()
+	{
+		DamageTaker.OnDamage -= (amount) => Health.ChangeHealth(amount * -1);
 	}
 
 	public void FixedUpdate()
 	{
-		boidMovement.FixedUpdate();
+		BoidMovement.FixedUpdate();
 	}
-
-	public void ChangeHealth(int amount)
-	{
-		Health += amount;
-		
-		OnHealthChanged?.Invoke(this);
-		
-		if (Health <= 0) Die();
-		if (Health > MaxHealth) Health = MaxHealth;
-	}
-
-	public void Die()
-	{
-		OnDeath?.Invoke(this);
-	}
-
+	
 	public void ChangeID(uint newID)
 	{
 		ID = newID;

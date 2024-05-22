@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterUI : ICharacterUI
+public class UIManager : MonoBehaviour
 {
-	// Dependencies
+	[SerializeField]
 	private Slider healthSlider;
+	[SerializeField]
 	private Slider boostSlider;
 	
-	public CharacterUI(Slider healthSlider, Slider boostSlider)
+	public void Start()
 	{
-		this.healthSlider = healthSlider;
-		this.boostSlider = boostSlider;
+		EventManager.Instance.AddListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
+	}
+	
+	private void OnDestroy() 
+	{
+		EventManager.Instance.RemoveListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
 	}
 	
 	public void UpdateHealthAmount(int amount)

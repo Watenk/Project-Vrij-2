@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1300570108819431830
+--- !u!1 &7828857646676411781
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,45 +8,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3483327032817087373}
-  - component: {fileID: 7891965802604894690}
+  - component: {fileID: 3529327800641272521}
+  - component: {fileID: 4342248706332851601}
   m_Layer: 0
-  m_Name: FishSwarmSpawner
+  m_Name: SwarmSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3483327032817087373
+--- !u!4 &3529327800641272521
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1300570108819431830}
+  m_GameObject: {fileID: 7828857646676411781}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.719601, y: 43.7, z: 62.8}
+  m_LocalPosition: {x: -24.149837, y: -29.089209, z: 50.07082}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7891965802604894690
+--- !u!114 &4342248706332851601
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1300570108819431830}
+  m_GameObject: {fileID: 7828857646676411781}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f374e8cf721954c4dbb7c36fa213bdc1, type: 3}
+  m_Script: {fileID: 11500000, guid: 991e30ce9a3da424b9d9b5cafc2d59f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creaturePrefabs:
-  - {fileID: 2174404751911787995, guid: a2520b35b82f99b4193a2bec28c4703b, type: 3}
-  WanderRadius: 31.7
-  Amount: 50
-  SwarmAIData: {fileID: 11400000, guid: d814ce498b7a5a742bc2974756f8c8dc, type: 2}
-  Obstacles: []
+  amount: 10
+  wanderRadius: 30
+  obstacles: []
+  boidSettings: {fileID: 11400000, guid: 517bd0ebb52ca4a429f0493512c88f60, type: 2}
+  swarmChannel: {fileID: 11400000, guid: 4384ff591ba72be4e9d2c550d2838f55, type: 2}

@@ -11,6 +11,10 @@ public class BoidSettings : ScriptableObject
 	[SerializeField] [Tooltip("The min and max speed of the boids")]
 	private Vector2 speedBounds;
 	
+	public Vector2Int HealthBounds { get { return healthBounds; } }
+	[SerializeField] [Tooltip("The min and max health of the boids")]
+	private Vector2Int healthBounds;
+	
 	public float NeighbourDetectRange { get { return neighbourDetectRange; } }
 	[SerializeField] [Tooltip("The range in which the boids will affect another")]
 	private float neighbourDetectRange; 

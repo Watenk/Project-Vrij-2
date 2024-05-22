@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponHealthDetector : MonoBehaviour
+public class Damager : MonoBehaviour
 {
 	private float lifeTime;
 	
@@ -22,10 +22,8 @@ public class WeaponHealthDetector : MonoBehaviour
 	
 	private void OnTriggerEnter(Collider other) 
 	{
-		if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-		{
-			EventManager.Instance.Invoke(Event.OnPlayerHit);
-			Destroy(this.gameObject);
-		}
+		IDamagable damagable = other.gameObject.GetComponent<IDamagable>();
+		if (damagable == null) return;	
+		damagable.TakeDamage(1);
 	}
 }

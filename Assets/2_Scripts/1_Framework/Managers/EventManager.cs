@@ -6,9 +6,7 @@ using Watenk;
 public enum Event
 {
 	// Swarm
-	OnNewSwarm,
-	OnPlayerHit,
-	OnFishDeath,
+	OnPlayerHealth,
 }
 
 // TODO: use params to generalize the paramers

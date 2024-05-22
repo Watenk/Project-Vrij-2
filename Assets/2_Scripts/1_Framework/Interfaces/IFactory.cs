@@ -4,8 +4,9 @@ using UnityEngine;
 
 /// <summary> Creates an object </summary>
 /// <typeparam name="T"> The type of objects it constructs </typeparam>
-public interface IFactory<T>
+/// <typeparam name="U"> The data it needs to construct it </typeparam>
+public interface IFactory<T, U>
 {
-	public T Construct(params object[] parameters);
+	public T Construct(U data);
 	public void Deconstruct(T instance);
 }

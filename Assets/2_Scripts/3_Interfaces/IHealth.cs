@@ -9,8 +9,8 @@ public interface IHealth<T>
 	public delegate void DeathEventHandler(T instance);
 	public event DeathEventHandler OnDeath;
 	
-	public int Health { get; }
-	public int MaxHealth { get; }
+	public int HP { get; }
+	public int MaxHP { get; }
 	
 	public void ChangeHealth(int amount);
 	public void Die();
