@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -141,8 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc97657e41cd25049819427b6d229e2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 648177299}
-  depth: 5
+  mainCamera: {fileID: 318284816}
+  depth: 10
   surfaceVolume: {fileID: 1806201392}
   underwaterVolume: {fileID: 2005895029}
 --- !u!1 &251283019
@@ -201,6 +201,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!4 &318284816 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7119710923258152829, guid: 88617d72bdccd8144a4f57a0eafefdf7,
+    type: 3}
+  m_PrefabInstance: {fileID: 648177298}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &334774490
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,24 +523,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 1028467634}
   boostSlider: {fileID: 1782422806}
---- !u!1 &622078230 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7005804799970911432, guid: 88617d72bdccd8144a4f57a0eafefdf7,
-    type: 3}
-  m_PrefabInstance: {fileID: 648177298}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &622078233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622078230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbf8276ea70f498438b83da316fae516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &648177298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -678,17 +666,7 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 199715382}
-    - targetCorrespondingSourceObject: {fileID: 7005804799970911432, guid: 88617d72bdccd8144a4f57a0eafefdf7,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 622078233}
   m_SourcePrefab: {fileID: 100100000, guid: 88617d72bdccd8144a4f57a0eafefdf7, type: 3}
---- !u!4 &648177299 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 784438537895793998, guid: 88617d72bdccd8144a4f57a0eafefdf7,
-    type: 3}
-  m_PrefabInstance: {fileID: 648177298}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &715259278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2056,6 +2034,6 @@ SceneRoots:
   - {fileID: 715259278}
   - {fileID: 449076731}
   - {fileID: 2005895031}
+  - {fileID: 1806201394}
   - {fileID: 1613862564}
   - {fileID: 251283021}
-  - {fileID: 1806201394}
