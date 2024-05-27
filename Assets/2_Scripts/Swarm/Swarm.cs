@@ -1,63 +1,85 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using Watenk;
 
-/// <summary> Controls and manages a list of creatures using ISwarmAI and ICollectionManager </summary>
-public class Swarm : DictCollection<Boid>, ISwarm
+/// <summary> A collection of boids </summary>
+public class Swarm : MonoBehaviour, ISwarm
 {
-	public float WanderRadius { get; private set; }
-	public Vector3 Center { get; private set; }
-	public byte Amount { get; private set; }
-	public Transform[] Obstacles { get; private set; }
-	public uint ID { get; private set; }
+	public SwarmSettings SwarmSettings { get { return swarmSettings; } }
+	[SerializeField]
+	private SwarmSettings swarmSettings;
+	
+	public BoidSettings BoidSettings { get { return boidSettings; } }
+	[Header("Shared Settings")]
+	[SerializeField] [Tooltip("The settings for the AI of the boids in the swarm")]
+	private BoidSettings boidSettings;
+	
+	public SwarmChannel SwarmChannel { get { return swarmChannel; } }
+	[SerializeField]
+	private SwarmChannel swarmChannel;
 
-	private ISwarmAI swarmAI;
+	public GameObject GameObject { get; private set; }
 
-	public Swarm(SwarmAIData swarmAIData, float wanderRadius, Vector3 center, byte amount, Transform[] obstacles)
-	{		
-		swarmAI = new BoidsSwarmAI(this, swarmAIData);
-		WanderRadius = wanderRadius;
-		Center = center;
-		Amount = amount;
-		Obstacles = obstacles;
+	private DictCollection<IBoid> boidCollection = new DictCollection<IBoid>();
+
+	public void Start()
+	{
+		GameObject = this.gameObject;
+		
+		for (int i = 0; i < swarmSettings.Amount; i++)
+		{
+			AddBoid();	
+		}
 	}
 	
 	public void FixedUpdate()
 	{
-		swarmAI.UpdateAI(instances);
-	}
-
-	public override uint Add(Boid instance)
-	{
-		instance.OnDeath += () => Remove(instance.ID);
-		return base.Add(instance);
-	}
-
-	public override void Remove(Boid instance)
-	{
-		instance.OnDeath -= () => Remove(instance.ID);
-		base.Remove(instance);
-	}
-
-	public List<Boid> GetNeighbours(Boid boid, float range){
-		List<Boid> neighbours = new List<Boid>();
-		foreach (var kvp in instances)
+		foreach (var kvp in boidCollection.Collection)
 		{
-			Boid otherBoid = kvp.Value;
+			kvp.Value.UpdateMovement(GetBoidNeighbours(kvp.Value, BoidSettings.NeighbourDetectRange), transform.position);
+		}
+	}
+	
+	#if UNITY_EDITOR
+	void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(transform.position, swarmSettings.WanderRadius);
+	}
+	#endif
+	
+	private void AddBoid()
+	{
+		Vector3 spawnPos = new Vector3(
+			this.transform.position.x + Random.Range(-swarmSettings.WanderRadius, swarmSettings.WanderRadius),
+			this.transform.position.y + Random.Range(-swarmSettings.WanderRadius, swarmSettings.WanderRadius),
+			this.transform.position.z + Random.Range(-swarmSettings.WanderRadius, swarmSettings.WanderRadius)
+		);
+		IBoid newBoid = new Boid(swarmSettings, boidSettings, spawnPos, this.gameObject.transform);
+		newBoid.Health.OnDeath += RemoveBoid;
+		boidCollection.Add(newBoid);
+	}
+	
+	private void RemoveBoid(IBoid boid)
+	{
+		swarmChannel.OnBoidDeath?.Invoke(boid);
+		
+		boidCollection.Remove(boid);
+		boid.Health.OnDeath -= RemoveBoid;
+		GameObject.Destroy(boid.GameObject);
+	}
+	
+	private List<IBoid> GetBoidNeighbours(IBoid boid, float range){
+		List<IBoid> neighbours = new List<IBoid>();
+		foreach (var kvp in boidCollection.Collection)
+		{
+			IBoid otherBoid = kvp.Value;
 			
-			if (Vector3.Distance(boid.Rigidbody.transform.position, otherBoid.Rigidbody.transform.position) <= range)
+			if (Vector3.Distance(boid.GameObject.transform.position, otherBoid.GameObject.transform.position) <= range)
 			{
 				neighbours.Add(otherBoid);
 			}
 		}
-		
 		return neighbours;
-	}
-
-	public void ChangeID(uint newID)
-	{
-		ID = newID;
 	}
 }

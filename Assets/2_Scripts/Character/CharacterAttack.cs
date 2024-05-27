@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class CharacterAttack : IAttack
 {
+    public event IAttack.KillEventhandler OnKill;
+	
 	private GameObject grabbedObject;
 	
 	// Dependencies
 	private CharacterAttackSettings characterAttackSettings;
 	private Transform attackRoot;
-	
-	public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
+
+
+    public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
 	{
 		this.characterAttackSettings = characterAttackSettings;
 		this.attackRoot = attackRoot;
@@ -21,10 +24,10 @@ public class CharacterAttack : IAttack
 		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
 		foreach (var collider in hitColliders)
 		{
-			if (collider.gameObject == null) continue;
-			IHealth health = collider.gameObject.GetComponent<IHealth>();
-			if (health == null) continue;
-			health.ChangeHealth(-characterAttackSettings.AttackDamage);
+			IDamagable damagable = collider.gameObject.GetComponent<IDamagable>();
+			if (damagable == null) return;
+			damagable.TakeDamage(characterAttackSettings.AttackDamage);
+			OnKill?.Invoke();
 		}
 	}
 	
@@ -33,4 +36,3 @@ public class CharacterAttack : IAttack
 		other.transform.SetParent(player.transform);
 	}
 }
-

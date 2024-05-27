@@ -6,14 +6,10 @@ using Watenk;
 
 public class Player : MonoBehaviour, IPlayer
 {
-	// Events
-	public event IPlayer.HealthChangeEventHandler ChangeHealth;
-
 	public ICharacterInputHandler CharacterInputHandler { get; private set; }
 	public ICharacterMovement CharacterMovement { get; private set; }
 	public IAttack CharacterAttack { get; private set; }
-	public IHealth CharacterHealth { get; private set; }
-	public ICharacterUI CharacterUI { get; private set; }
+	public Health<IPlayer> CharacterHealth { get; private set; }
 	
 	// References / Settings
 	[Header("References")]
@@ -44,26 +40,29 @@ public class Player : MonoBehaviour, IPlayer
 	[SerializeField]
 	private CharacterAttackSettings characterAttackSettings;
 	
-	private bool startHasRun = false;
-
-	public void Start()
+	private PhysicsDamageDetector damageTaker;
+	
+	public void Awake()
 	{
 		Rigidbody rb = GetComponent<Rigidbody>();
 		if (rb == null) DebugUtil.ThrowError(this.name + " is missing a RigidBody");
+		damageTaker = GetComponentInChildren<PhysicsDamageDetector>();
+		if (damageTaker == null) DebugUtil.ThrowError(this.name + " is missing a DamageTaker");
 		
 		CharacterInputHandler = new CharacterInputHandler();
 		CharacterMovement = new CharacterController(characterControllerSettings, rb, cameraRoot, moddelRoot, cinemachineRecomposer, waterSurface);
 		CharacterAttack = new CharacterAttack(characterAttackSettings, attackRoot);
-		CharacterHealth = new CharacterHealth(maxHealth);
-		CharacterUI = new CharacterUI(healthSlider, boostSlider);
-		
-		EnableEvents();
-		startHasRun = true;
+		CharacterHealth = new Health<IPlayer>(this, maxHealth);
 	}
 	
 	public void OnEnable() 
 	{
-		if (startHasRun) EnableEvents();
+		CharacterInputHandler.OnMove += CharacterMovement.UpdateMovement;
+		CharacterInputHandler.OnRotate += CharacterMovement.UpdateRotation;
+		CharacterInputHandler.OnAttack += CharacterAttack.Slash;
+		damageTaker.OnDamage += (amount) => CharacterHealth.ChangeHealth(amount * -1);
+		CharacterAttack.OnKill += () => CharacterHealth.ChangeHealth(1);
+		CharacterHealth.OnHealthChanged += (amount) => ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
 	}
 	
 	public void OnDisable() 
@@ -71,10 +70,9 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterInputHandler.OnMove -= CharacterMovement.UpdateMovement;
 		CharacterInputHandler.OnRotate -= CharacterMovement.UpdateRotation;
 		CharacterInputHandler.OnAttack -= CharacterAttack.Slash;
-		ChangeHealth -= CharacterHealth.ChangeHealth;
-		CharacterHealth.OnHealthChanged -= CharacterUI.UpdateHealthAmount;
-		EventManager.Instance.AddListener(Event.OnPlayerHit, () => CharacterHealth.ChangeHealth(-1));
-		EventManager.Instance.AddListener(Event.OnFishDeath, () => CharacterHealth.ChangeHealth(1));
+		damageTaker.OnDamage -= (amount) => CharacterHealth.ChangeHealth(amount * -1);
+		CharacterAttack.OnKill -= () => CharacterHealth.ChangeHealth(1);
+		CharacterHealth.OnHealthChanged -= (amount) => ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
 	}
 	
 	public void Update()
@@ -91,17 +89,6 @@ public class Player : MonoBehaviour, IPlayer
 		}
 	}
 	
-	private void EnableEvents()
-	{
-		CharacterInputHandler.OnMove += CharacterMovement.UpdateMovement;
-		CharacterInputHandler.OnRotate += CharacterMovement.UpdateRotation;
-		CharacterInputHandler.OnAttack += CharacterAttack.Slash;
-		ChangeHealth += CharacterHealth.ChangeHealth;
-		CharacterHealth.OnHealthChanged += CharacterUI.UpdateHealthAmount;
-		EventManager.Instance.AddListener(Event.OnPlayerHit, () => CharacterHealth.ChangeHealth(-1));
-		EventManager.Instance.AddListener(Event.OnFishDeath, () => CharacterHealth.ChangeHealth(1));
-	}
-
 	#if UNITY_EDITOR
 	public void OnDrawGizmosSelected()
 	{

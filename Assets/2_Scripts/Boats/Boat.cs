@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.AI;
 using Watenk;
 
-public class Boat : IGameObject, IFixedUpdateable
+public class Boat : IGameObject, IFixedUpdateable, IID
 {
 	public uint ID { get; private set;}
 	public GameObject GameObject { get; private set; }
 
 	private float speed;
 	private int sailPointIndex;
-	private DictCollectionFixedUpdate<Human> humanCollection = new DictCollectionFixedUpdate<Human>();
+	private DictCollection<Human> humanCollection = new DictCollection<Human>();
 	
 	// Dependencies
 	private List<Transform> sailPoints;
@@ -52,7 +52,10 @@ public class Boat : IGameObject, IFixedUpdateable
 
 	public void FixedUpdate()
 	{
-		humanCollection.FixedUpdate();
+		foreach (var kvp in humanCollection.Collection)
+		{
+			kvp.Value.FixedUpdate();
+		}
 		
 		if(agent.remainingDistance >= 3) return;
 		if (sailPoints.Count == 0) agent.SetDestination(NavMeshUtil.GetRandomPositionOnNavMesh(orginPos.position, boatsSettings.sailingRange));
