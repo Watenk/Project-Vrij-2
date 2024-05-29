@@ -11,6 +11,7 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 
 	private float speed;
 	private int sailPointIndex;
+	private Timer destinationTimer = new Timer(1);
 	private DictCollection<Human> humanCollection = new DictCollection<Human>();
 	
 	// Dependencies
@@ -24,7 +25,7 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 		this.boatsSettings = boatsSettings;
 		this.sailPoints = sailPoints;
 		this.orginPos = orginPos;
-		sailPointIndex = Random.Range(0, sailPoints.Count - 1);
+		sailPointIndex = Random.Range(0, sailPoints.Count);
 		
 		// Boat
 		GameObject randomPrefab = boatsSettings.BoatPrefabs[Random.Range(0, boatsSettings.BoatPrefabs.Count)];
@@ -56,15 +57,17 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 		{
 			kvp.Value.FixedUpdate();
 		}
+		destinationTimer.Tick(Time.deltaTime);
 		
-		if(agent.remainingDistance >= 3) return;
+		if(agent.remainingDistance >= 3 || destinationTimer.TimeLeft > 0) return;
 		if (sailPoints.Count == 0) agent.SetDestination(NavMeshUtil.GetRandomPositionOnNavMesh(orginPos.position, boatsSettings.sailingRange));
 		else
 		{
 		 	agent.SetDestination(sailPoints[sailPointIndex].position);
 			sailPointIndex++;
+			destinationTimer.Reset();
 		
-			if (sailPointIndex == sailPoints.Count - 1) sailPointIndex = 0;	
+			if (sailPointIndex == sailPoints.Count) sailPointIndex = 0;	
 		}
 	}
 	
@@ -108,14 +111,14 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 	
 	private Vector3 GenerateRandomPos(HumansSettings humanSettings)
 	{
-        Vector3 randomPos = new Vector3
-        {
-            x = Random.Range(GameObject.transform.position.x - (GameObject.transform.GetChild(0).transform.localScale.x / 2) + (humanSettings.HumanPrefabs[0].transform.localScale.x / 2),
-                                   GameObject.transform.position.x + (GameObject.transform.GetChild(0).transform.localScale.x / 2) - (humanSettings.HumanPrefabs[0].transform.localScale.x / 2)),
-            y = GameObject.transform.position.y + humanSettings.HumanPrefabs[0].transform.localScale.y / 2,
-            z = Random.Range(GameObject.transform.position.z - (GameObject.transform.GetChild(0).transform.localScale.z / 2) + (humanSettings.HumanPrefabs[0].transform.localScale.z / 2),
-                                   GameObject.transform.position.z + (GameObject.transform.GetChild(0).transform.localScale.z / 2) - (humanSettings.HumanPrefabs[0].transform.localScale.z / 2))
-        };
-        return randomPos;
+		Vector3 randomPos = new Vector3
+		{
+			x = Random.Range(GameObject.transform.position.x - (GameObject.transform.GetChild(0).transform.localScale.x / 2) + (humanSettings.HumanPrefabs[0].transform.localScale.x / 2),
+								   GameObject.transform.position.x + (GameObject.transform.GetChild(0).transform.localScale.x / 2) - (humanSettings.HumanPrefabs[0].transform.localScale.x / 2)),
+			y = GameObject.transform.localPosition.y + humanSettings.HumanPrefabs[0].transform.localScale.y / 2,
+			z = Random.Range(GameObject.transform.position.z - (GameObject.transform.GetChild(0).transform.localScale.z / 2) + (humanSettings.HumanPrefabs[0].transform.localScale.z / 2),
+								   GameObject.transform.position.z + (GameObject.transform.GetChild(0).transform.localScale.z / 2) - (humanSettings.HumanPrefabs[0].transform.localScale.z / 2))
+		};
+		return randomPos;
 	}
 }

@@ -19,9 +19,9 @@ MonoBehaviour:
   AttackDelay: 5
   WeaponThrowSpeed: 1000
   HumanPrefabs:
-  - {fileID: 6733316219152698968, guid: 9faee8314b882b248883663a9ff585d9, type: 3}
-  - {fileID: 2499842832401525283, guid: ba24c781eccbf5e4ea1881c8825eb3a3, type: 3}
-  - {fileID: 3206635001185897940, guid: 4cdfcc6fc50d34042aee1230680af5c5, type: 3}
-  - {fileID: 2966742219250516347, guid: ad55bf1040b58f740a4b2a9a01938979, type: 3}
+  - {fileID: 9128555760883104077, guid: 878b08d2b916eb0409b455e34c1cc334, type: 3}
+  - {fileID: 2137066865950730684, guid: 4e2abbc982ea05546b6ad4d0da8f8f94, type: 3}
+  - {fileID: 349783907030214437, guid: f20f5ef1cca8cee4e8e1ffb09decd841, type: 3}
+  - {fileID: 9044424884549572215, guid: c9873b28b38dcb5418a2914a49f986cd, type: 3}
   ThrowingWeaponsPrefabs:
   - {fileID: 7245075359114095302, guid: 4633a13b207b6224abb0c9c318d04391, type: 3}
