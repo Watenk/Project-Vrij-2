@@ -108,12 +108,14 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 	
 	private Vector3 GenerateRandomPos(HumansSettings humanSettings)
 	{
-		Vector3 randomPos = new Vector3();
-		randomPos.x = Random.Range(GameObject.transform.position.x - (GameObject.transform.GetChild(0).transform.localScale.x / 2) + (humanSettings.HumanPrefabs[0].transform.localScale.x / 2), 
-								   GameObject.transform.position.x + (GameObject.transform.GetChild(0).transform.localScale.x / 2) - (humanSettings.HumanPrefabs[0].transform.localScale.x / 2));
-		randomPos.y = GameObject.transform.position.y + humanSettings.HumanPrefabs[0].transform.localScale.y / 2;
-		randomPos.z = Random.Range(GameObject.transform.position.z - (GameObject.transform.GetChild(0).transform.localScale.z / 2) + (humanSettings.HumanPrefabs[0].transform.localScale.z / 2), 
-								   GameObject.transform.position.z + (GameObject.transform.GetChild(0).transform.localScale.z / 2) - (humanSettings.HumanPrefabs[0].transform.localScale.z / 2));
-		return randomPos;
+        Vector3 randomPos = new Vector3
+        {
+            x = Random.Range(GameObject.transform.position.x - (GameObject.transform.GetChild(0).transform.localScale.x / 2) + (humanSettings.HumanPrefabs[0].transform.localScale.x / 2),
+                                   GameObject.transform.position.x + (GameObject.transform.GetChild(0).transform.localScale.x / 2) - (humanSettings.HumanPrefabs[0].transform.localScale.x / 2)),
+            y = GameObject.transform.position.y + humanSettings.HumanPrefabs[0].transform.localScale.y / 2,
+            z = Random.Range(GameObject.transform.position.z - (GameObject.transform.GetChild(0).transform.localScale.z / 2) + (humanSettings.HumanPrefabs[0].transform.localScale.z / 2),
+                                   GameObject.transform.position.z + (GameObject.transform.GetChild(0).transform.localScale.z / 2) - (humanSettings.HumanPrefabs[0].transform.localScale.z / 2))
+        };
+        return randomPos;
 	}
 }
