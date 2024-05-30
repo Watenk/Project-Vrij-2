@@ -5,30 +5,47 @@ using UnityEngine;
 using UnityEngine.AI;
 using Watenk;
 
-public class Human : IGameObject, IFixedUpdateable, IID
+public class Human : IGameObject, IID
 {
 	public uint ID { get; private set; }
 	public GameObject GameObject { get; private set; }
 	
-	private bool attacking;
-	private float attackDelay;
+	private Fsm<Human> behaviourFSM;
 	
 	// Dependencies
-	private HumansSettings humansSettings;
-	private SirenLocation sirenLocation;
-	private GameObject parent;
+	public HumansSettings humansSettings { get; private set; }
+	public SirenLocation sirenLocation { get; private set; }
+	public GameObject platform { get; private set; }
+	public GameObject parent { get; private set; }
+	public DictCollection<Human> humans { get; private set; }
 
-	public Human(GameObject boat, HumansSettings humansSettings, Vector3 spawnPos, SirenLocation sirenLocation)
+	public Human(DictCollection<Human> humans, GameObject parent, GameObject platform, HumansSettings humansSettings, SirenLocation sirenLocation)
 	{
-		this.parent = boat;
+		this.humans = humans;
+		this.parent = parent;
+		this.platform = platform;
 		this.humansSettings = humansSettings;
 		this.sirenLocation = sirenLocation;
-		attackDelay = humansSettings.AttackDelay;
+		
+		behaviourFSM = new Fsm<Human>(this, 
+			new HumanIdleState(),
+			new HumanAttackState(),
+			new HumanWanderState()
+		);
+		
+		behaviourFSM.States.TryGetValue(typeof(HumanIdleState), out BaseState<Human> idleState);
+		((HumanIdleState)idleState).IdleTimer.OnTimer += OnIdleTimer;
 		
 		GameObject randomPrefab = humansSettings.HumanPrefabs[Random.Range(0, humansSettings.HumanPrefabs.Count)];
 		if (randomPrefab == null) DebugUtil.ThrowError("RandomPrefab is null. The boatspawner probably doesn't have any boat prefabs assigned.");
 		
-		GameObject = GameObject.Instantiate(randomPrefab, spawnPos, Quaternion.identity, boat.transform);
+		GameObject = GameObject.Instantiate(randomPrefab, GenerateRandomHumanPos(), Quaternion.identity, parent.transform);
+	}
+	
+	~Human()
+	{
+		behaviourFSM.States.TryGetValue(typeof(HumanIdleState), out BaseState<Human> idleState);
+		((HumanIdleState)idleState).IdleTimer.OnTimer -= OnIdleTimer;
 	}
 
 	public void ChangeID(uint newID)
@@ -36,38 +53,70 @@ public class Human : IGameObject, IFixedUpdateable, IID
 		ID = newID;
 	}
 
-	public void FixedUpdate()
+	public void FixedUpdate(DictCollection<Human> humans)
 	{
+		this.humans = humans;
+		
 		if (Vector3.Distance(sirenLocation.Position, GameObject.transform.position) <= humansSettings.SirenDetectRange)
 		{
-			attacking = true;
+			behaviourFSM.SwitchState(typeof(HumanAttackState));
 		}
-		else
+		else if (behaviourFSM.CurrentState.GetType() == typeof(HumanAttackState))
 		{
-			attacking = false;
+			behaviourFSM.SwitchState(typeof(HumanIdleState));
 		}
 		
-		if (attacking)
-		{
-			Quaternion targetRotation = Quaternion.LookRotation(sirenLocation.Position - GameObject.transform.position);
-			GameObject.transform.rotation = Quaternion.Lerp(GameObject.transform.rotation, targetRotation, Time.deltaTime * humansSettings.RotationSpeed);
-			attackDelay -= Time.deltaTime;
-			
-			if (attackDelay <= 0)
-			{
-				Attack();
-				attackDelay = humansSettings.AttackDelay;
-			}
-		}
+		behaviourFSM.Update();
 	}
 	
-	private void Attack()
+	private Vector3 GenerateRandomHumanPos()
 	{
-		int weaponAmount = humansSettings.ThrowingWeaponsPrefabs.Count;
-		GameObject randomWeaponPrefab = humansSettings.ThrowingWeaponsPrefabs[Random.Range(0, weaponAmount)];
-		GameObject weaponInstance = GameObject.Instantiate(randomWeaponPrefab, GameObject.transform.position, Quaternion.identity);
-		weaponInstance.transform.rotation = Quaternion.LookRotation(sirenLocation.Position - GameObject.transform.position);
-		Rigidbody weaponRigidbody = weaponInstance.GetComponent<Rigidbody>();
-		weaponRigidbody.AddForce(weaponInstance.transform.forward * humansSettings.WeaponThrowSpeed);
+		Vector3 randomPos = Vector3.zero;
+		bool getting = true;
+		int maxTries = 1000;
+		int tries = 0;
+		while (getting)
+		{
+			randomPos = GenerateRandomPlatformPos();
+			if (CheckIfOccupied(randomPos)) getting = false;
+			tries++;
+			if (tries >= maxTries)
+			{
+				DebugUtil.ThrowWarning("Couldn't get humanPos. This is probably because the seperation distance is too high or the human amount is too high to fit on the boat.");
+				break;
+			}
+		}
+		
+		return randomPos;
+	}
+	
+	private bool CheckIfOccupied(Vector3 newPos)
+	{
+		foreach (var kvp in humans.Collection)
+		{
+			if (Vector3.Distance(newPos, kvp.Value.GameObject.transform.position) < humansSettings.SeperationDistance)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private Vector3 GenerateRandomPlatformPos()
+	{
+		Vector3 randomPos = new Vector3
+		{
+			x = Random.Range(parent.transform.position.x - (platform.transform.localScale.x / 2) + (humansSettings.HumanPrefabs[0].transform.localScale.x / 2),
+							 parent.transform.position.x + (platform.transform.localScale.x / 2) - (humansSettings.HumanPrefabs[0].transform.localScale.x / 2)),
+			y = platform.transform.localPosition.y + (humansSettings.HumanPrefabs[0].transform.localScale.y / 2),
+			z = Random.Range(parent.transform.position.z - (platform.transform.localScale.z / 2) + (humansSettings.HumanPrefabs[0].transform.localScale.z / 2),
+							 parent.transform.position.z + (platform.transform.localScale.z / 2) - (humansSettings.HumanPrefabs[0].transform.localScale.z / 2))
+		};
+	return randomPos;
+	}
+	
+	private void OnIdleTimer()
+	{
+		behaviourFSM.SwitchState(typeof(HumanWanderState));
 	}
 }

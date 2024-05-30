@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary> BaseState for FSM use. With a blackboard </summary>
 /// <typeparam name="T"> BlackboardType </typeparam>
-public abstract class BaseState<T> : IUpdateable where T : ScriptableObject
+public abstract class BaseState<T> : IUpdateable
 {
 	protected Fsm<T> owner;
 	protected T blackboard;

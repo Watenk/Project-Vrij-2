@@ -40,13 +40,9 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 		
 		// Humans
 		int humanAmount = Random.Range(humansSettings.HumanBounds.x, humansSettings.HumanBounds.y + 1);
-		List<Vector3> occupiedPos = new List<Vector3>();
 		for (int i = 0; i < humanAmount; i++)
 		{
-			Vector3 randomPosOnBoat = GetRandomHumanPos(humansSettings, occupiedPos, humansSettings.SeperationDistance);
-			occupiedPos.Add(randomPosOnBoat);
-			
-			Human human = new Human(GameObject, humansSettings, randomPosOnBoat, sirenLocation);
+			Human human = new Human(humanCollection, GameObject, GameObject.transform.GetChild(0).gameObject, humansSettings, sirenLocation);
 			humanCollection.Add(human);
 		}
 	}
@@ -55,7 +51,7 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 	{
 		foreach (var kvp in humanCollection.Collection)
 		{
-			kvp.Value.FixedUpdate();
+			kvp.Value.FixedUpdate(humanCollection);
 		}
 		destinationTimer.Tick(Time.deltaTime);
 		
@@ -74,51 +70,5 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 	public void ChangeID(uint newID)
 	{
 		ID = newID;
-	}
-	
-	private Vector3 GetRandomHumanPos(HumansSettings humanSettings, List<Vector3> occupiedPos, float seperationDistance)
-	{
-		bool getting = true;
-		Vector3 randomPos = Vector3.zero;
-		int maxTries = 1000;
-		int tries = 0;
-		while (getting)
-		{
-			randomPos = GenerateRandomPos(humanSettings);
-			if (CheckIfOccupied(randomPos, occupiedPos, seperationDistance)) getting = false;
-			tries++;
-			if (tries >= maxTries)
-			{
-				DebugUtil.ThrowWarning("Couldn't instance all humans. This is probably because the seperation distance is too high or the human amount is too high to fit on the boat.");
-				break;
-			}
-		}
-		
-		return randomPos;
-	}
-	
-	private bool CheckIfOccupied(Vector3 newPos, List<Vector3> occupiedPos, float seperationDistance)
-	{
-		foreach (Vector3 currentOccupiedPos in occupiedPos)
-		{
-			if (Vector3.Distance(newPos, currentOccupiedPos) < seperationDistance)
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	private Vector3 GenerateRandomPos(HumansSettings humanSettings)
-	{
-		Vector3 randomPos = new Vector3
-		{
-			x = Random.Range(GameObject.transform.position.x - (GameObject.transform.GetChild(0).transform.localScale.x / 2) + (humanSettings.HumanPrefabs[0].transform.localScale.x / 2),
-								   GameObject.transform.position.x + (GameObject.transform.GetChild(0).transform.localScale.x / 2) - (humanSettings.HumanPrefabs[0].transform.localScale.x / 2)),
-			y = GameObject.transform.localPosition.y + humanSettings.HumanPrefabs[0].transform.localScale.y / 2,
-			z = Random.Range(GameObject.transform.position.z - (GameObject.transform.GetChild(0).transform.localScale.z / 2) + (humanSettings.HumanPrefabs[0].transform.localScale.z / 2),
-								   GameObject.transform.position.z + (GameObject.transform.GetChild(0).transform.localScale.z / 2) - (humanSettings.HumanPrefabs[0].transform.localScale.z / 2))
-		};
-		return randomPos;
 	}
 }
