@@ -73,17 +73,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8655963456487989340, guid: 0c72492f3e7ccbb47846f9ed00baba76,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 0c72492f3e7ccbb47846f9ed00baba76,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 2a911aca5c4e8454895868dc7ac6d7d5, type: 2}
+    - target: {fileID: -7417018294501098078, guid: 0c72492f3e7ccbb47846f9ed00baba76,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2a911aca5c4e8454895868dc7ac6d7d5, type: 2}
+    - target: {fileID: -1559576172850260151, guid: 0c72492f3e7ccbb47846f9ed00baba76,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1559576172850260151, guid: 0c72492f3e7ccbb47846f9ed00baba76,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c75417f6e86e8874688eef5936ae70b1, type: 2}
     - target: {fileID: 919132149155446097, guid: 0c72492f3e7ccbb47846f9ed00baba76,
         type: 3}
       propertyPath: m_Name
       value: TreeLeaf2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0c72492f3e7ccbb47846f9ed00baba76,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019710894005351401, guid: 0c72492f3e7ccbb47846f9ed00baba76,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
