@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 	[SerializeField]
-	private Slider healthSlider;
+	private Image healthSlider;
 	[SerializeField]
-	private Slider boostSlider;
+	private Image boostSlider;
 	
 	public void Start()
 	{
@@ -23,12 +23,12 @@ public class UIManager : MonoBehaviour
 	public void UpdateHealthAmount(int amount)
 	{
 		if (healthSlider == null) return;
-		healthSlider.value = amount;
+		healthSlider.fillAmount = amount;
 	}
 	
 	public void UpdateBoostAmount(int amount)
 	{
 		if (boostSlider == null) return;
-		boostSlider.value = amount;
+		boostSlider.fillAmount = amount;
 	}
 }
