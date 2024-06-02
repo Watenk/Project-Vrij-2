@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MoveToObject : MonoBehaviour
 {
+    [Header("Managers")]
+    public CameraManager cameraManager;
+
     public GameObject sphere;
     public GameObject Cube;
     public float speed;

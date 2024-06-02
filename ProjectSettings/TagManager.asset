@@ -9,6 +9,8 @@ TagManager:
   - RandomPoint
   - Island
   - Boat
+  - CameraSwitch
+  - CloseUpCamera
   layers:
   - Default
   - TransparentFX
