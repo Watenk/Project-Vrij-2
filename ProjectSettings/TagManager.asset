@@ -11,6 +11,7 @@ TagManager:
   - Boat
   - CameraSwitch
   - CloseUpCamera
+  - Human
   layers:
   - Default
   - TransparentFX
