@@ -59,7 +59,10 @@ public class Human : IGameObject, IID
 		
 		if (Vector3.Distance(sirenLocation.Position, GameObject.transform.position) <= humansSettings.SirenDetectRange)
 		{
-			behaviourFSM.SwitchState(typeof(HumanAttackState));
+			if (behaviourFSM.CurrentState.GetType() != typeof(HumanAttackState))
+			{
+				behaviourFSM.SwitchState(typeof(HumanAttackState));
+			}
 		}
 		else if (behaviourFSM.CurrentState.GetType() == typeof(HumanAttackState))
 		{
@@ -69,7 +72,7 @@ public class Human : IGameObject, IID
 		behaviourFSM.Update();
 	}
 	
-	private Vector3 GenerateRandomHumanPos()
+	public Vector3 GenerateRandomHumanPos()
 	{
 		Vector3 randomPos = Vector3.zero;
 		bool getting = true;
@@ -106,13 +109,13 @@ public class Human : IGameObject, IID
 	{
 		Vector3 randomPos = new Vector3
 		{
-			x = Random.Range(parent.transform.position.x - (platform.transform.localScale.x / 2) + (humansSettings.HumanPrefabs[0].transform.localScale.x / 2),
-							 parent.transform.position.x + (platform.transform.localScale.x / 2) - (humansSettings.HumanPrefabs[0].transform.localScale.x / 2)),
-			y = platform.transform.localPosition.y + (humansSettings.HumanPrefabs[0].transform.localScale.y / 2),
-			z = Random.Range(parent.transform.position.z - (platform.transform.localScale.z / 2) + (humansSettings.HumanPrefabs[0].transform.localScale.z / 2),
-							 parent.transform.position.z + (platform.transform.localScale.z / 2) - (humansSettings.HumanPrefabs[0].transform.localScale.z / 2))
+			x = Random.Range(platform.transform.position.x - (platform.transform.localScale.x / 2) + (humansSettings.HumanPrefabs[0].transform.localScale.x / 2),
+							 platform.transform.position.x + (platform.transform.localScale.x / 2) - (humansSettings.HumanPrefabs[0].transform.localScale.x / 2)),
+			y = platform.transform.position.y + (humansSettings.HumanPrefabs[0].transform.localScale.y / 2),
+			z = Random.Range(platform.transform.position.z - (platform.transform.localScale.z / 2) + (humansSettings.HumanPrefabs[0].transform.localScale.z / 2),
+							 platform.transform.position.z + (platform.transform.localScale.z / 2) - (humansSettings.HumanPrefabs[0].transform.localScale.z / 2))
 		};
-	return randomPos;
+		return randomPos;
 	}
 	
 	private void OnIdleTimer()
