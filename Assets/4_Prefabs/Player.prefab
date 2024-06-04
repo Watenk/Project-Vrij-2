@@ -446,6 +446,7 @@ GameObject:
   - component: {fileID: 7119710923258152829}
   - component: {fileID: 1506212043288507343}
   - component: {fileID: 1487415674402017258}
+  - component: {fileID: 6496520031648283822}
   m_Layer: 7
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -461,7 +462,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6990195752978861321}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.017491968, y: -0, z: -0, w: 0.99984705}
   m_LocalPosition: {x: 0.2, y: 0.94, z: -1.815}
   m_LocalScale: {x: 1.6666671, y: 1.6666666, z: 1.6666671}
   m_ConstrainProportionsScale: 0
@@ -487,7 +488,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
+  m_LookAt: {fileID: 6604433171891453264}
   m_Follow: {fileID: 6604433171891453264}
   m_Lens:
     FieldOfView: 90
@@ -527,6 +528,36 @@ MonoBehaviour:
   m_ZoomScale: 1
   m_FollowAttachment: 1
   m_LookAtAttachment: 1
+--- !u!114 &6496520031648283822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6990195752978861321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 1
+  m_IgnoreTag: 
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.1
+  m_Strategy: 1
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0
+  m_Damping: 0
+  m_DampingWhenOccluded: 0
+  m_OptimalTargetDistance: 0
 --- !u!1 &8153717172863798942
 GameObject:
   m_ObjectHideFlags: 0

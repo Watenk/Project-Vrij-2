@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class CharacterAttack : IAttack
 {
-    public event IAttack.KillEventhandler OnKill;
-	
-	private GameObject grabbedObject;
+	public event IAttack.KillEventhandler OnKill;
 	
 	// Dependencies
 	private CharacterAttackSettings characterAttackSettings;
 	private Transform attackRoot;
 
-
-    public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
+	public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
 	{
 		this.characterAttackSettings = characterAttackSettings;
 		this.attackRoot = attackRoot;
@@ -34,5 +31,10 @@ public class CharacterAttack : IAttack
 	public void Grab(GameObject other, GameObject player)
 	{
 		other.transform.SetParent(player.transform);
+	}
+	
+	public void Stun()
+	{
+		
 	}
 }
