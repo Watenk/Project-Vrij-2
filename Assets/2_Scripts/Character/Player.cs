@@ -28,9 +28,9 @@ public class Player : MonoBehaviour, IPlayer
 	
 	[Header("UI References")]
 	[SerializeField]
-	private Slider healthSlider;
+	private Image healthSlider;
 	[SerializeField]
-	private Slider boostSlider;
+	private Image boostSlider;
 	
 	[Header("Settings")]
 	[SerializeField]
