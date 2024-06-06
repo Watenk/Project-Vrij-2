@@ -5,19 +5,25 @@ using UnityEngine;
 using UnityEngine.AI;
 using Watenk;
 
-public class Human : IGameObject, IID
+public class Human : IGameObject, IID, IHealth<Human>
 {
+	public event IHealth<Human>.HealthChangeEventHandler OnHealthChanged;
+	public event IHealth<Human>.DeathEventHandler OnDeath;
+	
 	public uint ID { get; private set; }
 	public GameObject GameObject { get; private set; }
 	
 	private Fsm<Human> behaviourFSM;
-	
+
+
 	// Dependencies
 	public HumansSettings humansSettings { get; private set; }
 	public SirenLocation sirenLocation { get; private set; }
 	public GameObject platform { get; private set; }
 	public GameObject parent { get; private set; }
 	public DictCollection<Human> humans { get; private set; }
+	public int HP { get; private set; }
+	public int MaxHP { get; private set; }
 
 	public Human(DictCollection<Human> humans, GameObject parent, GameObject platform, HumansSettings humansSettings, SirenLocation sirenLocation)
 	{
@@ -32,6 +38,9 @@ public class Human : IGameObject, IID
 			new HumanAttackState(),
 			new HumanWanderState()
 		);
+	
+		MaxHP = Random.Range(humansSettings.HealthBounds.x, humansSettings.HealthBounds.y);
+		HP = MaxHP;
 		
 		behaviourFSM.States.TryGetValue(typeof(HumanIdleState), out BaseState<Human> idleState);
 		((HumanIdleState)idleState).IdleTimer.OnTimer += OnIdleTimer;
@@ -121,5 +130,21 @@ public class Human : IGameObject, IID
 	private void OnIdleTimer()
 	{
 		behaviourFSM.SwitchState(typeof(HumanWanderState));
+	}
+
+	public void ChangeHealth(int amount)
+	{
+		HP += amount;
+		OnHealthChanged(this);
+		
+		if (HP <= 0)
+		{
+			Die();
+		}
+	}
+
+	public void Die()
+	{
+		OnDeath(this);
 	}
 }

@@ -4,12 +4,16 @@ using UnityEngine;
 using UnityEngine.AI;
 using Watenk;
 
-public class Boat : IGameObject, IFixedUpdateable, IID
+public class Boat : IGameObject, IFixedUpdateable, IID, IHealth<Boat>
 {
+	public event IHealth<Boat>.HealthChangeEventHandler OnHealthChanged;
+	public event IHealth<Boat>.DeathEventHandler OnDeath;
+	
 	public uint ID { get; private set;}
 	public GameObject GameObject { get; private set; }
+	public int HP { get; private set; }
+	public int MaxHP { get; private set; }
 
-	private float speed;
 	private int sailPointIndex;
 	private Timer destinationTimer = new Timer(1);
 	private DictCollection<Human> humanCollection = new DictCollection<Human>();
@@ -19,13 +23,16 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 	private BoatsSettings boatsSettings;
 	private NavMeshAgent agent;
 	private Transform orginPos;
-	
+
 	public Boat(BoatsSettings boatsSettings, HumansSettings humansSettings, Transform orginPos, List<Transform> sailPoints, SirenLocation sirenLocation)
 	{
 		this.boatsSettings = boatsSettings;
 		this.sailPoints = sailPoints;
 		this.orginPos = orginPos;
 		sailPointIndex = Random.Range(0, sailPoints.Count);
+		
+		MaxHP = 1;
+		HP = MaxHP;
 		
 		// Boat
 		GameObject randomPrefab = boatsSettings.BoatPrefabs[Random.Range(0, boatsSettings.BoatPrefabs.Count)];
@@ -43,6 +50,7 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 		for (int i = 0; i < humanAmount; i++)
 		{
 			Human human = new Human(humanCollection, GameObject, GameObject.transform.GetChild(0).gameObject, humansSettings, sirenLocation);
+			human.OnDeath += OnDeadHuman;
 			humanCollection.Add(human);
 		}
 	}
@@ -70,5 +78,31 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 	public void ChangeID(uint newID)
 	{
 		ID = newID;
+	}
+	
+	public void OnDeadHuman(Human human)
+	{
+		human.OnDeath -= OnDeadHuman;
+		humanCollection.Remove(human);
+		if (humanCollection.GetCount() == 0)
+		{
+			
+		}
+	}
+
+	public void ChangeHealth(int amount)
+	{
+		HP += amount;
+		OnHealthChanged(this);
+		
+		if (HP <= 0)
+		{
+			Die();
+		}
+	}
+
+	public void Die()
+	{
+		OnDeath(this);
 	}
 }
