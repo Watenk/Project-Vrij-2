@@ -13,6 +13,8 @@ public class HumansSettings : ScriptableObject
 	public float RotationSpeed;
 	public float AttackDelay;
 	public float WeaponThrowSpeed;
+	public float WalkSpeed;
+	public Vector2 IdleTimeBounds;
 	public List<GameObject> HumanPrefabs = new List<GameObject>();
 	public List<GameObject> ThrowingWeaponsPrefabs = new List<GameObject>();
 }
