@@ -42,7 +42,7 @@ public class DictCollection<T> : ICollection<T, uint> where T : IID
 		{
 			DebugUtil.ThrowError("Tried to remove instance while its not tracked by " + this.GetType().Name);
 			return;	
-		} 
+		}
 		
 		Remove(key);
 	}

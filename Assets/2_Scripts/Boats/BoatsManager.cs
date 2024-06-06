@@ -5,6 +5,7 @@ using UnityEngine;
 public class BoatsManager : MonoBehaviour
 {
 	private DictCollection<Boat> boatCollection = new DictCollection<Boat>();
+	private List<Boat> sunkenBoats = new List<Boat>();
 	
 	[Header("Settings")]
 	[SerializeField]
@@ -34,6 +35,14 @@ public class BoatsManager : MonoBehaviour
 		{
 			kvp.Value.FixedUpdate();
 		}
+		
+		foreach (Boat boat in sunkenBoats)
+		{
+			boatCollection.Remove(boat);
+			GameObject.Destroy(boat.GameObject);
+			ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnBoatSunk);
+		}
+		sunkenBoats.Clear();
 	}
 	
 	#if UNITY_EDITOR
@@ -47,8 +56,6 @@ public class BoatsManager : MonoBehaviour
 	
 	private void OnBoatDead(Boat boat)
 	{
-		boatCollection.Remove(boat);
-		GameObject.Destroy(boat.GameObject);
-		ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnBoatSunk);
+		sunkenBoats.Add(boat);
 	}
 }

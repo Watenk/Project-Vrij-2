@@ -9,5 +9,7 @@ public class BoatsSettings : ScriptableObject
 	public Vector2 SpeedBounds;
 	[Tooltip("The range the boat will be able to sail in")] 
 	public byte sailingRange;
+	public byte sinkSpeed;
+	public byte sinkTime;
 	public List<GameObject> BoatPrefabs = new List<GameObject>();
 }

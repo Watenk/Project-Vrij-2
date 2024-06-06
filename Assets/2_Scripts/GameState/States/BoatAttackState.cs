@@ -9,11 +9,6 @@ public class BoatAttackState : BaseState<GameManager>
 		ServiceLocator.Instance.Get<EventManager>().AddListener(Event.OnBoatSunk, OnBoatSunk);
 	}
 
-	public override void Update()
-	{
-		
-	}
-
 	public override void Exit()
 	{
 		ServiceLocator.Instance.Get<EventManager>().RemoveListener(Event.OnBoatSunk, OnBoatSunk);
@@ -22,6 +17,9 @@ public class BoatAttackState : BaseState<GameManager>
 	private void OnBoatSunk()
 	{
 		boatsSunk++;
-		Debug.Log("Boats Sunk: " + boatsSunk);
+		if (boatsSunk == bb.GameSettings.BoatKillAmountBossTrigger)
+		{
+			owner.SwitchState(typeof(BossBattleState));
+		}
 	}
 }

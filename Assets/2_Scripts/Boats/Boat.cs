@@ -23,6 +23,8 @@ public class Boat : IGameObject, IFixedUpdateable, IID, IHealth<Boat>
 	private BoatsSettings boatsSettings;
 	private NavMeshAgent agent;
 	private Transform orginPos;
+	private Timer sinkTimer;
+	private bool sunk;
 
 	public Boat(BoatsSettings boatsSettings, HumansSettings humansSettings, Transform orginPos, List<Transform> sailPoints, SirenLocation sirenLocation)
 	{
@@ -33,6 +35,8 @@ public class Boat : IGameObject, IFixedUpdateable, IID, IHealth<Boat>
 		
 		MaxHP = 1;
 		HP = MaxHP;
+		
+		sinkTimer = new Timer(boatsSettings.sinkTime, false);
 		
 		// Boat
 		GameObject randomPrefab = boatsSettings.BoatPrefabs[Random.Range(0, boatsSettings.BoatPrefabs.Count)];
@@ -53,15 +57,22 @@ public class Boat : IGameObject, IFixedUpdateable, IID, IHealth<Boat>
 			human.OnDeath += OnDeadHuman;
 			humanCollection.Add(human);
 		}
+		
+		sinkTimer.OnTimer += OnSinkTimer;
+		sinkTimer.OnTick += Sink;
 	}
 
 	public void FixedUpdate()
 	{
+		destinationTimer.Tick(Time.deltaTime);
+		sinkTimer.Tick(Time.deltaTime);
+		
+		if (sunk) return;
+		
 		foreach (var kvp in humanCollection.Collection)
 		{
 			kvp.Value.FixedUpdate(humanCollection);
 		}
-		destinationTimer.Tick(Time.deltaTime);
 		
 		if(agent.remainingDistance >= 3 || destinationTimer.TimeLeft > 0) return;
 		if (sailPoints.Count == 0) agent.SetDestination(NavMeshUtil.GetRandomPositionOnNavMesh(orginPos.position, boatsSettings.sailingRange));
@@ -104,6 +115,21 @@ public class Boat : IGameObject, IFixedUpdateable, IID, IHealth<Boat>
 
 	public void Die()
 	{
+		sinkTimer.Reset();
+		sunk = true;
+		agent.SetDestination(GameObject.transform.position);
+		agent.enabled = false;
+	}
+	
+	private void OnSinkTimer()
+	{
+		sinkTimer.OnTimer -= OnSinkTimer;
+		sinkTimer.OnTick -= Sink;
 		OnDeath?.Invoke(this);
+	}
+		
+	private void Sink()
+	{
+		GameObject.transform.position = new Vector3(GameObject.transform.position.x, GameObject.transform.position.y - boatsSettings.sinkSpeed * Time.deltaTime, GameObject.transform.position.z);
 	}
 }

@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	public GameSettings GameSettings { get { return gameSettings; } }
 	[SerializeField]
-	public GameSettings GameSettings { get; private set; }
+	private GameSettings gameSettings;
 	
 	private Fsm<GameManager> gameState;
 	
