@@ -48,6 +48,7 @@ public class BoatsManager : MonoBehaviour
 	private void OnBoatDead(Boat boat)
 	{
 		boatCollection.Remove(boat);
+		GameObject.Destroy(boat.GameObject);
 		ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnBoatSunk);
 	}
 }

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7357101276943509990}
   - component: {fileID: 318134157921672095}
-  - component: {fileID: -7925953138591409952}
   m_Layer: 0
   m_Name: boat
   m_TagString: Untagged
@@ -57,21 +56,6 @@ NavMeshAgent:
   m_BaseOffset: 0.67
   m_WalkableMask: 8
   m_ObstacleAvoidanceType: 4
---- !u!114 &-7925953138591409952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2793317472273913817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d17d029bd8226843a66bb413c2e8cf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boat: {fileID: 0}
-  Cube: {fileID: 0}
-  speed: 0
 --- !u!1 &5007202148411192337
 GameObject:
   m_ObjectHideFlags: 0

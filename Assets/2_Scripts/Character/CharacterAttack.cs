@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterAttack : IAttack
 {
-    public event IAttack.KillEventhandler OnKill;
+	public event IAttack.KillEventhandler OnKill;
 	
 	private GameObject grabbedObject;
 	
@@ -13,7 +13,7 @@ public class CharacterAttack : IAttack
 	private Transform attackRoot;
 
 
-    public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
+	public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
 	{
 		this.characterAttackSettings = characterAttackSettings;
 		this.attackRoot = attackRoot;
@@ -24,7 +24,7 @@ public class CharacterAttack : IAttack
 		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
 		foreach (var collider in hitColliders)
 		{
-			IDamagable damagable = collider.gameObject.GetComponent<IDamagable>();
+			IPhysicsDamagable damagable = collider.gameObject.GetComponent<IPhysicsDamagable>();
 			if (damagable == null) return;
 			damagable.TakeDamage(characterAttackSettings.AttackDamage);
 			OnKill?.Invoke();

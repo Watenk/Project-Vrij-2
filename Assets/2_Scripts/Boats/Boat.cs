@@ -84,16 +84,17 @@ public class Boat : IGameObject, IFixedUpdateable, IID, IHealth<Boat>
 	{
 		human.OnDeath -= OnDeadHuman;
 		humanCollection.Remove(human);
+		GameObject.Destroy(human.GameObject);
 		if (humanCollection.GetCount() == 0)
 		{
-			
+			ChangeHealth(-1);
 		}
 	}
 
 	public void ChangeHealth(int amount)
 	{
 		HP += amount;
-		OnHealthChanged(this);
+		OnHealthChanged?.Invoke(this);
 		
 		if (HP <= 0)
 		{
@@ -103,6 +104,6 @@ public class Boat : IGameObject, IFixedUpdateable, IID, IHealth<Boat>
 
 	public void Die()
 	{
-		OnDeath(this);
+		OnDeath?.Invoke(this);
 	}
 }

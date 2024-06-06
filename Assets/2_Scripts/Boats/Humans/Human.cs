@@ -14,7 +14,7 @@ public class Human : IGameObject, IID, IHealth<Human>
 	public GameObject GameObject { get; private set; }
 	
 	private Fsm<Human> behaviourFSM;
-
+	private PhysicsDamageDetector physicsDamageDetector;
 
 	// Dependencies
 	public HumansSettings humansSettings { get; private set; }
@@ -38,7 +38,7 @@ public class Human : IGameObject, IID, IHealth<Human>
 			new HumanAttackState(),
 			new HumanWanderState()
 		);
-	
+		
 		MaxHP = Random.Range(humansSettings.HealthBounds.x, humansSettings.HealthBounds.y);
 		HP = MaxHP;
 		
@@ -49,12 +49,17 @@ public class Human : IGameObject, IID, IHealth<Human>
 		if (randomPrefab == null) DebugUtil.ThrowError("RandomPrefab is null. The boatspawner probably doesn't have any boat prefabs assigned.");
 		
 		GameObject = GameObject.Instantiate(randomPrefab, GenerateRandomHumanPos(), Quaternion.identity, parent.transform);
+		
+		physicsDamageDetector = GameObject.GetComponent<PhysicsDamageDetector>();
+		if (physicsDamageDetector == null) DebugUtil.ThrowError("physicsDamageDetector is null. The human probably doesnt have a physicsDamageDetector Component");
+		physicsDamageDetector.OnDamage += (amount) => ChangeHealth(-amount);
 	}
 	
 	~Human()
 	{
 		behaviourFSM.States.TryGetValue(typeof(HumanIdleState), out BaseState<Human> idleState);
 		((HumanIdleState)idleState).IdleTimer.OnTimer -= OnIdleTimer;
+		physicsDamageDetector.OnDamage -= (amount) => ChangeHealth(-amount);
 	}
 
 	public void ChangeID(uint newID)
@@ -135,7 +140,7 @@ public class Human : IGameObject, IID, IHealth<Human>
 	public void ChangeHealth(int amount)
 	{
 		HP += amount;
-		OnHealthChanged(this);
+		OnHealthChanged?.Invoke(this);
 		
 		if (HP <= 0)
 		{
@@ -145,6 +150,6 @@ public class Human : IGameObject, IID, IHealth<Human>
 
 	public void Die()
 	{
-		OnDeath(this);
+		OnDeath?.Invoke(this);
 	}
 }

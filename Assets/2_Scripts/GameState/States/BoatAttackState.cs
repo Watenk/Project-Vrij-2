@@ -22,5 +22,6 @@ public class BoatAttackState : BaseState<GameManager>
 	private void OnBoatSunk()
 	{
 		boatsSunk++;
+		Debug.Log("Boats Sunk: " + boatsSunk);
 	}
 }

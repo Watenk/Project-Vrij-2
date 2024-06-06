@@ -57,9 +57,8 @@ public class DictCollection<T> : ICollection<T, uint> where T : IID
 	
 	public void Clear()
 	{
-		foreach (var kvp in Collection)
-		{
-			Remove(kvp.Key);
-		}
+		Collection.Clear();
+		keys.Clear();
+		idCounter = 1;
 	}
 }
