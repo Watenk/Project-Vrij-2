@@ -20,6 +20,7 @@ MonoBehaviour:
   WeaponThrowSpeed: 1000
   WalkSpeed: 1
   IdleTimeBounds: {x: 1, y: 10}
+  HealthBounds: {x: 1, y: 1}
   HumanPrefabs:
   - {fileID: 9128555760883104077, guid: 878b08d2b916eb0409b455e34c1cc334, type: 3}
   - {fileID: 2137066865950730684, guid: 4e2abbc982ea05546b6ad4d0da8f8f94, type: 3}

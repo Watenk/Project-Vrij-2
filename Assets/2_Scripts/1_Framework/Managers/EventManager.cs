@@ -7,6 +7,7 @@ public enum Event
 {
 	// Swarm
 	OnPlayerHealth,
+	OnBoatSunk,
 }
 
 // TODO: use params to generalize the paramers

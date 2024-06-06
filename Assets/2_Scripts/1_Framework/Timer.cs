@@ -5,6 +5,7 @@ using UnityEngine;
 public class Timer : ITimer
 {
 	public event ITimer.TimerEventHandler OnTimer;
+	public event ITimer.TimerEventHandler OnTick;
 
 	public float TimeLeft { get { return timeLeft; } }
 	protected float timeLeft;
@@ -18,6 +19,13 @@ public class Timer : ITimer
 		this.startTime = startTime;
 		timeLeft = startTime;
 	}
+	
+	public Timer(float startTime, bool running)
+	{
+		this.startTime = startTime;
+		this.running = running;
+		timeLeft = startTime;
+	}
 
 	public void Tick(float deltaTime)
 	{
@@ -25,6 +33,7 @@ public class Timer : ITimer
 		
 		timeLeft -= deltaTime;
 		CheckTimerState();
+		OnTick?.Invoke();
 	}
 	
 	public void ChangeStartTime(float newStartTime)

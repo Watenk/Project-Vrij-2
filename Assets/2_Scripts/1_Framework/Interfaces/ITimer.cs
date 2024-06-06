@@ -6,6 +6,7 @@ public interface ITimer
 {
 	public delegate void TimerEventHandler();
 	public event TimerEventHandler OnTimer;
+	public event TimerEventHandler OnTick;
 	
 	public float TimeLeft { get; }
 	public float StartTime { get; }

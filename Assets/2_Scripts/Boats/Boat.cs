@@ -4,12 +4,16 @@ using UnityEngine;
 using UnityEngine.AI;
 using Watenk;
 
-public class Boat : IGameObject, IFixedUpdateable, IID
+public class Boat : IGameObject, IFixedUpdateable, IID, IHealth<Boat>
 {
+	public event IHealth<Boat>.HealthChangeEventHandler OnHealthChanged;
+	public event IHealth<Boat>.DeathEventHandler OnDeath;
+	
 	public uint ID { get; private set;}
 	public GameObject GameObject { get; private set; }
+	public int HP { get; private set; }
+	public int MaxHP { get; private set; }
 
-	private float speed;
 	private int sailPointIndex;
 	private Timer destinationTimer = new Timer(1);
 	private DictCollection<Human> humanCollection = new DictCollection<Human>();
@@ -19,13 +23,20 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 	private BoatsSettings boatsSettings;
 	private NavMeshAgent agent;
 	private Transform orginPos;
-	
+	private Timer sinkTimer;
+	private bool sunk;
+
 	public Boat(BoatsSettings boatsSettings, HumansSettings humansSettings, Transform orginPos, List<Transform> sailPoints, SirenLocation sirenLocation)
 	{
 		this.boatsSettings = boatsSettings;
 		this.sailPoints = sailPoints;
 		this.orginPos = orginPos;
 		sailPointIndex = Random.Range(0, sailPoints.Count);
+		
+		MaxHP = 1;
+		HP = MaxHP;
+		
+		sinkTimer = new Timer(boatsSettings.sinkTime, false);
 		
 		// Boat
 		GameObject randomPrefab = boatsSettings.BoatPrefabs[Random.Range(0, boatsSettings.BoatPrefabs.Count)];
@@ -43,17 +54,25 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 		for (int i = 0; i < humanAmount; i++)
 		{
 			Human human = new Human(humanCollection, GameObject, GameObject.transform.GetChild(0).gameObject, humansSettings, sirenLocation);
+			human.OnDeath += OnDeadHuman;
 			humanCollection.Add(human);
 		}
+		
+		sinkTimer.OnTimer += OnSinkTimer;
+		sinkTimer.OnTick += Sink;
 	}
 
 	public void FixedUpdate()
 	{
+		destinationTimer.Tick(Time.deltaTime);
+		sinkTimer.Tick(Time.deltaTime);
+		
+		if (sunk) return;
+		
 		foreach (var kvp in humanCollection.Collection)
 		{
 			kvp.Value.FixedUpdate(humanCollection);
 		}
-		destinationTimer.Tick(Time.deltaTime);
 		
 		if(agent.remainingDistance >= 3 || destinationTimer.TimeLeft > 0) return;
 		if (sailPoints.Count == 0) agent.SetDestination(NavMeshUtil.GetRandomPositionOnNavMesh(orginPos.position, boatsSettings.sailingRange));
@@ -70,5 +89,47 @@ public class Boat : IGameObject, IFixedUpdateable, IID
 	public void ChangeID(uint newID)
 	{
 		ID = newID;
+	}
+	
+	public void OnDeadHuman(Human human)
+	{
+		human.OnDeath -= OnDeadHuman;
+		humanCollection.Remove(human);
+		GameObject.Destroy(human.GameObject);
+		if (humanCollection.GetCount() == 0)
+		{
+			ChangeHealth(-1);
+		}
+	}
+
+	public void ChangeHealth(int amount)
+	{
+		HP += amount;
+		OnHealthChanged?.Invoke(this);
+		
+		if (HP <= 0)
+		{
+			Die();
+		}
+	}
+
+	public void Die()
+	{
+		sinkTimer.Reset();
+		sunk = true;
+		agent.SetDestination(GameObject.transform.position);
+		agent.enabled = false;
+	}
+	
+	private void OnSinkTimer()
+	{
+		sinkTimer.OnTimer -= OnSinkTimer;
+		sinkTimer.OnTick -= Sink;
+		OnDeath?.Invoke(this);
+	}
+		
+	private void Sink()
+	{
+		GameObject.transform.position = new Vector3(GameObject.transform.position.x, GameObject.transform.position.y - boatsSettings.sinkSpeed * Time.deltaTime, GameObject.transform.position.z);
 	}
 }

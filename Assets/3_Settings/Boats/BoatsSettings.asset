@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpeedBounds: {x: 3, y: 3}
   sailingRange: 50
+  sinkSpeed: 2
+  sinkTime: 10
   BoatPrefabs:
   - {fileID: 2793317472273913817, guid: abf408f18914ef6469c9f74e0e848b07, type: 3}
   - {fileID: 5262002097928479282, guid: f6afe442ad0c31d429fe96b60c7500f8, type: 3}
