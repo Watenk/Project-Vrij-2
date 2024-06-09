@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PhysicsDamageDetector : MonoBehaviour, IDamagable
+public class PhysicsDamageDetector : MonoBehaviour, IPhysicsDamagable
 {
 	public delegate void DamageEventHandler(int amount);
 	public event DamageEventHandler OnDamage;
