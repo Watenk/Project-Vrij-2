@@ -11,13 +11,22 @@ public class SoundManager : MonoBehaviour
     private void Awake() 
     {
         UnderwaterShader.OnWaterJump += PlaySound;
+        CharacterAttack.OnAttack += PlaySound;
     }
 
-    public void PlaySound(UnderwaterShader underwaterShader, int id) {
+    public void PlaySound(int id) {
         audioElements.ForEach(delegate (AudioElement element){
             if (id.Equals(element.id)) {
                 audioPlayer.clip = element.clip;
                 audioPlayer.Play();
+            }
+        });
+    }
+
+    public void StopSound(int id) {
+        audioElements.ForEach(delegate (AudioElement element) {
+            if (id.Equals(element.id)) {
+                audioPlayer.Stop();
             }
         });
     }

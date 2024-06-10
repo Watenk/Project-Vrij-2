@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 
 public class UnderwaterShader : MonoBehaviour
 {
-    public static event Action<UnderwaterShader, int> OnWaterJump = delegate { };
+    public static event Action<int> OnWaterJump = delegate { };
 
     [Header("Depth Parameters")]
     [SerializeField] private Transform mainCamera;
@@ -35,7 +35,7 @@ public class UnderwaterShader : MonoBehaviour
             {
                 underwaterVolume.SetActive(true);
                 surfaceVolume.SetActive(false);
-                OnWaterJump(this, 1);
+                OnWaterJump(1);
                 underWater = !underWater;
             }
             DistortionPlane.SetActive(true);
@@ -46,7 +46,7 @@ public class UnderwaterShader : MonoBehaviour
                 //RenderSettings.fog = false;
                 underwaterVolume.SetActive(false);
                 surfaceVolume.SetActive(true);
-                OnWaterJump(this, 1);
+                OnWaterJump(1);
                 underWater = !underWater;
             }
             DistortionPlane.SetActive(false);

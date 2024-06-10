@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CharacterAttack : IAttack
 {
-	public static event Action<CharacterAttack, int> OnAttack = delegate { };
+	public static event Action<int> OnAttack = delegate { };
 
 	public event IAttack.KillEventhandler OnKill;
 	
@@ -24,7 +24,7 @@ public class CharacterAttack : IAttack
 	
 	public void Slash()
 	{
-		OnAttack(this, 2);
+		OnAttack(2);
 		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
 		foreach (var collider in hitColliders)
 		{
