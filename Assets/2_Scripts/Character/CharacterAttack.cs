@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterAttack : IAttack
 {
+	public static event Action<int> OnAttack = delegate { };
+
 	public event IAttack.KillEventhandler OnKill;
 	
 	private GameObject grabbedObject;
@@ -21,6 +24,7 @@ public class CharacterAttack : IAttack
 	
 	public void Slash()
 	{
+		OnAttack(2);
 		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
 		foreach (var collider in hitColliders)
 		{
