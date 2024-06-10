@@ -22,13 +22,6 @@ public class TimerManager : MonoBehaviour
 		return timer;
 	}
 	
-	public ITimer AddRepeating(float startTime)
-	{
-		RepeatingTimer timer = new RepeatingTimer(startTime);
-		timers.Add(timer);
-		return timer;
-	}
-	
 	public void Remove(ITimer timer)
 	{
 		timers.Remove(timer);
