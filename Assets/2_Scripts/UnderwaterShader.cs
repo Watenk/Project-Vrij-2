@@ -13,6 +13,8 @@ public class UnderwaterShader : MonoBehaviour
     public GameObject surfaceVolume;
     public GameObject underwaterVolume;
 
+    public GameObject DistortionPlane;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,12 +29,14 @@ public class UnderwaterShader : MonoBehaviour
             //RenderSettings.fog = true;
             underwaterVolume.SetActive(true);
             surfaceVolume.SetActive(false);
+            DistortionPlane.SetActive(true);
         }
         else
         {
             //RenderSettings.fog = false;
             underwaterVolume.SetActive(false);
             surfaceVolume.SetActive(true);
+            DistortionPlane.SetActive(false);
         }
     }
     

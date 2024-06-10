@@ -6,9 +6,12 @@ public class CharacterAttack : IAttack
 {
 	public event IAttack.KillEventhandler OnKill;
 	
+	private GameObject grabbedObject;
+	
 	// Dependencies
 	private CharacterAttackSettings characterAttackSettings;
 	private Transform attackRoot;
+
 
 	public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
 	{
@@ -21,7 +24,7 @@ public class CharacterAttack : IAttack
 		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
 		foreach (var collider in hitColliders)
 		{
-			IDamagable damagable = collider.gameObject.GetComponent<IDamagable>();
+			IPhysicsDamagable damagable = collider.gameObject.GetComponent<IPhysicsDamagable>();
 			if (damagable == null) return;
 			damagable.TakeDamage(characterAttackSettings.AttackDamage);
 			OnKill?.Invoke();
