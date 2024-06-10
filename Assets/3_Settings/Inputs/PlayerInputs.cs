@@ -62,6 +62,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Sing"",
+                    ""type"": ""Button"",
+                    ""id"": ""8779d3f6-07e9-465b-94e6-a943e8656d21"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -317,6 +326,17 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""VerticalMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c6bc57b1-8fa8-42d7-9b55-654e34825f3a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -906,6 +926,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Player_Rotation = m_Player.FindAction("Rotation", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_VerticalMovement = m_Player.FindAction("VerticalMovement", throwIfNotFound: true);
+        m_Player_Sing = m_Player.FindAction("Sing", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -983,6 +1004,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Rotation;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_VerticalMovement;
+    private readonly InputAction m_Player_Sing;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
@@ -991,6 +1013,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @Rotation => m_Wrapper.m_Player_Rotation;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @VerticalMovement => m_Wrapper.m_Player_VerticalMovement;
+        public InputAction @Sing => m_Wrapper.m_Player_Sing;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1012,6 +1035,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @VerticalMovement.started += instance.OnVerticalMovement;
             @VerticalMovement.performed += instance.OnVerticalMovement;
             @VerticalMovement.canceled += instance.OnVerticalMovement;
+            @Sing.started += instance.OnSing;
+            @Sing.performed += instance.OnSing;
+            @Sing.canceled += instance.OnSing;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1028,6 +1054,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @VerticalMovement.started -= instance.OnVerticalMovement;
             @VerticalMovement.performed -= instance.OnVerticalMovement;
             @VerticalMovement.canceled -= instance.OnVerticalMovement;
+            @Sing.started -= instance.OnSing;
+            @Sing.performed -= instance.OnSing;
+            @Sing.canceled -= instance.OnSing;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1214,6 +1243,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnRotation(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnVerticalMovement(InputAction.CallbackContext context);
+        void OnSing(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

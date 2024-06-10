@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Sing",
+                    "type": "Button",
+                    "id": "8779d3f6-07e9-465b-94e6-a943e8656d21",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -295,6 +304,17 @@
                     "action": "VerticalMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c6bc57b1-8fa8-42d7-9b55-654e34825f3a",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sing",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

@@ -12,6 +12,7 @@ public class HumanStunnedState : BaseState<Human>
 
 	public override void Enter()
 	{
+		Debug.Log("Entered Stunned State");
 		stunnedTimer.Reset();
 		stunnedTimer.OnTimer += OnStunnedTimer;
 	}

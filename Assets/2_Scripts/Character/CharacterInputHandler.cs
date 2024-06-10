@@ -8,7 +8,8 @@ public class CharacterInputHandler : ICharacterInputHandler
 	// Events
 	public event ICharacterInputHandler.MoveEventHandler OnMove;
 	public event ICharacterInputHandler.RotateEventHandler OnRotate;
-	public event ICharacterInputHandler.AttackEventHandler OnAttack;
+	public event ICharacterInputHandler.voidEventHandler OnAttack;
+	public event ICharacterInputHandler.voidEventHandler OnStun;
 	
 	// Inputs
 	private PlayerInputs inputs;
@@ -16,6 +17,7 @@ public class CharacterInputHandler : ICharacterInputHandler
 	private InputAction verticalMovement;
 	private InputAction rotation;
 	private InputAction attack;
+	private InputAction stun;
 
 	public CharacterInputHandler()
 	{
@@ -42,14 +44,17 @@ public class CharacterInputHandler : ICharacterInputHandler
 			verticalMovement = inputs.Player.VerticalMovement;
 			rotation = inputs.Player.Rotation;
 			attack = inputs.Player.Attack;
+			stun = inputs.Player.Sing;
 		}
 		
 		movement.Enable();
 		verticalMovement.Enable();
 		rotation.Enable();
 		attack.Enable();
+		stun.Enable();
 		
 		attack.performed += context => OnAttack?.Invoke();
+		stun.performed += context => OnStun?.Invoke();
 	}
 	
 	public void DisableInputs()
@@ -58,7 +63,9 @@ public class CharacterInputHandler : ICharacterInputHandler
 		verticalMovement.Disable();
 		rotation.Disable();
 		attack.Disable();
+		stun.Disable();
 		
 		attack.performed -= context => OnAttack?.Invoke();
+		stun.performed -= context => OnStun?.Invoke();
 	}
 }
