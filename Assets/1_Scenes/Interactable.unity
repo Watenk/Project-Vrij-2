@@ -311,6 +311,11 @@ PrefabInstance:
       objectReference: {fileID: 1404171403}
     - target: {fileID: 1549643546896312915, guid: 0a9cd207e68a8f947b0574899a935839,
         type: 3}
+      propertyPath: disableTime
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549643546896312915, guid: 0a9cd207e68a8f947b0574899a935839,
+        type: 3}
       propertyPath: imageObject
       value: 
       objectReference: {fileID: 1404171399}
@@ -319,6 +324,11 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 2008203663}
+    - target: {fileID: 1922885560790720764, guid: 0a9cd207e68a8f947b0574899a935839,
+        type: 3}
+      propertyPath: disableTime
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1922885560790720764, guid: 0a9cd207e68a8f947b0574899a935839,
         type: 3}
       propertyPath: imageObject
@@ -334,6 +344,11 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 39396248}
+    - target: {fileID: 4518960275226619554, guid: 0a9cd207e68a8f947b0574899a935839,
+        type: 3}
+      propertyPath: disableTime
+      value: 3.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4518960275226619554, guid: 0a9cd207e68a8f947b0574899a935839,
         type: 3}
       propertyPath: imageObject
@@ -407,7 +422,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 199715378}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc97657e41cd25049819427b6d229e2e, type: 3}
   m_Name: 
@@ -925,7 +940,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 492983032}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7270e117dd5bd0a409368ff4fff30e43, type: 3}
   m_Name: 
@@ -1092,7 +1107,7 @@ GameObject:
   - component: {fileID: 652617538}
   - component: {fileID: 652617537}
   - component: {fileID: 652617536}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DressCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1113,6 +1128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imageObject: {fileID: 1404171399}
   audioSource: {fileID: 1404171403}
+  disableTime: 0
 --- !u!65 &652617537
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1290,7 +1306,7 @@ GameObject:
   - component: {fileID: 791377255}
   - component: {fileID: 791377254}
   - component: {fileID: 791377253}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BoatCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1311,6 +1327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imageObject: {fileID: 2008203659}
   audioSource: {fileID: 2008203663}
+  disableTime: 3
 --- !u!65 &791377254
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2144,7 +2161,7 @@ GameObject:
   - component: {fileID: 1230563545}
   - component: {fileID: 1230563544}
   - component: {fileID: 1230563543}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HerringboneCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2165,6 +2182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imageObject: {fileID: 39396244}
   audioSource: {fileID: 39396248}
+  disableTime: 0
 --- !u!65 &1230563544
 BoxCollider:
   m_ObjectHideFlags: 0
