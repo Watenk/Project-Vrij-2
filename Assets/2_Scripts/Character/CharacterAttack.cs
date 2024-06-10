@@ -39,4 +39,9 @@ public class CharacterAttack : IAttack
 	{
 		other.transform.SetParent(player.transform);
 	}
+	
+	public void Stun()
+	{
+		
+	}
 }
