@@ -17,7 +17,7 @@ public class CameraManager : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {
+    { 
         if (other.CompareTag("Boat"))
         {
             SwitchCamera();
