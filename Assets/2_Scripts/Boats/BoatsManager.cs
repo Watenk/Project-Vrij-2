@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BoatsManager : MonoBehaviour
 {
+	public static event Action<int> OnBoatSunk = delegate { };
+
 	private DictCollection<Boat> boatCollection = new DictCollection<Boat>();
 	private List<Boat> sunkenBoats = new List<Boat>();
 	
@@ -57,5 +60,6 @@ public class BoatsManager : MonoBehaviour
 	private void OnBoatDead(Boat boat)
 	{
 		sunkenBoats.Add(boat);
+		OnBoatSunk(sunkenBoats.Count);
 	}
 }
