@@ -15,6 +15,7 @@ public class Human : IGameObject, IID, IHealth<Human>
 	
 	private Fsm<Human> behaviourFSM;
 	private PhysicsDamageDetector physicsDamageDetector;
+	private PhysicsStunDetector physicsStunDetector;
 
 	// Dependencies
 	public HumansSettings humansSettings { get; private set; }
@@ -36,7 +37,8 @@ public class Human : IGameObject, IID, IHealth<Human>
 		behaviourFSM = new Fsm<Human>(this, 
 			new HumanIdleState(),
 			new HumanAttackState(),
-			new HumanWanderState()
+			new HumanWanderState(),
+			new HumanStunnedState()
 		);
 		
 		MaxHP = Random.Range(humansSettings.HealthBounds.x, humansSettings.HealthBounds.y);
@@ -53,6 +55,10 @@ public class Human : IGameObject, IID, IHealth<Human>
 		physicsDamageDetector = GameObject.GetComponent<PhysicsDamageDetector>();
 		if (physicsDamageDetector == null) DebugUtil.ThrowError("physicsDamageDetector is null. The human probably doesnt have a physicsDamageDetector Component");
 		physicsDamageDetector.OnDamage += (amount) => ChangeHealth(-amount);
+		
+		physicsStunDetector = GameObject.GetComponent<PhysicsStunDetector>();
+		if (physicsStunDetector == null) DebugUtil.ThrowError("physicsStunDetector is null. The human probably doesnt have a physicsStunDetector Component");
+		physicsStunDetector.OnStun += () => behaviourFSM.SwitchState(typeof(HumanStunnedState));
 	}
 	
 	~Human()
@@ -60,6 +66,7 @@ public class Human : IGameObject, IID, IHealth<Human>
 		behaviourFSM.States.TryGetValue(typeof(HumanIdleState), out BaseState<Human> idleState);
 		((HumanIdleState)idleState).IdleTimer.OnTimer -= OnIdleTimer;
 		physicsDamageDetector.OnDamage -= (amount) => ChangeHealth(-amount);
+		physicsStunDetector.OnStun -= () => behaviourFSM.SwitchState(typeof(HumanStunnedState));
 	}
 
 	public void ChangeID(uint newID)
@@ -73,9 +80,12 @@ public class Human : IGameObject, IID, IHealth<Human>
 		
 		if (Vector3.Distance(sirenLocation.Position, GameObject.transform.position) <= humansSettings.SirenDetectRange)
 		{
-			if (behaviourFSM.CurrentState.GetType() != typeof(HumanAttackState))
+			if (behaviourFSM.CurrentState.GetType() == typeof(HumanWanderState) || behaviourFSM.CurrentState.GetType() == typeof(HumanIdleState))
 			{
-				behaviourFSM.SwitchState(typeof(HumanAttackState));
+				if (behaviourFSM.CurrentState.GetType() != typeof(HumanAttackState))
+				{
+					behaviourFSM.SwitchState(typeof(HumanAttackState));
+				}
 			}
 		}
 		else if (behaviourFSM.CurrentState.GetType() == typeof(HumanAttackState))
@@ -106,7 +116,7 @@ public class Human : IGameObject, IID, IHealth<Human>
 		
 		return randomPos;
 	}
-	
+
 	private bool CheckIfOccupied(Vector3 newPos)
 	{
 		foreach (var kvp in humans.Collection)
