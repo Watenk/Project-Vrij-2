@@ -16,3 +16,6 @@ MonoBehaviour:
   AttackDamage: 1
   SingRadius: 5
   SingReach: 50
+  SlashCooldown: 5
+  DragCooldown: 20
+  SingCooldown: 30

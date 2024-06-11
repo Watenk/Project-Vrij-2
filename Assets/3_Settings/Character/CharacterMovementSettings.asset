@@ -16,5 +16,6 @@ MonoBehaviour:
   Gravity: 20
   BoostStrenght: 2000
   BoostCooldownLenght: 5
+  LandMovementDebuff: 2
   RotationSensitivity: 0.1
   CameraTiltIntencity: 0.8

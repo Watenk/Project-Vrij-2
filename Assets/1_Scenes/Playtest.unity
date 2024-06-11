@@ -817,6 +817,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6496520031648283822, guid: 88617d72bdccd8144a4f57a0eafefdf7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6946246811683543114, guid: 88617d72bdccd8144a4f57a0eafefdf7,
         type: 3}
       propertyPath: m_Layer
@@ -873,14 +878,18 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 4906648012450298482, guid: 88617d72bdccd8144a4f57a0eafefdf7, type: 3}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5490007081340384417, guid: 88617d72bdccd8144a4f57a0eafefdf7,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1328870958}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6990195752978861321, guid: 88617d72bdccd8144a4f57a0eafefdf7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 930813476}
   m_SourcePrefab: {fileID: 100100000, guid: 88617d72bdccd8144a4f57a0eafefdf7, type: 3}
 --- !u!4 &648177299 stripped
 Transform:
@@ -1063,6 +1072,42 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 885561082}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &930813471 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6990195752978861321, guid: 88617d72bdccd8144a4f57a0eafefdf7,
+    type: 3}
+  m_PrefabInstance: {fileID: 648177298}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &930813476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930813471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 0
+  m_IgnoreTag: 
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.1
+  m_Strategy: 1
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0
+  m_Damping: 0
+  m_DampingWhenOccluded: 0
+  m_OptimalTargetDistance: 0
 --- !u!1 &953444239
 GameObject:
   m_ObjectHideFlags: 0
@@ -1787,6 +1832,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 299065615398518053, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: boatAmount
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 525496723590462684, guid: 88efcd270799b194f83f2ce922f3433b,
         type: 3}
       propertyPath: m_LocalPosition.x

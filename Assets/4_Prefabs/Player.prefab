@@ -191,7 +191,6 @@ MonoBehaviour:
   depth: 10
   surfaceVolume: {fileID: 0}
   underwaterVolume: {fileID: 0}
-  DistortionPlane: {fileID: 1775824198112308742}
 --- !u!1 &5089820953895713310
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,7 +547,6 @@ GameObject:
   - component: {fileID: 7119710923258152829}
   - component: {fileID: 1506212043288507343}
   - component: {fileID: 1487415674402017258}
-  - component: {fileID: 6496520031648283822}
   m_Layer: 7
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -630,36 +628,6 @@ MonoBehaviour:
   m_ZoomScale: 1
   m_FollowAttachment: 1
   m_LookAtAttachment: 1
---- !u!114 &6496520031648283822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6990195752978861321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_CollideAgainst:
-    serializedVersion: 2
-    m_Bits: 1
-  m_IgnoreTag: 
-  m_TransparentLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_MinimumDistanceFromTarget: 0.1
-  m_AvoidObstacles: 1
-  m_DistanceLimit: 0
-  m_MinimumOcclusionTime: 0
-  m_CameraRadius: 0.1
-  m_Strategy: 1
-  m_MaximumEffort: 4
-  m_SmoothingTime: 0
-  m_Damping: 0
-  m_DampingWhenOccluded: 0
-  m_OptimalTargetDistance: 0
 --- !u!1 &8153717172863798942
 GameObject:
   m_ObjectHideFlags: 0
