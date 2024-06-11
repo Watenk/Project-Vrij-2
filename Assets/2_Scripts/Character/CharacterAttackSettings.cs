@@ -7,4 +7,6 @@ public class CharacterAttackSettings : ScriptableObject
 {
 	public float AttackRange;
 	public int AttackDamage;
+	public float SingRadius;
+	public float SingReach;
 }

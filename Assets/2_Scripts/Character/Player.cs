@@ -60,6 +60,10 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterInputHandler.OnMove += CharacterMovement.UpdateMovement;
 		CharacterInputHandler.OnRotate += CharacterMovement.UpdateRotation;
 		CharacterInputHandler.OnAttack += CharacterAttack.Slash;
+		CharacterInputHandler.OnStun += () => CharacterAttack.Stun(sirenLocation);
+		CharacterInputHandler.OnBoost += CharacterMovement.Boost;
+		CharacterInputHandler.OnGrabDown += CharacterAttack.Grab;
+		CharacterInputHandler.OnGrabUp += CharacterAttack.GrabRelease;
 		damageTaker.OnDamage += (amount) => CharacterHealth.ChangeHealth(amount * -1);
 		CharacterAttack.OnKill += () => CharacterHealth.ChangeHealth(1);
 		CharacterHealth.OnHealthChanged += (amount) => ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
@@ -70,6 +74,10 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterInputHandler.OnMove -= CharacterMovement.UpdateMovement;
 		CharacterInputHandler.OnRotate -= CharacterMovement.UpdateRotation;
 		CharacterInputHandler.OnAttack -= CharacterAttack.Slash;
+		CharacterInputHandler.OnStun -= () => CharacterAttack.Stun(sirenLocation);
+		CharacterInputHandler.OnBoost -= CharacterMovement.Boost;
+		CharacterInputHandler.OnGrabDown -= CharacterAttack.Grab;
+		CharacterInputHandler.OnGrabUp -= CharacterAttack.GrabRelease;
 		damageTaker.OnDamage -= (amount) => CharacterHealth.ChangeHealth(amount * -1);
 		CharacterAttack.OnKill -= () => CharacterHealth.ChangeHealth(1);
 		CharacterHealth.OnHealthChanged -= (amount) => ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
@@ -85,9 +93,10 @@ public class Player : MonoBehaviour, IPlayer
 	{
 		if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
 		{
-			CharacterAttack.Grab(other.gameObject, this.gameObject);
+			CharacterAttack.GrabObject(other.gameObject, this.gameObject);
 		}
 	}
+
 	
 	#if UNITY_EDITOR
 	public void OnDrawGizmosSelected()
