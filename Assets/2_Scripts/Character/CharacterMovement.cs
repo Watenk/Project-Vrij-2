@@ -14,6 +14,10 @@ public class CharacterController : ICharacterMovement
 	private Transform moddelRoot;
 	private CinemachineRecomposer cinemachineRecomposer;
 	private Transform waterSurface;
+	private Timer boostCooldownTimer;
+	private EventManager events;
+	
+	private bool boost;
 	
 	public CharacterController(CharacterMovementSettings characterControllerSettings, Rigidbody rb, Transform cameraRoot, Transform moddelRoot, CinemachineRecomposer cinemachineRecomposer, Transform waterSurface)
 	{
@@ -23,6 +27,9 @@ public class CharacterController : ICharacterMovement
 		this.moddelRoot = moddelRoot;
 		this.cinemachineRecomposer = cinemachineRecomposer;
 		this.waterSurface = waterSurface;
+		
+		boostCooldownTimer = new Timer(characterControllerSettings.BoostCooldownLenght);
+		events = ServiceLocator.Instance.Get<EventManager>();
 	}
 	
 	public void UpdateRotation(Vector2 rotationInput)
@@ -50,6 +57,9 @@ public class CharacterController : ICharacterMovement
 
 	public void UpdateMovement(Vector2 moveInput, float verticalMoveInput)
 	{
+		boostCooldownTimer.Tick(Time.deltaTime);
+		events.Invoke(Event.OnBoostChange, boostCooldownTimer.TimeLeft);
+		
 		Vector3 forward = cameraRoot.forward;
 		Vector3 right = cameraRoot.right;
 		forward.y = 0f;
@@ -68,6 +78,21 @@ public class CharacterController : ICharacterMovement
 		{
 			rb.AddForce(rb.gameObject.transform.up * -characterControllerSettings.Gravity * Time.deltaTime, ForceMode.Impulse);
 			rb.AddForce(moveDirection * (characterControllerSettings.Speed / 5) * Time.deltaTime, ForceMode.Impulse);
+		}
+		
+		if (boost)
+		{
+			rb.AddForce(moveDirection * characterControllerSettings.BoostStrenght * Time.deltaTime, ForceMode.Impulse);
+			boost = false;
+		}
+	}
+	
+	public void Boost()
+	{
+		if (boostCooldownTimer.TimeLeft <= 0)
+		{
+			boost = true;
+			boostCooldownTimer.Reset();
 		}
 	}
 	

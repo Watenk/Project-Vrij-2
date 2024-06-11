@@ -16,7 +16,7 @@ public class UnderwaterShader : MonoBehaviour
     public GameObject surfaceVolume;
     public GameObject underwaterVolume;
 
-    public GameObject DistortionPlane;
+    //public GameObject DistortionPlane;
     private bool underWater = false;
 
     // Start is called before the first frame update
@@ -38,7 +38,7 @@ public class UnderwaterShader : MonoBehaviour
                 OnWaterJump(1);
                 underWater = !underWater;
             }
-            DistortionPlane.SetActive(true);
+            //DistortionPlane.SetActive(true);
         }
         else
         {
@@ -49,7 +49,7 @@ public class UnderwaterShader : MonoBehaviour
                 OnWaterJump(1);
                 underWater = !underWater;
             }
-            DistortionPlane.SetActive(false);
+            //DistortionPlane.SetActive(false);
         }
     }
     

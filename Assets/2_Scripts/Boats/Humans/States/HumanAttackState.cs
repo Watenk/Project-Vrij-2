@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HumanAttackState : BaseState<Human>
 {
+	public static event Action<int> OnAttack = delegate { };
 	private Timer attackDelay;
 
 	public override void Init(Fsm<Human> owner, Human blackboard)
@@ -38,11 +40,14 @@ public class HumanAttackState : BaseState<Human>
 	private void Attack()
 	{
 		int weaponAmount = bb.humansSettings.ThrowingWeaponsPrefabs.Count;
-		GameObject randomWeaponPrefab = bb.humansSettings.ThrowingWeaponsPrefabs[Random.Range(0, weaponAmount)];
+		GameObject randomWeaponPrefab = bb.humansSettings.ThrowingWeaponsPrefabs[UnityEngine.Random.Range(0, weaponAmount)];
 		GameObject weaponInstance = GameObject.Instantiate(randomWeaponPrefab, bb.GameObject.transform.position, Quaternion.identity);
 		weaponInstance.transform.rotation = Quaternion.LookRotation(bb.sirenLocation.Position - bb.GameObject.transform.position);
 		Rigidbody weaponRigidbody = weaponInstance.GetComponent<Rigidbody>();
 		weaponRigidbody.AddForce(weaponInstance.transform.forward * bb.humansSettings.WeaponThrowSpeed);
+		OnAttack(4);
+
+		Debug.Log("Attack");
 	}
 	
 	private void UpdateRotation()

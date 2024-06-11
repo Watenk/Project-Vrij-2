@@ -16,6 +16,7 @@ public class HumansSettings : ScriptableObject
 	public float WalkSpeed;
 	public Vector2 IdleTimeBounds;
 	public Vector2Int HealthBounds;
+	public Vector2Int StunnedTimeBounds;
 	public List<GameObject> HumanPrefabs = new List<GameObject>();
 	public List<GameObject> ThrowingWeaponsPrefabs = new List<GameObject>();
 }

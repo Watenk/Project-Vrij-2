@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02b676fa766530d48b8b42c8ad08cb75, type: 3}
-  m_Name: CharacterAttackSettings
+  m_Script: {fileID: 11500000, guid: ddb9d92694d051b4ba25623ee98bf61b, type: 3}
+  m_Name: SpearAttack
   m_EditorClassIdentifier: 
-  AttackRange: 2
-  AttackDamage: 1
-  SingRadius: 5
-  SingReach: 50
+  id: 4
+  clip: {fileID: 8300000, guid: 3ac270093cdba494fb37728ec5b26eeb, type: 3}
