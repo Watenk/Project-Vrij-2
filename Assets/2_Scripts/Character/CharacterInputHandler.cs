@@ -11,6 +11,8 @@ public class CharacterInputHandler : ICharacterInputHandler
 	public event ICharacterInputHandler.voidEventHandler OnAttack;
 	public event ICharacterInputHandler.voidEventHandler OnStun;
 	public event ICharacterInputHandler.voidEventHandler OnBoost;
+	public event ICharacterInputHandler.voidEventHandler OnGrabDown;
+	public event ICharacterInputHandler.voidEventHandler OnGrabUp;
 	
 	// Inputs
 	private PlayerInputs inputs;
@@ -20,6 +22,7 @@ public class CharacterInputHandler : ICharacterInputHandler
 	private InputAction attack;
 	private InputAction stun;
 	private InputAction boost;
+	private InputAction grab;	
 
 	public CharacterInputHandler()
 	{
@@ -48,6 +51,7 @@ public class CharacterInputHandler : ICharacterInputHandler
 			attack = inputs.Player.Attack;
 			stun = inputs.Player.Sing;
 			boost = inputs.Player.Boost;
+			grab = inputs.Player.Drag;
 		}
 		
 		movement.Enable();
@@ -56,10 +60,13 @@ public class CharacterInputHandler : ICharacterInputHandler
 		attack.Enable();
 		stun.Enable();
 		boost.Enable();
+		grab.Enable();
 		
 		attack.performed += context => OnAttack?.Invoke();
 		stun.performed += context => OnStun?.Invoke();
 		boost.performed += context => OnBoost?.Invoke();
+		grab.performed += context => OnGrabDown?.Invoke();
+		grab.canceled += context => OnGrabUp?.Invoke();
 	}
 	
 	public void DisableInputs()
@@ -70,9 +77,12 @@ public class CharacterInputHandler : ICharacterInputHandler
 		attack.Disable();
 		stun.Disable();
 		boost.Disable();
+		grab.Disable();
 		
 		attack.performed -= context => OnAttack?.Invoke();
 		stun.performed -= context => OnStun?.Invoke();
 		boost.performed -= context => OnBoost?.Invoke();
+		grab.performed -= context => OnGrabDown?.Invoke();
+		grab.canceled -= context => OnGrabUp?.Invoke();
 	}
 }

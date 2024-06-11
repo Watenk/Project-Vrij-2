@@ -9,6 +9,8 @@ public class CharacterAttack : IAttack
 
 	public event IAttack.KillEventhandler OnKill;
 	
+	// Grab
+	private bool grabbing;
 	private GameObject grabbedObject;
 	
 	// Dependencies
@@ -36,9 +38,20 @@ public class CharacterAttack : IAttack
 	}
 	
 	// Hold RMB
-	public void Grab(GameObject other, GameObject player)
+	public void GrabObject(GameObject other, GameObject player)
 	{
+		if (!grabbing) return;
 		other.transform.SetParent(player.transform);
+	}
+	
+	public void Grab()
+	{
+		grabbing = true;
+	}
+	
+	public void GrabRelease()
+	{
+		grabbing = false;
 	}
 	
 	// E
