@@ -15,6 +15,7 @@ public class CharacterController : ICharacterMovement
 	private CinemachineRecomposer cinemachineRecomposer;
 	private Transform waterSurface;
 	private Timer boostCooldownTimer;
+	private EventManager events;
 	
 	private bool boost;
 	
@@ -28,6 +29,7 @@ public class CharacterController : ICharacterMovement
 		this.waterSurface = waterSurface;
 		
 		boostCooldownTimer = new Timer(characterControllerSettings.BoostCooldownLenght);
+		events = ServiceLocator.Instance.Get<EventManager>();
 	}
 	
 	public void UpdateRotation(Vector2 rotationInput)
@@ -56,6 +58,7 @@ public class CharacterController : ICharacterMovement
 	public void UpdateMovement(Vector2 moveInput, float verticalMoveInput)
 	{
 		boostCooldownTimer.Tick(Time.deltaTime);
+		events.Invoke(Event.OnBoostChange, boostCooldownTimer.TimeLeft);
 		
 		Vector3 forward = cameraRoot.forward;
 		Vector3 right = cameraRoot.right;
