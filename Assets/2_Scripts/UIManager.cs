@@ -49,12 +49,12 @@ public class UIManager : MonoBehaviour
 	public void UpdateBoostAmount(float amount)
 	{
 		if (boostSlider == null) return;
+		amount = Remap(amount, 0, 5, 1, 0);
 		boostSlider.fillAmount = amount;
 	}
 
 	public void UpdateBoatsKilled(int amount)
 	{
-		Debug.Log(amount);
 		if (boatKills == null) return;
 		boatKills.text = amount + "/" + boatKillsNeeded;
 	}
