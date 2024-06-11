@@ -61,6 +61,7 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterInputHandler.OnRotate += CharacterMovement.UpdateRotation;
 		CharacterInputHandler.OnAttack += CharacterAttack.Slash;
 		CharacterInputHandler.OnStun += () => CharacterAttack.Stun(sirenLocation);
+		CharacterInputHandler.OnBoost += CharacterMovement.Boost;
 		damageTaker.OnDamage += (amount) => CharacterHealth.ChangeHealth(amount * -1);
 		CharacterAttack.OnKill += () => CharacterHealth.ChangeHealth(1);
 		CharacterHealth.OnHealthChanged += (amount) => ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
@@ -72,6 +73,7 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterInputHandler.OnRotate -= CharacterMovement.UpdateRotation;
 		CharacterInputHandler.OnAttack -= CharacterAttack.Slash;
 		CharacterInputHandler.OnStun -= () => CharacterAttack.Stun(sirenLocation);
+		CharacterInputHandler.OnBoost -= CharacterMovement.Boost;
 		damageTaker.OnDamage -= (amount) => CharacterHealth.ChangeHealth(amount * -1);
 		CharacterAttack.OnKill -= () => CharacterHealth.ChangeHealth(1);
 		CharacterHealth.OnHealthChanged -= (amount) => ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);

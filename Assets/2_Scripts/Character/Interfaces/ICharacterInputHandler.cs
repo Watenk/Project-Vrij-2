@@ -11,4 +11,5 @@ public interface ICharacterInputHandler : IUpdateable
 	public delegate void voidEventHandler();
 	public event voidEventHandler OnAttack;
 	public event voidEventHandler OnStun;
+	public event voidEventHandler OnBoost;
 }

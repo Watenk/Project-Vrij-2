@@ -29,7 +29,7 @@ public class CharacterAttack : IAttack
 		foreach (var collider in hitColliders)
 		{
 			IPhysicsDamagable damagable = collider.gameObject.GetComponent<IPhysicsDamagable>();
-			if (damagable == null) return;
+			if (damagable == null || collider.gameObject.layer == LayerMask.NameToLayer("Player")) return;
 			damagable.TakeDamage(characterAttackSettings.AttackDamage);
 			OnKill?.Invoke();
 		}
