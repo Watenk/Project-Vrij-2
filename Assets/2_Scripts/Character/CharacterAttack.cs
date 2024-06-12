@@ -13,7 +13,6 @@ public class CharacterAttack : IAttack
 	// Grab
 	private bool grabbing;
 	private GameObject grabbedObject;
-	private bool grabAllowed;
 	private ITimer grabCooldownTimer;
 	private bool slashAllowed;
 	private ITimer slashCooldownTimer;
@@ -36,7 +35,6 @@ public class CharacterAttack : IAttack
 		slashCooldownTimer = timerManager.Add(characterAttackSettings.SlashCooldown);
 		singCooldownTimer = timerManager.Add(characterAttackSettings.SingCooldown);
 		
-		grabCooldownTimer.OnTimer += () => grabAllowed = true;
 		slashCooldownTimer.OnTimer += () => slashAllowed = true;
 		singCooldownTimer.OnTimer += () => singAllowed = true;
 		
@@ -45,7 +43,6 @@ public class CharacterAttack : IAttack
 	
 	~CharacterAttack()
 	{
-		grabCooldownTimer.OnTimer -= () => grabAllowed = true;
 		slashCooldownTimer.OnTimer -= () => slashAllowed = true;
 		singCooldownTimer.OnTimer -= () => singAllowed = true;
 	}
@@ -72,11 +69,10 @@ public class CharacterAttack : IAttack
 	// Hold RMB
 	public void GrabObject(GameObject other, GameObject player)
 	{
-		if (!grabbing || !grabAllowed) return;
+		if (!grabbing || grabCooldownTimer.TimeLeft > 0) return;
 		
 		other.transform.SetParent(player.transform);
 		grabCooldownTimer.Reset();
-		grabAllowed = false;
 		
 		events.Invoke(Event.OnHumanGrabbed, other);
 	}
