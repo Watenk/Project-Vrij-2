@@ -12,6 +12,7 @@ public class Tutorial : MonoBehaviour
 	public GameObject UIJumpBoat;
 	public GameObject UIEatFish;
 	public GameObject UIBoost;
+	public GameObject UISing;
 
 	private EventManager events;
 
@@ -69,6 +70,8 @@ public class Tutorial : MonoBehaviour
 
 	private void OnHumanGrabbed(GameObject grabbedObject)
 	{
+		UIJumpBoat.SetActive(false);
+		TriggerEnter = true;
 		
 	}
 
@@ -76,13 +79,16 @@ public class Tutorial : MonoBehaviour
 	{
 		yield return new WaitForSeconds(10);
 		UIEatFish.SetActive(false);
-	}
+        UISing.SetActive(true);
+        StartCoroutine(Coroutine2());
 
-	private void OnTriggerEnter(Collider other)
+    }
+
+	private IEnumerator Coroutine2()
 	{
-		UIJumpBoat.SetActive(false);
-		TriggerEnter = true;
-	}
+        yield return new WaitForSeconds(10);
+		UISing.SetActive(false);
+    }
 
 	private void ButtonDown()
 	{
