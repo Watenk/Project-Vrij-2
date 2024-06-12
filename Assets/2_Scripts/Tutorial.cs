@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class Tutorial : MonoBehaviour
 {
@@ -9,11 +10,8 @@ public class Tutorial : MonoBehaviour
     public GameObject UIButtonUp;
     public GameObject UIButtonDown;
     public GameObject UIJumpBoat;
-    public GameObject UIDrowning;
     public GameObject UIEatFish;
     public GameObject UIBoost;
-    
-    public GameObject BoatSpawn;
 
     bool One;
     bool Two;
@@ -49,7 +47,7 @@ public class Tutorial : MonoBehaviour
         {
             UIButtonDown.SetActive(false);
             UIJumpBoat.SetActive(true);
-            BoatSpawn.SetActive(true);
+         
         }
 
         if (TriggerEnter == true) 
@@ -59,7 +57,6 @@ public class Tutorial : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                UIDrowning.SetActive(false);
                 UIEatFish.SetActive(true);
                 StartCoroutine(Coroutine());
 
@@ -67,10 +64,10 @@ public class Tutorial : MonoBehaviour
 
         }
 
-        //if(Input.GetKeyDown (KeyCode.))
-        //{
-             //UIBoost.SetActive(false);
-        //}
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            UIBoost.SetActive(false);
+        }
     }
 
     IEnumerator Coroutine()
@@ -82,8 +79,6 @@ public class Tutorial : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
             UIJumpBoat.SetActive(false);
-            BoatSpawn.SetActive(false);
-            UIDrowning.SetActive(true);
             TriggerEnter = true;
 
     }
