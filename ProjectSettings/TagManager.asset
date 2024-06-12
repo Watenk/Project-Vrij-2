@@ -24,7 +24,7 @@ TagManager:
   - TextTrigger
   - Platform
   - PlayerParent
-  - 
+  - NavMesh
   - 
   - 
   - 

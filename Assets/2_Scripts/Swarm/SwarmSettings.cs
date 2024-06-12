@@ -12,6 +12,10 @@ public class SwarmSettings : MonoBehaviour
 	[SerializeField] [Tooltip("Note that the boids will be able to leave this range. Its a target range and not enforced")]
 	private float wanderRadius;
 	
+	public float SwarmSleepRange { get { return swarmSleepRange; } }
+	[SerializeField] 
+	private float swarmSleepRange;
+	
 	public Transform[] Obstacles { get { return obstacles; } }
 	[SerializeField] [Tooltip("The boids will try to avoid objects in this array. Note that the boids will 'try' to avoid the objects. It's not enforced")]
 	private Transform[] obstacles;

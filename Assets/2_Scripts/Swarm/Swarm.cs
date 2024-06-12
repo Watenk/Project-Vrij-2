@@ -16,6 +16,11 @@ public class Swarm : MonoBehaviour, ISwarm
 	
 	public SwarmChannel SwarmChannel { get { return swarmChannel; } }
 	[SerializeField]
+	
+	public SirenLocation SirenLocation { get { return sirenLocation; } }
+	[SerializeField]
+	private SirenLocation sirenLocation;
+	
 	private SwarmChannel swarmChannel;
 
 	public GameObject GameObject { get; private set; }
@@ -34,6 +39,8 @@ public class Swarm : MonoBehaviour, ISwarm
 	
 	public void FixedUpdate()
 	{
+		if (Vector3.Distance(sirenLocation.Position, gameObject.transform.position) > swarmSettings.SwarmSleepRange) return;
+		
 		foreach (var kvp in boidCollection.Collection)
 		{
 			kvp.Value.UpdateMovement(GetBoidNeighbours(kvp.Value, BoidSettings.NeighbourDetectRange), transform.position);
