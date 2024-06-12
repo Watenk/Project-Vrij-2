@@ -51,9 +51,9 @@ public class Timer : ITimer
 	{
 		if (timeLeft <= 0)
 		{
-			OnTimer?.Invoke();
 			timeLeft = 0;
 			running = false;
+			OnTimer?.Invoke();
 		}
 	}
 }

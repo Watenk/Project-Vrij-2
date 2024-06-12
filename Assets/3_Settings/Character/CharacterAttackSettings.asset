@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02b676fa766530d48b8b42c8ad08cb75, type: 3}
   m_Name: CharacterAttackSettings
   m_EditorClassIdentifier: 
-  AttackRange: 2
+  AttackRange: 5
   AttackDamage: 1
   SingRadius: 5
   SingReach: 50
+  SlashCooldown: 0
+  DragCooldown: 20
+  SingCooldown: 30
