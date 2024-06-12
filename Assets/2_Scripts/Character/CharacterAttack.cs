@@ -24,6 +24,7 @@ public class CharacterAttack : IAttack
 	private CharacterAttackSettings characterAttackSettings;
 	private Transform attackRoot;
 	private TimerManager timerManager;
+	private EventManager events;
 
 	public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
 	{
@@ -38,6 +39,8 @@ public class CharacterAttack : IAttack
 		grabCooldownTimer.OnTimer += () => grabAllowed = true;
 		slashCooldownTimer.OnTimer += () => slashAllowed = true;
 		singCooldownTimer.OnTimer += () => singAllowed = true;
+		
+		events = ServiceLocator.Instance.Get<EventManager>();
 	}
 	
 	~CharacterAttack()
@@ -74,6 +77,8 @@ public class CharacterAttack : IAttack
 		other.transform.SetParent(player.transform);
 		grabCooldownTimer.Reset();
 		grabAllowed = false;
+		
+		events.Invoke(Event.OnHumanGrabbed, other);
 	}
 	
 	public void Grab()
