@@ -10805,6 +10805,74 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &1663094867
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 525496723590462684, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -680
+      objectReference: {fileID: 0}
+    - target: {fileID: 525496723590462684, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 525496723590462684, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -221
+      objectReference: {fileID: 0}
+    - target: {fileID: 525496723590462684, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 525496723590462684, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 525496723590462684, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 525496723590462684, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 525496723590462684, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 525496723590462684, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 525496723590462684, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121997926188031905, guid: 88efcd270799b194f83f2ce922f3433b,
+        type: 3}
+      propertyPath: m_Name
+      value: BoatSpawner (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 88efcd270799b194f83f2ce922f3433b, type: 3}
 --- !u!1001 &1669495943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13304,6 +13372,7 @@ SceneRoots:
   - {fileID: 648177298}
   - {fileID: 885561082}
   - {fileID: 1540999403}
+  - {fileID: 1663094867}
   - {fileID: 1357323028}
   - {fileID: 2005895031}
   - {fileID: 1806201394}
