@@ -96,6 +96,7 @@ public class Player : MonoBehaviour, IPlayer
 			CharacterAttack.GrabObject(other.gameObject, this.gameObject);
 		}
 	}
+
 	
 	#if UNITY_EDITOR
 	public void OnDrawGizmosSelected()

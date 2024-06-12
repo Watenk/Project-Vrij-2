@@ -21,25 +21,35 @@ public class UIManager : MonoBehaviour
 
 	public void Start()
 	{
+		BoatsManager.OnBoatSunk += UpdateBoatsKilled;
 		ServiceLocator.Instance.Get<EventManager>().AddListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
+		EventManager events = ServiceLocator.Instance.Get<EventManager>();
+		events.AddListener<float>(Event.OnBoostChange, (float amount) => UpdateBoostAmount(amount));
+
 		UpdateBoatsKilled(0);
-		UpPause();
+		UnPause();
 	}
 	
 	private void OnDestroy() 
 	{
 		ServiceLocator.Instance.Get<EventManager>().RemoveListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
 	}
-	
-	public void UpdateHealthAmount(int amount)
+
+	public float Remap(float value, float from1, float to1, float from2, float to2) {
+		return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+	}
+
+	public void UpdateHealthAmount(float amount)
 	{
 		if (healthSlider == null) return;
+		amount = Remap(amount, 0, 10, 0, 1);
 		healthSlider.fillAmount = amount;
 	}
 	
-	public void UpdateBoostAmount(int amount)
+	public void UpdateBoostAmount(float amount)
 	{
 		if (boostSlider == null) return;
+		amount = Remap(amount, 0, 5, 1, 0);
 		boostSlider.fillAmount = amount;
 	}
 
@@ -52,10 +62,9 @@ public class UIManager : MonoBehaviour
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)) {
             if (paused) {
-				UpPause();
+				UnPause();
 			} else {
 				Pause();
-
             }
         }
     }
@@ -68,7 +77,7 @@ public class UIManager : MonoBehaviour
 		paused = !paused;
 	}
 
-	public void UpPause()
+	public void UnPause()
 	{
 		Cursor.lockState = CursorLockMode.Locked;
 		pauseObject.SetActive(false);
@@ -78,5 +87,5 @@ public class UIManager : MonoBehaviour
 
 	public void BackToMenu() {
 		SceneManager.LoadScene("MainMenu");
-    }
+    }	
 }

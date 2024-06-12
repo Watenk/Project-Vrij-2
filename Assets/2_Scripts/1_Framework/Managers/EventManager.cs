@@ -8,6 +8,7 @@ public enum Event
 	// Swarm
 	OnPlayerHealth,
 	OnBoatSunk,
+	OnEat,
 	OnBoostChange,
 }
 
