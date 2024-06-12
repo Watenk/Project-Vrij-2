@@ -44,7 +44,7 @@ public class CharacterController : ICharacterMovement
 		// Camera Rotation
 		rotationX += rotationInput.x * characterControllerSettings.RotationSensitivity;
 		rotationY += rotationInput.y * characterControllerSettings.RotationSensitivity;
-		rotationY = Mathf.Clamp(rotationY, -90, 90);
+		rotationY = Mathf.Clamp(rotationY, -89, 89);
 		cameraRoot.localRotation = Quaternion.Euler(-rotationY, rotationX, 0);
 		
 		// Camera Tilt
@@ -77,7 +77,7 @@ public class CharacterController : ICharacterMovement
 		else
 		{
 			rb.AddForce(rb.gameObject.transform.up * -characterControllerSettings.Gravity * Time.deltaTime, ForceMode.Impulse);
-			rb.AddForce(moveDirection * (characterControllerSettings.Speed / 5) * Time.deltaTime, ForceMode.Impulse);
+			rb.AddForce(moveDirection * (characterControllerSettings.Speed / characterControllerSettings.LandMovementDebuff) * Time.deltaTime, ForceMode.Impulse);
 		}
 		
 		if (boost)

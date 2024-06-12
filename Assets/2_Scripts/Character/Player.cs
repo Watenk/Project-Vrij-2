@@ -103,7 +103,7 @@ public class Player : MonoBehaviour, IPlayer
 	{
 		// AttackRange Sphere
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(attackRoot.position, characterAttackSettings.AttackRange);
+		Gizmos.DrawWireSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
 	}
 	#endif
 }
