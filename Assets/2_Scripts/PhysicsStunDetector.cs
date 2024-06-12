@@ -10,5 +10,6 @@ public class PhysicsStunDetector : MonoBehaviour
     public void Stun()
     {
         OnStun();
+        Debug.Log("J FSD:FJ:");
     }
 }
