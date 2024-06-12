@@ -51,19 +51,17 @@ public class CharacterAttack : IAttack
 	{
 		if (!slashAllowed) return;
 		
-		Debug.Log("SlashAttack");
 		OnAttack(2);
 		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
 		slashAllowed = false;
 		slashCooldownTimer.Reset();
 		foreach (var collider in hitColliders)
 		{
-			IPhysicsDamagable damagable = collider.gameObject.GetComponent<IPhysicsDamagable>();
-			if (damagable == null || collider.gameObject.layer == LayerMask.NameToLayer("Player")) return;
+			PhysicsDamageDetector damagable = collider.gameObject.GetComponent<PhysicsDamageDetector>();
+			if (damagable == null || collider.gameObject.layer == LayerMask.NameToLayer("Player")) continue;
 			damagable.TakeDamage(characterAttackSettings.AttackDamage);
 			OnKill?.Invoke();
 		}
-		
 	}
 	
 	// Hold RMB
@@ -71,7 +69,6 @@ public class CharacterAttack : IAttack
 	{
 		if (!grabbing || !grabAllowed) return;
 		
-		Debug.Log("GrabAttack");
 		other.transform.SetParent(player.transform);
 		grabCooldownTimer.Reset();
 		grabAllowed = false;
@@ -92,7 +89,6 @@ public class CharacterAttack : IAttack
 	{
 		if (!singAllowed) return;
 		
-		Debug.Log("StunAttack");
 		Vector3 direction = Camera.main.transform.forward;
 		Vector3 origin = sirenLocation.Position;
 		float radius = characterAttackSettings.SingRadius;

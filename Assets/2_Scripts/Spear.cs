@@ -20,6 +20,14 @@ public class Spear : MonoBehaviour
 		despawnTimer.Tick(Time.deltaTime);	
 	}
 	
+	private void OnCollisionEnter(Collision other) 
+	{
+		PhysicsDamageDetector damagable = other.gameObject.GetComponent<PhysicsDamageDetector>();
+		if (damagable == null || other.gameObject.layer == LayerMask.NameToLayer("Human")) return;
+		damagable.TakeDamage(1);
+		GameObject.Destroy(this.gameObject);
+	}
+	
 	private void OnDespawnTimer()
 	{
 		despawnTimer.OnTimer -= OnDespawnTimer;
