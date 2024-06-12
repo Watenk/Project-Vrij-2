@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterAttack : IAttack
 {
 	public static event Action<int> OnAttackSound = delegate { };
-	public static event Action<int> OnAttackAnimation = delegate { };
+	public static event Action<string> OnAttackAnimation = delegate { };
 
 	public event IAttack.KillEventhandler OnKill;
 	
@@ -24,6 +24,7 @@ public class CharacterAttack : IAttack
 	private CharacterAttackSettings characterAttackSettings;
 	private Transform attackRoot;
 	private TimerManager timerManager;
+	private EventManager events;
 
 	public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
 	{
@@ -38,6 +39,8 @@ public class CharacterAttack : IAttack
 		grabCooldownTimer.OnTimer += () => grabAllowed = true;
 		slashCooldownTimer.OnTimer += () => slashAllowed = true;
 		singCooldownTimer.OnTimer += () => singAllowed = true;
+		
+		events = ServiceLocator.Instance.Get<EventManager>();
 	}
 	
 	~CharacterAttack()
@@ -53,6 +56,7 @@ public class CharacterAttack : IAttack
 		if (!slashAllowed) return;
 		
 		OnAttackSound(2);
+		OnAttackAnimation("Slash");
 		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
 		slashAllowed = false;
 		slashCooldownTimer.Reset();
@@ -73,6 +77,8 @@ public class CharacterAttack : IAttack
 		other.transform.SetParent(player.transform);
 		grabCooldownTimer.Reset();
 		grabAllowed = false;
+		
+		events.Invoke(Event.OnHumanGrabbed, other);
 	}
 	
 	public void Grab()

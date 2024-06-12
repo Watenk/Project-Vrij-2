@@ -41,6 +41,9 @@ public class Player : MonoBehaviour, IPlayer
 	private CharacterAttackSettings characterAttackSettings;
 	
 	private PhysicsDamageDetector damageTaker;
+	private bool onBoat;
+	private Transform boatPos;
+	private Vector3 previousBoatPos;
 	
 	public void Awake()
 	{
@@ -87,6 +90,14 @@ public class Player : MonoBehaviour, IPlayer
 	{
 		CharacterInputHandler.Update();
 		sirenLocation.Position = gameObject.transform.position;
+		
+		if (onBoat)
+		{
+			CharacterMovement.rb.AddForce(CharacterMovement.rb.gameObject.transform.up * characterControllerSettings.Gravity * Time.deltaTime, ForceMode.Impulse);
+			Vector3 difference = previousBoatPos - boatPos.position;
+			gameObject.transform.position += difference;
+			previousBoatPos = boatPos.position;
+		}
 	}
 	
 	private void OnTriggerEnter(Collider other)
@@ -95,8 +106,22 @@ public class Player : MonoBehaviour, IPlayer
 		{
 			CharacterAttack.GrabObject(other.gameObject, this.gameObject);
 		}
+		
+		if (other.gameObject.layer == LayerMask.NameToLayer("PlayerParent") && !onBoat)
+		{
+			onBoat = true;
+			boatPos = other.transform;
+			previousBoatPos = boatPos.position;
+		}
 	}
-
+	
+	private void OnTriggerExit(Collider other)
+	{
+		if (other.gameObject.layer == LayerMask.NameToLayer("PlayerParent") && onBoat)
+		{
+			onBoat = false;
+		}
+	}
 	
 	#if UNITY_EDITOR
 	public void OnDrawGizmosSelected()

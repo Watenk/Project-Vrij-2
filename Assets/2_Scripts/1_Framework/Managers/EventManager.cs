@@ -10,6 +10,8 @@ public enum Event
 	OnBoatSunk,
 	OnEat,
 	OnBoostChange,
+	OnHumanStunned,
+	OnHumanGrabbed,
 }
 
 // TODO: use params to generalize the paramers
