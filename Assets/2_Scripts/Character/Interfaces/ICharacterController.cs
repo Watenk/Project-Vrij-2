@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface ICharacterMovement 
 {
+	public Rigidbody rb { get; }
+	
 	public void UpdateRotation(Vector2 rotationInput);
 	public void UpdateMovement(Vector2 moveInput, float verticalMoveInput);
 	public void Boost();

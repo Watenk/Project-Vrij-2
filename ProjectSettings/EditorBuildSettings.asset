@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/1_Scenes/Temp/Max_Dev.unity
     guid: a480e7a9595c69944b860e12c0e00934
   - enabled: 1
-    path: Assets/1_Scenes/Playtest.unity
+    path: Assets/1_Scenes/MainScene.unity
     guid: 62b89833b27fc59489d3365bd13196e8
   - enabled: 1
     path: Assets/1_Scenes/Jodi_Blockout.unity
