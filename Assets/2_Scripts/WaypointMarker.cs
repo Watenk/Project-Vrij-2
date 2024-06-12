@@ -16,7 +16,7 @@ public class WaypointMarker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        boat = GameObject.Find("boat(Clone)");
+        boat = GameObject.Find("BoatSpawner");
         target = boat.transform;
     }
 
