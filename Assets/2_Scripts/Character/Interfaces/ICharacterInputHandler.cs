@@ -8,6 +8,10 @@ public interface ICharacterInputHandler : IUpdateable
 	public event MoveEventHandler OnMove;
 	public delegate void RotateEventHandler(Vector2 rotationInput);
 	public event RotateEventHandler OnRotate;
-	public delegate void AttackEventHandler();
-	public event AttackEventHandler OnAttack;
+	public delegate void voidEventHandler();
+	public event voidEventHandler OnAttack;
+	public event voidEventHandler OnStun;
+	public event voidEventHandler OnBoost;
+	public event voidEventHandler OnGrabUp;
+	public event voidEventHandler OnGrabDown;
 }

@@ -21,10 +21,10 @@ TagManager:
   - UI
   - Human
   - Player
-  - 
-  - 
-  - 
-  - 
+  - TextTrigger
+  - Platform
+  - PlayerParent
+  - NavMesh
   - 
   - 
   - 

@@ -11,7 +11,9 @@ public class SoundManager : MonoBehaviour
     private void Awake() 
     {
         UnderwaterShader.OnWaterJump += PlaySound;
-        CharacterAttack.OnAttack += PlaySound;
+        CharacterAttack.OnAttackSound += PlaySound;
+        Health<IPlayer>.OnKill += PlaySound;
+        HumanAttackState.OnAttack += PlaySound;
     }
 
     public void PlaySound(int id) {
@@ -29,17 +31,5 @@ public class SoundManager : MonoBehaviour
                 audioPlayer.Stop();
             }
         });
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
