@@ -2742,6 +2742,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4342248706332851601, guid: 1da916fdd2456fa41adec205184d9209,
+        type: 3}
+      propertyPath: sirenLocation
+      value: 
+      objectReference: {fileID: 11400000, guid: a4f11de6460e541498ac90310064f622,
+        type: 2}
+    - target: {fileID: 4840219232709216632, guid: 1da916fdd2456fa41adec205184d9209,
+        type: 3}
+      propertyPath: swarmSleepRange
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 7828857646676411781, guid: 1da916fdd2456fa41adec205184d9209,
         type: 3}
       propertyPath: m_Name
@@ -3145,6 +3156,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342248706332851601, guid: 1da916fdd2456fa41adec205184d9209,
+        type: 3}
+      propertyPath: sirenLocation
+      value: 
+      objectReference: {fileID: 11400000, guid: a4f11de6460e541498ac90310064f622,
+        type: 2}
+    - target: {fileID: 4840219232709216632, guid: 1da916fdd2456fa41adec205184d9209,
+        type: 3}
+      propertyPath: swarmSleepRange
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 7828857646676411781, guid: 1da916fdd2456fa41adec205184d9209,
         type: 3}
