@@ -9,7 +9,7 @@ public class CharacterController : ICharacterMovement
 	
 	// Dependencies
 	private CharacterMovementSettings characterControllerSettings;
-	private Rigidbody rb;
+	public Rigidbody rb { get; private set; }
 	private Transform cameraRoot;
 	private Transform moddelRoot;
 	private CinemachineRecomposer cinemachineRecomposer;
@@ -44,7 +44,7 @@ public class CharacterController : ICharacterMovement
 		// Camera Rotation
 		rotationX += rotationInput.x * characterControllerSettings.RotationSensitivity;
 		rotationY += rotationInput.y * characterControllerSettings.RotationSensitivity;
-		rotationY = Mathf.Clamp(rotationY, -89, 89);
+		rotationY = Mathf.Clamp(rotationY, -70, 70);
 		cameraRoot.localRotation = Quaternion.Euler(-rotationY, rotationX, 0);
 		
 		// Camera Tilt
