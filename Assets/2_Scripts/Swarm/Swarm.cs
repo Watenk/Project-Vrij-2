@@ -16,13 +16,12 @@ public class Swarm : MonoBehaviour, ISwarm
 	
 	public SwarmChannel SwarmChannel { get { return swarmChannel; } }
 	[SerializeField]
+	private SwarmChannel swarmChannel;
 	
 	public SirenLocation SirenLocation { get { return sirenLocation; } }
 	[SerializeField]
 	private SirenLocation sirenLocation;
 	
-	private SwarmChannel swarmChannel;
-
 	public GameObject GameObject { get; private set; }
 
 	private DictCollection<IBoid> boidCollection = new DictCollection<IBoid>();
