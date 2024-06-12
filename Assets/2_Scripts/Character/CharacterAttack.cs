@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class CharacterAttack : IAttack
 {
-	public static event Action<int> OnAttack = delegate { };
+	public static event Action<int> OnAttackSound = delegate { };
+	public static event Action<string> OnAttackAnimation = delegate { };
 
 	public event IAttack.KillEventhandler OnKill;
 	
@@ -51,7 +52,8 @@ public class CharacterAttack : IAttack
 	{
 		if (!slashAllowed) return;
 		
-		OnAttack(2);
+		OnAttackSound(2);
+		OnAttackAnimation("Slash");
 		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
 		slashAllowed = false;
 		slashCooldownTimer.Reset();
