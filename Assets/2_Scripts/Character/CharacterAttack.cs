@@ -12,26 +12,53 @@ public class CharacterAttack : IAttack
 	// Grab
 	private bool grabbing;
 	private GameObject grabbedObject;
+	private bool grabAllowed;
+	private ITimer grabCooldownTimer;
+	private bool slashAllowed;
+	private ITimer slashCooldownTimer;
+	private bool singAllowed;
+	private ITimer singCooldownTimer;
 	
 	// Dependencies
 	private CharacterAttackSettings characterAttackSettings;
 	private Transform attackRoot;
+	private TimerManager timerManager;
 
 	public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
 	{
 		this.characterAttackSettings = characterAttackSettings;
 		this.attackRoot = attackRoot;
+		
+		timerManager = ServiceLocator.Instance.Get<TimerManager>();
+		grabCooldownTimer = timerManager.Add(characterAttackSettings.DragCooldown);
+		slashCooldownTimer = timerManager.Add(characterAttackSettings.SlashCooldown);
+		singCooldownTimer = timerManager.Add(characterAttackSettings.SingCooldown);
+		
+		grabCooldownTimer.OnTimer += () => grabAllowed = true;
+		slashCooldownTimer.OnTimer += () => slashAllowed = true;
+		singCooldownTimer.OnTimer += () => singAllowed = true;
+	}
+	
+	~CharacterAttack()
+	{
+		grabCooldownTimer.OnTimer -= () => grabAllowed = true;
+		slashCooldownTimer.OnTimer -= () => slashAllowed = true;
+		singCooldownTimer.OnTimer -= () => singAllowed = true;
 	}
 	
 	//LMB
 	public void Slash()
 	{
+		if (!slashAllowed) return;
+		
 		OnAttack(2);
 		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
+		slashAllowed = false;
+		slashCooldownTimer.Reset();
 		foreach (var collider in hitColliders)
 		{
-			IPhysicsDamagable damagable = collider.gameObject.GetComponent<IPhysicsDamagable>();
-			if (damagable == null || collider.gameObject.layer == LayerMask.NameToLayer("Player")) return;
+			PhysicsDamageDetector damagable = collider.gameObject.GetComponent<PhysicsDamageDetector>();
+			if (damagable == null || collider.gameObject.layer == LayerMask.NameToLayer("Player")) continue;
 			damagable.TakeDamage(characterAttackSettings.AttackDamage);
 			OnKill?.Invoke();
 		}
@@ -40,8 +67,11 @@ public class CharacterAttack : IAttack
 	// Hold RMB
 	public void GrabObject(GameObject other, GameObject player)
 	{
-		if (!grabbing) return;
+		if (!grabbing || !grabAllowed) return;
+		
 		other.transform.SetParent(player.transform);
+		grabCooldownTimer.Reset();
+		grabAllowed = false;
 	}
 	
 	public void Grab()
@@ -57,6 +87,8 @@ public class CharacterAttack : IAttack
 	// E
 	public void Stun(SirenLocation sirenLocation)
 	{
+		if (!singAllowed) return;
+		
 		Vector3 direction = Camera.main.transform.forward;
 		Vector3 origin = sirenLocation.Position;
 		float radius = characterAttackSettings.SingRadius;
@@ -79,5 +111,8 @@ public class CharacterAttack : IAttack
 			
 			currentTries++;
 		}
+		
+		singAllowed = false;
+		singCooldownTimer.Reset();
 	}
 }
