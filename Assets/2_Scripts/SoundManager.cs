@@ -11,7 +11,7 @@ public class SoundManager : MonoBehaviour
     private void Awake() 
     {
         UnderwaterShader.OnWaterJump += PlaySound;
-        CharacterAttack.OnAttack += PlaySound;
+        CharacterAttack.OnAttackSound += PlaySound;
         Health<IPlayer>.OnKill += PlaySound;
         HumanAttackState.OnAttack += PlaySound;
     }

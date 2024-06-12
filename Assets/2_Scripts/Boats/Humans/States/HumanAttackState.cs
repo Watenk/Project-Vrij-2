@@ -23,7 +23,6 @@ public class HumanAttackState : BaseState<Human>
 	public override void Update()
 	{
 		attackDelay.Tick(Time.deltaTime);
-		Debug.Log(attackDelay.TimeLeft);
 		UpdateRotation();
 	}
 
@@ -36,7 +35,7 @@ public class HumanAttackState : BaseState<Human>
 	{
 		int weaponAmount = bb.humansSettings.ThrowingWeaponsPrefabs.Count;
 
-		GameObject randomWeaponPrefab = bb.humansSettings.ThrowingWeaponsPrefabs[Random.Range(0, weaponAmount)];
+		GameObject randomWeaponPrefab = bb.humansSettings.ThrowingWeaponsPrefabs[UnityEngine.Random.Range(0, weaponAmount)];
 		GameObject weaponInstance = GameObject.Instantiate(randomWeaponPrefab, new Vector3(bb.GameObject.transform.position.x, bb.GameObject.transform.position.y + 3.0f, bb.GameObject.transform.position.z), Quaternion.identity);
 		weaponInstance.transform.rotation = Quaternion.LookRotation(bb.sirenLocation.Position - bb.GameObject.transform.position);
 		Rigidbody weaponRigidbody = weaponInstance.GetComponent<Rigidbody>();
