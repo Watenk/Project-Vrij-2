@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 20
   Gravity: 20
-  BoostStrenght: 2000
+  BoostStrenght: 1000
   BoostCooldownLenght: 5
   LandMovementDebuff: 2
   RotationSensitivity: 0.1
