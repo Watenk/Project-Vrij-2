@@ -23,6 +23,7 @@ public class Spear : MonoBehaviour
 	private void OnCollisionEnter(Collision other) 
 	{
 		PhysicsDamageDetector damagable = other.gameObject.GetComponent<PhysicsDamageDetector>();
+		if (damagable == null) damagable = other.gameObject.GetComponentInChildren<PhysicsDamageDetector>();
 		if (damagable == null || other.gameObject.layer == LayerMask.NameToLayer("Human")) return;
 		damagable.TakeDamage(1);
 		GameObject.Destroy(this.gameObject);

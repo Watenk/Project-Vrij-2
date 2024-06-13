@@ -75,7 +75,7 @@ public class Boat : IGameObject, IFixedUpdateable, IID, IHealth<Boat>
 		}
 		
 		if(agent.remainingDistance >= 3 || destinationTimer.TimeLeft > 0) return;
-		if (sailPoints.Count == 0) agent.SetDestination(NavMeshUtil.GetRandomPositionOnNavMesh(orginPos.position, boatsSettings.sailingRange));
+		if (sailPoints.Count == 0) agent.SetDestination(new Vector3(Random.Range(orginPos.position.x - boatsSettings.sailingRange, orginPos.position.x + boatsSettings.sailingRange), 0, Random.Range(orginPos.position.z - boatsSettings.sailingRange, orginPos.position.z + boatsSettings.sailingRange)));
 		else
 		{
 		 	agent.SetDestination(sailPoints[sailPointIndex].position);

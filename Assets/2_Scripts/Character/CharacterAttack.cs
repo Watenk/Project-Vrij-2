@@ -22,7 +22,6 @@ public class CharacterAttack : IAttack
 	// Dependencies
 	private CharacterAttackSettings characterAttackSettings;
 	private Transform attackRoot;
-	private TimerManager timerManager;
 	private EventManager events;
 
 	public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
@@ -30,10 +29,9 @@ public class CharacterAttack : IAttack
 		this.characterAttackSettings = characterAttackSettings;
 		this.attackRoot = attackRoot;
 		
-		timerManager = ServiceLocator.Instance.Get<TimerManager>();
-		grabCooldownTimer = timerManager.Add(characterAttackSettings.DragCooldown);
-		slashCooldownTimer = timerManager.Add(characterAttackSettings.SlashCooldown);
-		singCooldownTimer = timerManager.Add(characterAttackSettings.SingCooldown);
+		grabCooldownTimer = new Timer(characterAttackSettings.DragCooldown);
+		slashCooldownTimer = new Timer(characterAttackSettings.SlashCooldown);
+		singCooldownTimer = new Timer(characterAttackSettings.SingCooldown);
 		
 		slashCooldownTimer.OnTimer += () => slashAllowed = true;
 		singCooldownTimer.OnTimer += () => singAllowed = true;
@@ -45,6 +43,13 @@ public class CharacterAttack : IAttack
 	{
 		slashCooldownTimer.OnTimer -= () => slashAllowed = true;
 		singCooldownTimer.OnTimer -= () => singAllowed = true;
+	}
+	
+	public void Update()
+	{
+		grabCooldownTimer.Tick(Time.deltaTime);
+		slashCooldownTimer.Tick(Time.deltaTime);
+		singCooldownTimer.Tick(Time.deltaTime);
 	}
 	
 	//LMB

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 
 public class Tutorial : MonoBehaviour
@@ -26,6 +27,12 @@ public class Tutorial : MonoBehaviour
 	{
 		events = ServiceLocator.Instance.Get<EventManager>();
 		events.AddListener<GameObject>(Event.OnHumanGrabbed, (grabbedObject) => OnHumanGrabbed(grabbedObject));
+		events.AddListener(Event.OnBoatSunk, () => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
+	}
+	
+	private void OnDestroy() {
+		events.RemoveListener<GameObject>(Event.OnHumanGrabbed, (grabbedObject) => OnHumanGrabbed(grabbedObject));
+		events.RemoveListener(Event.OnBoatSunk, () => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
 	}
 
 	private void Update()
@@ -79,16 +86,15 @@ public class Tutorial : MonoBehaviour
 	{
 		yield return new WaitForSeconds(10);
 		UIEatFish.SetActive(false);
-        UISing.SetActive(true);
-        StartCoroutine(Coroutine2());
-
-    }
+		UISing.SetActive(true);
+		StartCoroutine(Coroutine2());
+	}
 
 	private IEnumerator Coroutine2()
 	{
-        yield return new WaitForSeconds(10);
+		yield return new WaitForSeconds(10);
 		UISing.SetActive(false);
-    }
+	}
 
 	private void ButtonDown()
 	{
