@@ -31,6 +31,7 @@ public class AnimationLogic : MonoBehaviour
 	
 	private void OnDestroy() {
 		events.RemoveListener<Human>(Event.OnHumanStunned, (human) => StunParticle(human));
+		CharacterAttack.OnAttackAnimation -= PlayAnimation;
 	}
 
 	// Update is called once per frame

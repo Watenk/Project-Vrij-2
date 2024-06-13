@@ -89,6 +89,7 @@ public class Player : MonoBehaviour, IPlayer
 	public void Update()
 	{
 		CharacterInputHandler.Update();
+		CharacterAttack.Update();
 		sirenLocation.Position = gameObject.transform.position;
 		
 		if (onBoat)
