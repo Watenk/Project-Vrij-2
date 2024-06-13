@@ -29,6 +29,11 @@ public class Tutorial : MonoBehaviour
 		events.AddListener<GameObject>(Event.OnHumanGrabbed, (grabbedObject) => OnHumanGrabbed(grabbedObject));
 		events.AddListener(Event.OnBoatSunk, () => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
 	}
+	
+	private void OnDestroy() {
+		events.RemoveListener<GameObject>(Event.OnHumanGrabbed, (grabbedObject) => OnHumanGrabbed(grabbedObject));
+		events.RemoveListener(Event.OnBoatSunk, () => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
+	}
 
 	private void Update()
 	{
