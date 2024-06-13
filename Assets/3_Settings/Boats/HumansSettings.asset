@@ -17,8 +17,15 @@ MonoBehaviour:
   SirenDetectRange: 20
   RotationSpeed: 3
   AttackDelay: 5
-  WeaponThrowSpeed: 1000
+  WeaponThrowSpeed: 2000
+  WalkSpeed: 1
+  IdleTimeBounds: {x: 1, y: 5}
+  HealthBounds: {x: 1, y: 1}
+  StunnedTimeBounds: {x: 4, y: 10}
   HumanPrefabs:
-  - {fileID: 3843687404574601689, guid: d7d1b7454d2adc146a377c91e0124787, type: 3}
+  - {fileID: 9128555760883104077, guid: 878b08d2b916eb0409b455e34c1cc334, type: 3}
+  - {fileID: 2137066865950730684, guid: 4e2abbc982ea05546b6ad4d0da8f8f94, type: 3}
+  - {fileID: 349783907030214437, guid: f20f5ef1cca8cee4e8e1ffb09decd841, type: 3}
+  - {fileID: 9044424884549572215, guid: c9873b28b38dcb5418a2914a49f986cd, type: 3}
   ThrowingWeaponsPrefabs:
   - {fileID: 7245075359114095302, guid: 4633a13b207b6224abb0c9c318d04391, type: 3}

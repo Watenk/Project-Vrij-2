@@ -9,11 +9,15 @@ public class CharacterController : ICharacterMovement
 	
 	// Dependencies
 	private CharacterMovementSettings characterControllerSettings;
-	private Rigidbody rb;
+	public Rigidbody rb { get; private set; }
 	private Transform cameraRoot;
 	private Transform moddelRoot;
 	private CinemachineRecomposer cinemachineRecomposer;
 	private Transform waterSurface;
+	private Timer boostCooldownTimer;
+	private EventManager events;
+	
+	private bool boost;
 	
 	public CharacterController(CharacterMovementSettings characterControllerSettings, Rigidbody rb, Transform cameraRoot, Transform moddelRoot, CinemachineRecomposer cinemachineRecomposer, Transform waterSurface)
 	{
@@ -23,19 +27,24 @@ public class CharacterController : ICharacterMovement
 		this.moddelRoot = moddelRoot;
 		this.cinemachineRecomposer = cinemachineRecomposer;
 		this.waterSurface = waterSurface;
+		
+		boostCooldownTimer = new Timer(characterControllerSettings.BoostCooldownLenght);
+		events = ServiceLocator.Instance.Get<EventManager>();
 	}
 	
 	public void UpdateRotation(Vector2 rotationInput)
 	{
 		// Moddel Rotation
 		Vector3 direction = rb.velocity.normalized;
+		if (direction == Vector3.zero) return;
+		
 		Quaternion targetRotation = Quaternion.LookRotation(direction);
 		moddelRoot.transform.rotation = Quaternion.Slerp(moddelRoot.transform.rotation, targetRotation, Time.deltaTime * 10f);
 		
 		// Camera Rotation
 		rotationX += rotationInput.x * characterControllerSettings.RotationSensitivity;
 		rotationY += rotationInput.y * characterControllerSettings.RotationSensitivity;
-		rotationY = Mathf.Clamp(rotationY, -90, 90);
+		rotationY = Mathf.Clamp(rotationY, -70, 70);
 		cameraRoot.localRotation = Quaternion.Euler(-rotationY, rotationX, 0);
 		
 		// Camera Tilt
@@ -48,6 +57,9 @@ public class CharacterController : ICharacterMovement
 
 	public void UpdateMovement(Vector2 moveInput, float verticalMoveInput)
 	{
+		boostCooldownTimer.Tick(Time.deltaTime);
+		events.Invoke(Event.OnBoostChange, boostCooldownTimer.TimeLeft);
+		
 		Vector3 forward = cameraRoot.forward;
 		Vector3 right = cameraRoot.right;
 		forward.y = 0f;
@@ -65,7 +77,22 @@ public class CharacterController : ICharacterMovement
 		else
 		{
 			rb.AddForce(rb.gameObject.transform.up * -characterControllerSettings.Gravity * Time.deltaTime, ForceMode.Impulse);
-			rb.AddForce(moveDirection * (characterControllerSettings.Speed / 5) * Time.deltaTime, ForceMode.Impulse);
+			rb.AddForce(moveDirection * (characterControllerSettings.Speed / characterControllerSettings.LandMovementDebuff) * Time.deltaTime, ForceMode.Impulse);
+		}
+		
+		if (boost)
+		{
+			rb.AddForce(moveDirection * characterControllerSettings.BoostStrenght * Time.deltaTime, ForceMode.Impulse);
+			boost = false;
+		}
+	}
+	
+	public void Boost()
+	{
+		if (boostCooldownTimer.TimeLeft <= 0)
+		{
+			boost = true;
+			boostCooldownTimer.Reset();
 		}
 	}
 	

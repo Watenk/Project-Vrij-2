@@ -9,6 +9,9 @@ TagManager:
   - RandomPoint
   - Island
   - Boat
+  - CameraSwitch
+  - CloseUpCamera
+  - Human
   layers:
   - Default
   - TransparentFX
@@ -18,11 +21,11 @@ TagManager:
   - UI
   - Human
   - Player
-  - 
-  - 
-  - 
-  - 
-  - 
+  - TextTrigger
+  - Platform
+  - PlayerParent
+  - NavMesh
+  - Island
   - 
   - 
   - 

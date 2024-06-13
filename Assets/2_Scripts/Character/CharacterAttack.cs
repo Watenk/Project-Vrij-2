@@ -1,38 +1,129 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class CharacterAttack : IAttack
 {
-    public event IAttack.KillEventhandler OnKill;
+	public static event Action<int> OnAttackSound = delegate { };
+	public static event Action<string> OnAttackAnimation = delegate { };
+
+	public event IAttack.KillEventhandler OnKill;
 	
-	private GameObject grabbedObject;
+	// Grab
+	private bool grabbing;
+	private ITimer grabCooldownTimer;
+	private bool slashAllowed;
+	private ITimer slashCooldownTimer;
+	private bool singAllowed;
+	private ITimer singCooldownTimer;
 	
 	// Dependencies
 	private CharacterAttackSettings characterAttackSettings;
 	private Transform attackRoot;
+	private EventManager events;
 
-
-    public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
+	public CharacterAttack(CharacterAttackSettings characterAttackSettings, Transform attackRoot)
 	{
 		this.characterAttackSettings = characterAttackSettings;
 		this.attackRoot = attackRoot;
+		
+		grabCooldownTimer = new Timer(characterAttackSettings.DragCooldown);
+		slashCooldownTimer = new Timer(characterAttackSettings.SlashCooldown);
+		singCooldownTimer = new Timer(characterAttackSettings.SingCooldown);
+		
+		slashCooldownTimer.OnTimer += () => slashAllowed = true;
+		singCooldownTimer.OnTimer += () => singAllowed = true;
+		
+		events = ServiceLocator.Instance.Get<EventManager>();
 	}
 	
+	~CharacterAttack()
+	{
+		slashCooldownTimer.OnTimer -= () => slashAllowed = true;
+		singCooldownTimer.OnTimer -= () => singAllowed = true;
+	}
+	
+	public void Update()
+	{
+		grabCooldownTimer.Tick(Time.deltaTime);
+		slashCooldownTimer.Tick(Time.deltaTime);
+		singCooldownTimer.Tick(Time.deltaTime);
+	}
+	
+	//LMB
 	public void Slash()
 	{
+		if (!slashAllowed) return;
+		
+		OnAttackSound(2);
+		OnAttackAnimation("Slash");
 		Collider[] hitColliders = Physics.OverlapSphere(attackRoot.transform.position, characterAttackSettings.AttackRange);
+		slashAllowed = false;
+		slashCooldownTimer.Reset();
 		foreach (var collider in hitColliders)
 		{
-			IDamagable damagable = collider.gameObject.GetComponent<IDamagable>();
-			if (damagable == null) return;
+			PhysicsDamageDetector damagable = collider.gameObject.GetComponent<PhysicsDamageDetector>();
+			if (damagable == null || collider.gameObject.layer == LayerMask.NameToLayer("Player")) continue;
 			damagable.TakeDamage(characterAttackSettings.AttackDamage);
 			OnKill?.Invoke();
 		}
 	}
 	
-	public void Grab(GameObject other, GameObject player)
+	// Hold RMB
+	public void GrabObject(GameObject other, GameObject player, Transform attackRoot)
 	{
-		other.transform.SetParent(player.transform);
+		if (!grabbing || grabCooldownTimer.TimeLeft > 0) return;
+		
+		other.transform.SetParent(player.transform.GetChild(3).gameObject.transform);
+		other.transform.position = new Vector3(attackRoot.position.x, attackRoot.position.y - 1, attackRoot.position.z);
+		other.transform.rotation = quaternion.Euler(-75, other.transform.rotation.y, other.transform.rotation.z);
+		other.GetComponent<PhysicsGrabDetector>().Grab();
+		grabCooldownTimer.Reset();
+		
+		events.Invoke(Event.OnHumanGrabbed, other);
+	}
+	
+	public void Grab()
+	{
+		grabbing = true;
+	}
+	
+	public void GrabRelease()
+	{
+		grabbing = false;
+	}
+	
+	// E
+	public void Stun(SirenLocation sirenLocation)
+	{
+		if (!singAllowed) return;
+		
+		Vector3 direction = Camera.main.transform.forward;
+		Vector3 origin = sirenLocation.Position;
+		float radius = characterAttackSettings.SingRadius;
+		float reach = characterAttackSettings.SingReach;
+		int tries = 100;
+		int currentTries = 0;
+	
+		while (tries != currentTries)
+		{
+			RaycastHit[] hits = Physics.RaycastAll(new Vector3(origin.x + UnityEngine.Random.Range(-radius, radius), origin.y, origin.z + UnityEngine.Random.Range(-radius, radius)), direction, reach);
+
+			foreach (RaycastHit hit in hits)
+			{
+				Debug.DrawLine(origin, hit.point);
+				if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Human"))
+				{
+					hit.collider.gameObject.GetComponent<PhysicsStunDetector>().Stun();
+				}
+			}
+			
+			currentTries++;
+		}
+		
+		singAllowed = false;
+		singCooldownTimer.Reset();
 	}
 }

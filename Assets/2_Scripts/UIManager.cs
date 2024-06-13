@@ -2,33 +2,90 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
 	[SerializeField]
-	private Slider healthSlider;
+	private Image healthSlider;
 	[SerializeField]
-	private Slider boostSlider;
-	
+	private Image boostSlider;
+	[SerializeField]
+	private TextMeshProUGUI boatKills;
+	[SerializeField]
+	private GameObject pauseObject;
+	public int boatKillsNeeded;
+
+	private bool paused;
+
 	public void Start()
 	{
-		EventManager.Instance.AddListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
+		BoatsManager.OnBoatSunk += UpdateBoatsKilled;
+		ServiceLocator.Instance.Get<EventManager>().AddListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
+		ServiceLocator.Instance.Get<EventManager>().AddListener<float>(Event.OnBoostChange, (float amount) => UpdateBoostAmount(amount));
+
+		UpdateBoatsKilled(0);
+		UnPause();
 	}
 	
 	private void OnDestroy() 
 	{
-		EventManager.Instance.RemoveListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
+		ServiceLocator.Instance.Get<EventManager>().RemoveListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
+		ServiceLocator.Instance.Get<EventManager>().RemoveListener<float>(Event.OnBoostChange, (float amount) => UpdateBoostAmount(amount));
 	}
-	
-	public void UpdateHealthAmount(int amount)
+
+	public float Remap(float value, float from1, float to1, float from2, float to2) {
+		return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+	}
+
+	public void UpdateHealthAmount(float amount)
 	{
 		if (healthSlider == null) return;
-		healthSlider.value = amount;
+		amount = Remap(amount, 0, 10, 0, 1);
+		healthSlider.fillAmount = amount;
 	}
 	
-	public void UpdateBoostAmount(int amount)
+	public void UpdateBoostAmount(float amount)
 	{
 		if (boostSlider == null) return;
-		boostSlider.value = amount;
+		amount = Remap(amount, 0, 5, 1, 0);
+		boostSlider.fillAmount = amount;
 	}
+
+	public void UpdateBoatsKilled(int amount)
+	{
+		if (boatKills == null) return;
+		boatKills.text = amount + "/" + boatKillsNeeded;
+	}
+
+	private void Update() {
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			if (paused) {
+				UnPause();
+			} else {
+				Pause();
+			}
+		}
+	}
+
+	public void Pause()
+	{
+		Cursor.lockState = CursorLockMode.None;
+		pauseObject.SetActive(true);
+		Time.timeScale = 0;
+		paused = !paused;
+	}
+
+	public void UnPause()
+	{
+		Cursor.lockState = CursorLockMode.Locked;
+		pauseObject.SetActive(false);
+		Time.timeScale = 1;
+		paused = !paused;
+	}
+
+	public void BackToMenu() {
+		SceneManager.LoadScene("MainMenu");
+	}	
 }

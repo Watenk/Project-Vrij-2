@@ -15,10 +15,10 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.97648454, z: 0.88654554, w: 0}
+    m_Value: {x: 0.8090907, y: 0.9979508, z: 1, w: 0}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 0.9515591, y: 1, z: 0.9734339, w: 0}
+    m_Value: {x: 0.8753793, y: 1, z: 0.77220523, w: 0}
   highlights:
     m_OverrideState: 1
     m_Value: {x: 1, y: 0.93099445, z: 0.99575555, w: 0}
@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 1
@@ -140,8 +140,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.33950618
-          value: 0.6485623
+          time: 0.3565148
+          value: 0.7373737
           inSlope: 1.6219825
           outSlope: 1.6219825
           tangentMode: 0
@@ -149,8 +149,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.67901236
-          value: 0.9648562
+          time: 0.65867305
+          value: 0.94949496
           inSlope: 1
           outSlope: 1
           tangentMode: 0
@@ -329,13 +329,13 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.97378397, z: 0.8109441, w: 0}
+    m_Value: {x: 1, y: 0.9623322, z: 0.83822674, w: 0}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.97119254, z: 0.9734795, w: 0}
+    m_Value: {x: 1, y: 0.9760309, z: 0.9736254, w: 0}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 0.96986085, y: 0.9075612, z: 1, w: 0}
+    m_Value: {x: 0.9890702, y: 0.85301805, z: 1, w: 0}
 --- !u!114 &7801595961511004239
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -351,7 +351,7 @@ MonoBehaviour:
   active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: -34.8
+    m_Value: -23.5
   tint:
     m_OverrideState: 1
-    m_Value: 38.5
+    m_Value: 33.2

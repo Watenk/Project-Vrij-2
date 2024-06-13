@@ -5,18 +5,18 @@ using Watenk;
 
 /// <summary> A manager that keeps track of GameObjects using ICollectionManager </summary>
 /// <typeparam name="T"> The type of object it stores </typeparam>
-public class DictCollection<T> : ICollection<T> where T : IID
+public class DictCollection<T> : ICollection<T, uint> where T : IID
 {
-	public Dictionary<uint, T> instances { get; protected set; } = new Dictionary<uint, T>();
+	public Dictionary<uint, T> Collection { get; protected set; } = new Dictionary<uint, T>();
+	
 	protected Dictionary<T, uint> keys = new Dictionary<T, uint>();
 	protected uint idCounter = 1;
 	
-	// ICollectionManager
 	public virtual uint Add(T instance)
 	{
 		instance.ChangeID(idCounter);
 		
-		instances.Add(idCounter, instance);
+		Collection.Add(idCounter, instance);
 		keys.Add(instance, idCounter);
 		
 		idCounter++;
@@ -25,14 +25,14 @@ public class DictCollection<T> : ICollection<T> where T : IID
 
 	public T Get(uint getter)
 	{
-		instances.TryGetValue(getter, out T instance);
+		Collection.TryGetValue(getter, out T instance);
 		if (instance == null) DebugUtil.ThrowError("Tried to get id " + getter + " from " + this.GetType().Name + " but cant find instance");
 		return instance;
 	}
 
 	public int GetCount()
 	{
-		return instances.Count;
+		return Collection.Count;
 	}
 
 	public virtual void Remove(T instance)
@@ -42,7 +42,7 @@ public class DictCollection<T> : ICollection<T> where T : IID
 		{
 			DebugUtil.ThrowError("Tried to remove instance while its not tracked by " + this.GetType().Name);
 			return;	
-		} 
+		}
 		
 		Remove(key);
 	}
@@ -52,14 +52,13 @@ public class DictCollection<T> : ICollection<T> where T : IID
 		T instance = Get(getter);
 		
 		keys.Remove(instance);
-		instances.Remove(getter);
+		Collection.Remove(getter);
 	}
 	
 	public void Clear()
 	{
-		foreach (var kvp in instances)
-		{
-			Remove(kvp.Key);
-		}
+		Collection.Clear();
+		keys.Clear();
+		idCounter = 1;
 	}
 }

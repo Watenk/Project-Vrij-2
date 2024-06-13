@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IBoid : IGameObject, IRigidBody, IID, IFixedUpdateable
+public interface IBoid : IGameObject, IRigidBody, IID
 {
-	public ISwarm Swarm { get; }
-	public Health<Boid> Health { get; }
 	public float Speed { get; }
-	public BoidMovement BoidMovement{ get; }
-	public DamageTaker DamageTaker { get; }
+	public PhysicsDamageDetector PhysicsDamageDetector { get; }
+	public Health<Boid> Health { get; }
+	
+	public void UpdateMovement(List<IBoid> neighbours, Vector3 swarmCenter);
 }
