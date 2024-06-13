@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class CharacterAttack : IAttack
@@ -12,8 +13,6 @@ public class CharacterAttack : IAttack
 	
 	// Grab
 	private bool grabbing;
-	private GameObject grabbedObject;
-	private bool grabAllowed;
 	private ITimer grabCooldownTimer;
 	private bool slashAllowed;
 	private ITimer slashCooldownTimer;
@@ -36,7 +35,6 @@ public class CharacterAttack : IAttack
 		slashCooldownTimer = timerManager.Add(characterAttackSettings.SlashCooldown);
 		singCooldownTimer = timerManager.Add(characterAttackSettings.SingCooldown);
 		
-		grabCooldownTimer.OnTimer += () => grabAllowed = true;
 		slashCooldownTimer.OnTimer += () => slashAllowed = true;
 		singCooldownTimer.OnTimer += () => singAllowed = true;
 		
@@ -45,7 +43,6 @@ public class CharacterAttack : IAttack
 	
 	~CharacterAttack()
 	{
-		grabCooldownTimer.OnTimer -= () => grabAllowed = true;
 		slashCooldownTimer.OnTimer -= () => slashAllowed = true;
 		singCooldownTimer.OnTimer -= () => singAllowed = true;
 	}
@@ -70,13 +67,15 @@ public class CharacterAttack : IAttack
 	}
 	
 	// Hold RMB
-	public void GrabObject(GameObject other, GameObject player)
+	public void GrabObject(GameObject other, GameObject player, Transform attackRoot)
 	{
-		if (!grabbing || !grabAllowed) return;
+		if (!grabbing || grabCooldownTimer.TimeLeft > 0) return;
 		
-		other.transform.SetParent(player.transform);
+		other.transform.SetParent(player.transform.GetChild(3).gameObject.transform);
+		other.transform.position = new Vector3(attackRoot.position.x, attackRoot.position.y - 1, attackRoot.position.z);
+		other.transform.rotation = quaternion.Euler(-75, other.transform.rotation.y, other.transform.rotation.z);
+		other.GetComponent<PhysicsGrabDetector>().Grab();
 		grabCooldownTimer.Reset();
-		grabAllowed = false;
 		
 		events.Invoke(Event.OnHumanGrabbed, other);
 	}

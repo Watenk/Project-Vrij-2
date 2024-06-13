@@ -9,17 +9,23 @@ EditorBuildSettings:
     path: Assets/1_Scenes/MainMenu.unity
     guid: 24b108dbbd8d40b46af5e80a00e29bde
   - enabled: 1
-    path: Assets/1_Scenes/Tutorial.unity
-    guid: 0396f66242a525b40838d93dd74aac82
+    path: Assets/1_Scenes/Tutorial 2.unity
+    guid: aeb54a0bf4d805d4cbee7296141f053e
   - enabled: 1
-    path: Assets/1_Scenes/Temp/Max_Dev.unity
-    guid: a480e7a9595c69944b860e12c0e00934
-  - enabled: 1
-    path: Assets/1_Scenes/MainScene.unity
-    guid: 62b89833b27fc59489d3365bd13196e8
-  - enabled: 1
+    path: Assets/1_Scenes/FixedMainScene.unity
+    guid: 62fc17843c73c1c4c80b9da71736b1c8
+  - enabled: 0
     path: Assets/1_Scenes/Jodi_Blockout.unity
     guid: 8f6bf08704174604cb56794a997854c5
+  - enabled: 0
+    path: Assets/1_Scenes/MainScene.unity
+    guid: 62b89833b27fc59489d3365bd13196e8
+  - enabled: 0
+    path: Assets/1_Scenes/Temp/Max_Dev.unity
+    guid: a480e7a9595c69944b860e12c0e00934
+  - enabled: 0
+    path: Assets/1_Scenes/Tutorial.unity
+    guid: 0396f66242a525b40838d93dd74aac82
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 72ab42cac6d37d64d9bf95fd72dfbee3,
       type: 2}

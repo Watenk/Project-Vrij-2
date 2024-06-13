@@ -1,126 +1,125 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class Tutorial : MonoBehaviour
 {
-    public GameObject UIWasd;
-    public GameObject UIMouse;
-    public GameObject UIButtonUp;
-    public GameObject UIButtonDown;
-    public GameObject UIJumpBoat;
-    public GameObject UIDrowning;
-    public GameObject UIEatFish;
-    public GameObject UIBoost;
-    
-    public GameObject BoatSpawn;
+	public GameObject UIWasd;
+	public GameObject UIMouse;
+	public GameObject UIButtonUp;
+	public GameObject UIButtonDown;
+	public GameObject UIJumpBoat;
+	public GameObject UIEatFish;
+	public GameObject UIBoost;
+	public GameObject UISing;
 
-    bool One;
-    bool Two;
-    bool SpacePressed;
-    bool Boat;
-    bool TriggerEnter;
+	private EventManager events;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+	bool One;
+	bool Two;
+	bool SpacePressed;
+	bool Boat;
+	bool TriggerEnter;
+
+	private void Start() 
+	{
+		events = ServiceLocator.Instance.Get<EventManager>();
+		events.AddListener<GameObject>(Event.OnHumanGrabbed, (grabbedObject) => OnHumanGrabbed(grabbedObject));
+	}
+
+	private void Update()
+	{
+		ControlsMouse();
+
+		if (One == true && Two == true)
+		{
+			ButtonUp();
+			UIButtonUp.SetActive(true);
+		}
+
+		if(SpacePressed == true)
+		{
+			UIButtonDown.SetActive(true);
+			UIButtonUp.SetActive(false);
+			ButtonDown();
+		}
+
+		if(Boat == true)
+		{
+			UIButtonDown.SetActive(false);
+			UIJumpBoat.SetActive(true);
+		}
+
+		if (TriggerEnter == true) 
+		{
+			UIJumpBoat.SetActive(false);
+
+			if (Input.GetKeyDown(KeyCode.LeftShift))
+			{
+				UIEatFish.SetActive(true);
+				StartCoroutine(Coroutine());
+			}
+		}
+
+		if (Input.GetKeyDown(KeyCode.LeftControl))
+		{
+			UIBoost.SetActive(false);
+		}
+	}
+
+	private void OnHumanGrabbed(GameObject grabbedObject)
+	{
+		UIJumpBoat.SetActive(false);
+		TriggerEnter = true;
+		
+	}
+
+	private IEnumerator Coroutine()
+	{
+		yield return new WaitForSeconds(10);
+		UIEatFish.SetActive(false);
+        UISing.SetActive(true);
+        StartCoroutine(Coroutine2());
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        ControlsMouse();
-
-        if (One == true && Two == true)
-        {
-            ButtonUp();
-            UIButtonUp.SetActive(true);
-        }
-
-        if(SpacePressed == true)
-        {
-            UIButtonDown.SetActive(true);
-            UIButtonUp.SetActive(false);
-            ButtonDown();
-        }
-
-        if(Boat == true)
-        {
-            UIButtonDown.SetActive(false);
-            UIJumpBoat.SetActive(true);
-            BoatSpawn.SetActive(true);
-        }
-
-        if (TriggerEnter == true) 
-        {
-            UIJumpBoat.SetActive(false);
-            Debug.Log("Boat is hit");
-
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                UIDrowning.SetActive(false);
-                UIEatFish.SetActive(true);
-                StartCoroutine(Coroutine());
-
-            }
-
-        }
-
-        //if(Input.GetKeyDown (KeyCode.))
-        //{
-             //UIBoost.SetActive(false);
-        //}
-    }
-
-    IEnumerator Coroutine()
-    {
+	private IEnumerator Coroutine2()
+	{
         yield return new WaitForSeconds(10);
-        UIEatFish.SetActive(false);
+		UISing.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-            UIJumpBoat.SetActive(false);
-            BoatSpawn.SetActive(false);
-            UIDrowning.SetActive(true);
-            TriggerEnter = true;
+	private void ButtonDown()
+	{
+		if (Input.GetKeyDown(KeyCode.LeftShift))
+		{
+			UIButtonDown.SetActive(false);
+			Boat = true;
+		}
+	}
 
-    }
+	private void ButtonUp()
+	{
+		 if(Input.GetKeyDown(KeyCode.Space))
+		 {
+			 UIButtonUp.SetActive(false);
+			 SpacePressed = true;
+		 }
+	}
 
-    private void ButtonDown()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            UIButtonDown.SetActive(false);
-            Boat = true;
+	private void ControlsMouse()
+	{
+		if(Input.GetAxis("Vertical") > .1f || Input.GetAxis("Horizontal") > .1f)
+		{
+			UIWasd.SetActive(false);
+			One = true;
+		}
 
-        }
-    }
-
-    private void ButtonUp()
-    {
-         if(Input.GetKeyDown(KeyCode.Space))
-         {
-             UIButtonUp.SetActive(false);
-             SpacePressed = true;
-         }
-
-    }
-
-    private void ControlsMouse()
-    {
-        if(Input.GetAxis("Vertical") > .1f || Input.GetAxis("Horizontal") > .1f)
-        {
-            UIWasd.SetActive(false);
-            One = true;
-        }
-
-        if(Input.GetAxis("Mouse Y") > .1f || Input.GetAxis("Mouse X") > .1f)
-        {
-            UIMouse.SetActive(false);
-            Two = true;
-        }
-
-    }
+		if(Input.GetAxis("Mouse Y") > .1f || Input.GetAxis("Mouse X") > .1f)
+		{
+			UIMouse.SetActive(false);
+			Two = true;
+		}
+	}
 }

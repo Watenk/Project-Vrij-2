@@ -104,7 +104,7 @@ public class Player : MonoBehaviour, IPlayer
 	{
 		if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
 		{
-			CharacterAttack.GrabObject(other.gameObject, this.gameObject);
+			CharacterAttack.GrabObject(other.gameObject, this.gameObject, attackRoot);
 		}
 		
 		if (other.gameObject.layer == LayerMask.NameToLayer("PlayerParent") && !onBoat)
