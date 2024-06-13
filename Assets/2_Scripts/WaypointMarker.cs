@@ -47,6 +47,6 @@ public class WaypointMarker : MonoBehaviour
         pos.y = Mathf.Clamp(pos.y, minY, maxY);
 
         Image.transform.position = pos;
-        meter.text = "Jump over the boat";
+        meter.text = "Sink a boat";
     }
 }
