@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Watenk;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IPlayer
 {
@@ -70,6 +71,7 @@ public class Player : MonoBehaviour, IPlayer
 		damageDetector.OnDamage += (amount) => CharacterHealth.ChangeHealth(amount * -1);
 		CharacterAttack.OnKill += () => CharacterHealth.ChangeHealth(1);
 		CharacterHealth.OnHealthChanged += (amount) => ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
+		CharacterHealth.OnDeath += (player) => SceneManager.LoadScene(0);;
 	}
 	
 	public void OnDisable() 

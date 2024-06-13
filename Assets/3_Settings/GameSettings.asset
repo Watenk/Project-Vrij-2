@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16a3ee845d19cb24d8fb5d88f46b029f, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  BoatKillAmountBossTrigger: 10
+  BoatKillAmountBossTrigger: 16

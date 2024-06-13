@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/1_Scenes/FixedMainScene.unity
     guid: 62fc17843c73c1c4c80b9da71736b1c8
   - enabled: 1
+    path: Assets/1_Scenes/BossBattleCutScene.unity
+    guid: 3f53d0c419127c2469b04b9d25e1dc34
+  - enabled: 1
     path: Assets/1_Scenes/BossBattle.unity
     guid: 144b7b2726c59c447a8c494cf33d05c6
   m_configObjects:
