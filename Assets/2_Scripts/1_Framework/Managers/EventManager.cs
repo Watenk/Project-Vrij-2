@@ -12,6 +12,7 @@ public enum Event
 	OnBoostChange,
 	OnHumanStunned,
 	OnHumanGrabbed,
+	OnPlayerDied
 }
 
 // TODO: use params to generalize the paramers

@@ -45,7 +45,7 @@ public class BoatsManager : MonoBehaviour
 			GameObject.Destroy(boat.GameObject);
 			ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnBoatSunk);
 		}
-		sunkenBoats.Clear();
+		//sunkenBoats.Clear();
 	}
 	
 	#if UNITY_EDITOR

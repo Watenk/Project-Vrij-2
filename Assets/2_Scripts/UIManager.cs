@@ -17,22 +17,26 @@ public class UIManager : MonoBehaviour
 	private GameObject pauseObject;
 	public int boatKillsNeeded;
 
+	public GameObject victory; 
+
 	private bool paused;
+	private int boatsKilled = -1;
 
 	public void Start()
 	{
 		BoatsManager.OnBoatSunk += UpdateBoatsKilled;
 		ServiceLocator.Instance.Get<EventManager>().AddListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
-		EventManager events = ServiceLocator.Instance.Get<EventManager>();
-		events.AddListener<float>(Event.OnBoostChange, (float amount) => UpdateBoostAmount(amount));
+		ServiceLocator.Instance.Get<EventManager>().AddListener<float>(Event.OnBoostChange, (float amount) => UpdateBoostAmount(amount));
 
 		UpdateBoatsKilled(0);
 		UnPause();
+		victory.SetActive(false);
 	}
 	
 	private void OnDestroy() 
 	{
 		ServiceLocator.Instance.Get<EventManager>().RemoveListener(Event.OnPlayerHealth, (int amount) => UpdateHealthAmount(amount));
+		ServiceLocator.Instance.Get<EventManager>().RemoveListener<float>(Event.OnBoostChange, (float amount) => UpdateBoostAmount(amount));
 	}
 
 	public float Remap(float value, float from1, float to1, float from2, float to2) {
@@ -55,19 +59,24 @@ public class UIManager : MonoBehaviour
 
 	public void UpdateBoatsKilled(int amount)
 	{
+		boatsKilled++;
 		if (boatKills == null) return;
-		boatKills.text = amount + "/" + boatKillsNeeded;
+        if (boatsKilled >= boatKillsNeeded) {
+			victory.SetActive(true);
+			Pause();
+		}
+		boatKills.text = boatsKilled + "/" + boatKillsNeeded;
 	}
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            if (paused) {
+	private void Update() {
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			if (paused) {
 				UnPause();
 			} else {
 				Pause();
-            }
-        }
-    }
+			}
+		}
+	}
 
 	public void Pause()
 	{
@@ -87,5 +96,5 @@ public class UIManager : MonoBehaviour
 
 	public void BackToMenu() {
 		SceneManager.LoadScene("MainMenu");
-    }	
+	}	
 }

@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BossBattleState : BaseState<GameManager>
 {
 	public override void Enter()
 	{
-		// Start cut scene
-		//Switch to boss scene
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 	}
 }

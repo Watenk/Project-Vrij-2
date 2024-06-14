@@ -63,4 +63,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f4ea0afcf80dca146b7929bedb2be113, type: 2}
   - {fileID: 11400000, guid: ff0ce8cf00e419e4d836e1f87546a00b, type: 2}
   - {fileID: 11400000, guid: 14c52d6b87b37304fa2f3093a8ad6411, type: 2}
+  - {fileID: 11400000, guid: 0b535bc2e7989ed4f818606053857130, type: 2}
   audioPlayer: {fileID: 0}

@@ -7,14 +7,17 @@ using TMPro;
 public class WaypointMarker : MonoBehaviour
 {
     public Image Image;
-    public Transform target;
+    private Transform target;
     public TMP_Text meter;
     public Vector3 offset;
+
+    private GameObject boat;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        boat = GameObject.Find("BoatSpawner");
+        target = boat.transform;
     }
 
     // Update is called once per frame
@@ -44,6 +47,6 @@ public class WaypointMarker : MonoBehaviour
         pos.y = Mathf.Clamp(pos.y, minY, maxY);
 
         Image.transform.position = pos;
-        meter.text = ((int)Vector3.Distance(target.position, transform.position)).ToString() + "m";
+        meter.text = "Sink a boat";
     }
 }

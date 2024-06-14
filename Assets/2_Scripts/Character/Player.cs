@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Watenk;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IPlayer
 {
@@ -40,7 +41,7 @@ public class Player : MonoBehaviour, IPlayer
 	[SerializeField]
 	private CharacterAttackSettings characterAttackSettings;
 	
-	private PhysicsDamageDetector damageTaker;
+	private PhysicsDamageDetector damageDetector;
 	private bool onBoat;
 	private Transform boatPos;
 	private Vector3 previousBoatPos;
@@ -49,8 +50,8 @@ public class Player : MonoBehaviour, IPlayer
 	{
 		Rigidbody rb = GetComponent<Rigidbody>();
 		if (rb == null) DebugUtil.ThrowError(this.name + " is missing a RigidBody");
-		damageTaker = GetComponentInChildren<PhysicsDamageDetector>();
-		if (damageTaker == null) DebugUtil.ThrowError(this.name + " is missing a DamageTaker");
+		damageDetector = GetComponentInChildren<PhysicsDamageDetector>();
+		if (damageDetector == null) DebugUtil.ThrowError(this.name + " is missing a DamageTaker");
 		
 		CharacterInputHandler = new CharacterInputHandler();
 		CharacterMovement = new CharacterController(characterControllerSettings, rb, cameraRoot, moddelRoot, cinemachineRecomposer, waterSurface);
@@ -67,9 +68,10 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterInputHandler.OnBoost += CharacterMovement.Boost;
 		CharacterInputHandler.OnGrabDown += CharacterAttack.Grab;
 		CharacterInputHandler.OnGrabUp += CharacterAttack.GrabRelease;
-		damageTaker.OnDamage += (amount) => CharacterHealth.ChangeHealth(amount * -1);
+		damageDetector.OnDamage += (amount) => CharacterHealth.ChangeHealth(amount * -1);
 		CharacterAttack.OnKill += () => CharacterHealth.ChangeHealth(1);
 		CharacterHealth.OnHealthChanged += (amount) => ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
+		CharacterHealth.OnDeath += (player) => SceneManager.LoadScene(0);;
 	}
 	
 	public void OnDisable() 
@@ -81,7 +83,7 @@ public class Player : MonoBehaviour, IPlayer
 		CharacterInputHandler.OnBoost -= CharacterMovement.Boost;
 		CharacterInputHandler.OnGrabDown -= CharacterAttack.Grab;
 		CharacterInputHandler.OnGrabUp -= CharacterAttack.GrabRelease;
-		damageTaker.OnDamage -= (amount) => CharacterHealth.ChangeHealth(amount * -1);
+		damageDetector.OnDamage -= (amount) => CharacterHealth.ChangeHealth(amount * -1);
 		CharacterAttack.OnKill -= () => CharacterHealth.ChangeHealth(1);
 		CharacterHealth.OnHealthChanged -= (amount) => ServiceLocator.Instance.Get<EventManager>().Invoke(Event.OnPlayerHealth, amount.CharacterHealth.HP);
 	}
@@ -89,6 +91,7 @@ public class Player : MonoBehaviour, IPlayer
 	public void Update()
 	{
 		CharacterInputHandler.Update();
+		CharacterAttack.Update();
 		sirenLocation.Position = gameObject.transform.position;
 		
 		if (onBoat)
@@ -104,7 +107,7 @@ public class Player : MonoBehaviour, IPlayer
 	{
 		if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
 		{
-			CharacterAttack.GrabObject(other.gameObject, this.gameObject);
+			CharacterAttack.GrabObject(other.gameObject, this.gameObject, attackRoot);
 		}
 		
 		if (other.gameObject.layer == LayerMask.NameToLayer("PlayerParent") && !onBoat)

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BoatAttackState : BaseState<GameManager>
 {
-	private int boatsSunk;
+	private int boatsSunk = 0;
 	
 	public override void Enter()
 	{

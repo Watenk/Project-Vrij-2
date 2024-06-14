@@ -16,6 +16,7 @@ public class Human : IGameObject, IID, IHealth<Human>
 	private Fsm<Human> behaviourFSM;
 	private PhysicsDamageDetector physicsDamageDetector;
 	private PhysicsStunDetector physicsStunDetector;
+	private PhysicsGrabDetector physicsGrabDetector;
 
 	// Dependencies
 	public HumansSettings humansSettings { get; private set; }
@@ -25,6 +26,8 @@ public class Human : IGameObject, IID, IHealth<Human>
 	public DictCollection<Human> humans { get; private set; }
 	public int HP { get; private set; }
 	public int MaxHP { get; private set; }
+	
+	private bool disabled;
 
 	public Human(DictCollection<Human> humans, GameObject parent, GameObject platform, HumansSettings humansSettings, SirenLocation sirenLocation)
 	{
@@ -59,6 +62,10 @@ public class Human : IGameObject, IID, IHealth<Human>
 		physicsStunDetector = GameObject.GetComponent<PhysicsStunDetector>();
 		if (physicsStunDetector == null) DebugUtil.ThrowError("physicsStunDetector is null. The human probably doesnt have a physicsStunDetector Component");
 		physicsStunDetector.OnStun += () => behaviourFSM.SwitchState(typeof(HumanStunnedState));
+		
+		physicsGrabDetector = GameObject.GetComponent<PhysicsGrabDetector>();
+		if (physicsGrabDetector == null) DebugUtil.ThrowError("physicsGrabDetector is null. The human probably doesnt have a physicsGrabDetector Component");
+		physicsGrabDetector.OnGrab += () => disabled = true;
 	}
 	
 	~Human()
@@ -76,6 +83,7 @@ public class Human : IGameObject, IID, IHealth<Human>
 
 	public void FixedUpdate(DictCollection<Human> humans)
 	{
+		if (disabled) return;
 		this.humans = humans;
 		
 		if (Vector3.Distance(sirenLocation.Position, GameObject.transform.position) <= humansSettings.SirenDetectRange)
