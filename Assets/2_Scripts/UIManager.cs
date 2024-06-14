@@ -17,7 +17,10 @@ public class UIManager : MonoBehaviour
 	private GameObject pauseObject;
 	public int boatKillsNeeded;
 
+	public GameObject victory; 
+
 	private bool paused;
+	private int boatsKilled = -1;
 
 	public void Start()
 	{
@@ -27,6 +30,7 @@ public class UIManager : MonoBehaviour
 
 		UpdateBoatsKilled(0);
 		UnPause();
+		victory.SetActive(false);
 	}
 	
 	private void OnDestroy() 
@@ -55,8 +59,13 @@ public class UIManager : MonoBehaviour
 
 	public void UpdateBoatsKilled(int amount)
 	{
+		boatsKilled++;
 		if (boatKills == null) return;
-		boatKills.text = amount + "/" + boatKillsNeeded;
+        if (boatsKilled >= boatKillsNeeded) {
+			victory.SetActive(true);
+			Pause();
+		}
+		boatKills.text = boatsKilled + "/" + boatKillsNeeded;
 	}
 
 	private void Update() {

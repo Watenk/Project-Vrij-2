@@ -9,7 +9,7 @@ public class SkipTutorial : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            SceneManager.LoadScene("1_Scenes/Temp/Max_Dev");
+            //SceneManager.LoadScene("1_Scenes/Temp/Max_Dev");
 
         }
     }
